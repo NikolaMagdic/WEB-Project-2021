@@ -1,0 +1,19 @@
+{
+	
+	"admin": {
+		"username": "admin",
+		"password": "admin",
+		"firstName": "Pera",
+		"lastName": "Peric",
+		"gender": true,
+		"birthDate": 1508762343511,
+		"role": "ADMIN",
+		"myOrders": [],
+		"cart": 0,
+		"restaurant": 0,
+		"deliveryOrders": [],
+		"points": 0,
+		"customerType": 0
+		
+	}
+}

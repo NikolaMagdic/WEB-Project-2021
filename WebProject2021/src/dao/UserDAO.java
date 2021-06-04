@@ -1,13 +1,17 @@
 package dao;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import beans.User;
 
@@ -41,6 +45,26 @@ public class UserDAO {
 			if (in != null) {
 				try {
 					in.close();
+				} catch (Exception e) {}
+			}
+		}
+	}
+	
+	public void saveUsers(String path) {
+		BufferedWriter out = null;
+		try {
+			File file = new File(path + "/data/users.json");
+			out = new BufferedWriter(new FileWriter(file));
+			ObjectMapper mapper = new ObjectMapper();
+			ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());  
+			String content = writer.writeValueAsString(this.usersMap);
+			out.write(content);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
 				} catch (Exception e) {}
 			}
 		}

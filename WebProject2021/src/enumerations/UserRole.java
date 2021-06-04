@@ -1,7 +1,7 @@
 package enumerations;
 
 public enum UserRole {
-	ADMINISTRATOR,
+	ADMIN,
 	MENADZER,
 	DOSTAVLJAC,
 	KUPAC
