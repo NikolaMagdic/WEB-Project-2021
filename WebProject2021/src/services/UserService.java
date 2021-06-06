@@ -25,8 +25,7 @@ public class UserService {
 		UserDAO userDAO = new UserDAO(contextPath);
 		if(ctx.getAttribute("users") == null) {
 			ctx.setAttribute("users", userDAO);
-		}
-		
+		}	
 		
 	}
 }
