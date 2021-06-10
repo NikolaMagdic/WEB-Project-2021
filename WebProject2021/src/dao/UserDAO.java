@@ -30,7 +30,9 @@ public class UserDAO {
 	public void loadUsers(String path) {
 		BufferedReader in = null;
 		try {
-			File file = new File(path + "/data/users.json");
+
+			File file = new File(path + "data/users.json");
+
 			in = new BufferedReader(new FileReader(file));
 			String line;
 			StringBuilder sb = new StringBuilder();
@@ -68,5 +70,13 @@ public class UserDAO {
 				} catch (Exception e) {}
 			}
 		}
+	}
+	
+	public User findUser(String username) {
+		User user = this.usersMap.get(username);
+		if(user != null)
+			return user;
+		else 
+			return null;
 	}
 }

@@ -13,7 +13,7 @@
 		"restaurant": 0,
 		"deliveryOrders": [],
 		"points": 0,
-		"customerType": 0
+		"customerType": null
 		
 	}
 }
