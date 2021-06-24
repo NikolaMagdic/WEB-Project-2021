@@ -2,22 +2,29 @@ package beans;
 
 public class Cart {
 	
+	private Long id;
+	
 	private CartItem cartItem;
 	
 	private Integer user;
 	
 	private Double price;
 	
+	
+	
 	public Cart() {
 		
 	}
 
-	public Cart(CartItem cartItem, Integer user, Double price) {
+	public Cart(Long id, CartItem cartItem, Integer user, Double price) {
 		super();
+		this.id = id;
 		this.cartItem = cartItem;
 		this.user = user;
 		this.price = price;
 	}
+
+
 
 	public CartItem getCartItem() {
 		return cartItem;

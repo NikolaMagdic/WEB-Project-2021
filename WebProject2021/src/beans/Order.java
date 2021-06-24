@@ -7,6 +7,8 @@ import java.util.List;
 import enumerations.OrderStatus;
 
 public class Order {
+	
+	private Long id;
 
 	// 10 karaktera
 	private String orderId;
@@ -25,13 +27,17 @@ public class Order {
 	private OrderStatus orderStatus;
 
 	
+	
 	public Order() {
 		
 	}
 	
-	public Order(String orderId, List<Integer> products, Integer restaurant, Date date, Double price, String customer,
-			OrderStatus orderStatus) {
+	
+
+	public Order(Long id, String orderId, List<Integer> products, Integer restaurant, Date date, Double price,
+			String customer, OrderStatus orderStatus) {
 		super();
+		this.id = id;
 		this.orderId = orderId;
 		this.products = products;
 		this.restaurant = restaurant;
@@ -40,6 +46,7 @@ public class Order {
 		this.customer = customer;
 		this.orderStatus = orderStatus;
 	}
+
 
 
 	public String getOrderId() {

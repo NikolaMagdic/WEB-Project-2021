@@ -3,6 +3,8 @@ package beans;
 import enumerations.ProductType;
 
 public class Product {
+	
+	private Long id;
 
 	private String name;
 	
@@ -18,13 +20,17 @@ public class Product {
 	
 	private String image;
 
+	
 	public Product() {
 		
 	}
 	
-	public Product(String name, Double price, ProductType itemType, Integer restaurant, Double amount, String description,
-			String image) {
+
+
+	public Product(Long id, String name, Double price, ProductType itemType, Integer restaurant, Double amount,
+			String description, String image) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.itemType = itemType;
@@ -33,6 +39,8 @@ public class Product {
 		this.description = description;
 		this.image = image;
 	}
+
+
 
 	public String getName() {
 		return name;

@@ -1,6 +1,8 @@
 package beans;
 
 public class Address {
+	
+	private Long id;
 
 	private String streetAndNumber;
 	
@@ -8,16 +10,21 @@ public class Address {
 	
 	private int postalCode;
 	
+	
 	public Address() {
 		
 	}
 
-	public Address(String streetAndNumber, String city, int postalCode) {
+
+	public Address(Long id, String streetAndNumber, String city, int postalCode) {
 		super();
+		this.id = id;
 		this.streetAndNumber = streetAndNumber;
 		this.city = city;
 		this.postalCode = postalCode;
 	}
+
+
 
 	public String getStreetAndNumber() {
 		return streetAndNumber;

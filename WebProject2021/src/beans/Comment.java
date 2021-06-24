@@ -1,6 +1,8 @@
 package beans;
 
 public class Comment {
+	
+	private Long id;
 
 	private Integer customer;
 	
@@ -11,17 +13,22 @@ public class Comment {
 	// od 1 do 10
 	private Integer grade;
 
+	
 	public Comment() {
 		
 	}
 	
-	public Comment(Integer customer, Integer restaurant, String text, Integer grade) {
+
+	public Comment(Long id, Integer customer, Integer restaurant, String text, Integer grade) {
 		super();
+		this.id = id;
 		this.customer = customer;
 		this.restaurant = restaurant;
 		this.text = text;
 		this.grade = grade;
 	}
+
+
 
 	public Integer getCustomer() {
 		return customer;

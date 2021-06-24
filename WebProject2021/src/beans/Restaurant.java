@@ -7,6 +7,8 @@ import enumerations.RestaurantType;
 
 public class Restaurant {
 	
+	private Long id;
+	
 	private String name;
 	
 	private RestaurantType restaurantType;
@@ -25,11 +27,12 @@ public class Restaurant {
 	public Restaurant() {
 		super();
 	}
-	
-	
-	public Restaurant(String name, RestaurantType restaurantType, List<Integer> articals, boolean open,
+
+
+	public Restaurant(Long id, String name, RestaurantType restaurantType, List<Integer> articals, boolean open,
 			Location location, String image) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.restaurantType = restaurantType;
 		this.articals = articals;
@@ -37,6 +40,8 @@ public class Restaurant {
 		this.location = location;
 		this.image = image;
 	}
+
+
 
 
 
