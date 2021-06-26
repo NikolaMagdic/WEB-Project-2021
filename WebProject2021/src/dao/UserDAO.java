@@ -79,4 +79,9 @@ public class UserDAO {
 		else 
 			return null;
 	}
+	
+	public User addUser (User user) {
+		usersMap.put(user.getUsername(), user);
+		return user;
+	}
 }

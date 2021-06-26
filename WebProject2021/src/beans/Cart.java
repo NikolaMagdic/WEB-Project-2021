@@ -1,12 +1,13 @@
 package beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cart {
 	
 	private Long id;
 	
-	private CartItem cartItem;
-	
-	private Integer user;
+	private List<CartItem> cartItems = new ArrayList<CartItem>();
 	
 	private Double price;
 	
@@ -16,30 +17,21 @@ public class Cart {
 		
 	}
 
-	public Cart(Long id, CartItem cartItem, Integer user, Double price) {
+	public Cart(Long id, List<CartItem> cartItems, Double price) {
 		super();
 		this.id = id;
-		this.cartItem = cartItem;
-		this.user = user;
+		this.cartItems = cartItems;
 		this.price = price;
 	}
 
 
 
-	public CartItem getCartItem() {
-		return cartItem;
+	public List<CartItem> getCartItems() {
+		return cartItems;
 	}
 
-	public void setCartItem(CartItem cartItem) {
-		this.cartItem = cartItem;
-	}
-
-	public Integer getUser() {
-		return user;
-	}
-
-	public void setUser(Integer user) {
-		this.user = user;
+	public void setCartItem(List<CartItem> cartItems) {
+		this.cartItems = cartItems;
 	}
 
 	public Double getPrice() {
@@ -50,10 +42,6 @@ public class Cart {
 		this.price = price;
 	}
 
-	@Override
-	public String toString() {
-		return "Cart [cartItem=" + cartItem + ", user=" + user + ", price=" + price + "]";
-	}
 	
 	
 	

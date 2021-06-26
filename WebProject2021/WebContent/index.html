@@ -10,18 +10,96 @@
 <body>
 	<div class="meni">
 	  <button id="loginMenu">Log in</button>
+	  <button id="registerMenu">Register</button>
 	</div>
 	<div id="divLogin">
-	<h1>Prijava</h1>
-	<form id="formLogin">
-		<label>Username</label>
-		<input type="text" id="username">
-		<br>
-		<label>Password</label>
-		<input type="password" id="password">
-		<br>
-		<input type="submit" value="Sign in" class="submit">
-	</form>
+		<h1>Prijava</h1>
+		<form id="formLogin">
+			<label>Username</label>
+			<input type="text" id="username">
+			<br>
+			<label>Password</label>
+			<input type="password" id="password">
+			<br>
+			<input type="submit" value="Sign in" class="submit" id="submitLogin">
+		</form>
+	</div>
+	<div id="divRegister">
+		<div id="divH1Register">
+			<h1 id="h1Register">Register</h1>
+		</div>
+			<form id="formRegister">
+				<table>
+					<tr>
+						<td>
+							<div>
+								<div>
+									<span>Username*: </span>
+								</div>
+								<input type="text" required id="usernameRegister">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div >
+								<div>
+									<span>Password*: </span>
+								</div>
+								<input type="password" required  id="passwordRegister">
+							</div>
+						</td>
+					</tr>
+									<tr>
+						<td>
+							<div>
+								<div>
+									<span>Confirm Password*: </span>
+								</div>
+								<input type="password" required id="confirm-password">
+							</div>
+						</td>
+					</tr>
+					<tr>
+	
+						<td>
+							<div>
+								<div>
+									<span>Name*: </span>
+								</div>
+								<input type="text" required id="nameRegister" >
+							</div>
+						</td>
+					</tr>
+					<tr>
+	
+						<td><div>
+								<div>
+									<span>Last
+										Name* : </span>
+								</div>
+								<input type="text" required id="lastNameRegister">
+							</div></td>
+					</tr>
+					
+					<tr>
+						<div class="btn-group">
+						  <label>
+						    <input type="radio" name="optionsCheck" id="male" checked> Male
+						  </label>
+						  <label>
+						    <input type="radio" name="optionsCheck" id="female"> Female
+						  </label>
+						</div>	
+					</tr>
+					
+					<tr>
+						<td><input type="submit"
+							id="submitRegister" value="Register" class="submit">
+						</td>
+					</tr>
+				</table>
+			</form>
 	</div>
 </body>
 </html>

@@ -49,3 +49,24 @@ input {
   background-color: #ff1a1a;
   color: white;
 }
+
+#divRegister{
+	display: block;
+}
+
+
+#registerMenu {
+  background-color: #1eae30;
+  color: white;
+  float: right;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  padding: 14px 16px; 
+  font-size: 17px;
+}
+
+#registerMenu:hover {
+  background-color: #32e73c;
+  color: white;
+}

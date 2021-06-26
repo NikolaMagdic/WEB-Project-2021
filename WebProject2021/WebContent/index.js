@@ -27,7 +27,8 @@ $(document).ready(function(){
 				} else if(message === "DOSTAVLJAC") {
 					
 				} else if(message === "KUPAC"){
-					
+					//window.location = "./admin.html";
+					alert("Welcome!");
 				} else {
 					alert(message)
 				}
@@ -48,6 +49,64 @@ $(document).ready(function(){
 			$("#divLogin").hide();
 		}
 		
+	});
+	
+	// Show/hide register form
+	$("#registerMenu").click(function(event){
+		if($("#divRegister").css("display") == "none") {
+			$("#divRegister").show();
+		} else {
+			$("#divRegister").hide();
+		}
+		
+	});
+	
+	
+	$("#formRegister").submit(function(event){
+		console.log("#######1");
+		event.preventDefault();
+
+		let username = $("#usernameRegister").val();
+		let password = $("#passwordRegister").val();
+		console.log(password);
+		let firstName = $("#nameRegister").val();
+		let lastName = $("#lastNameRegister").val();
+		let male = $("#male:checked").val();
+		let confirm_password = $("#confirm-password").val();
+		console.log(confirm_password);
+		let gender;
+		
+		console.log("#######2");
+		
+		if(male){
+			gender = "True";
+			//alert("Musko");
+		}else {
+			gender = "False";
+			//alert("Zensko");
+		}
+		
+		console.log("#######3");
+		if (password === confirm_password){
+					$.post({
+						url : "rest/register",
+						data : JSON.stringify({username, password, firstName, lastName, gender}),
+						contentType: "application/json",
+						success : function(){
+							alert("You are registred");
+							console.log("success");
+							window.location = "./index.html";
+						},
+						error : function(){
+							console.log("error");
+							alert("Username already exists.");
+						}
+					});
+		} else {
+			alert("Passwords do not match");
+		}
+	
+
 	});
 	
 	

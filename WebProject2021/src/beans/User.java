@@ -27,7 +27,7 @@ public class User {
 	private List<Integer> myOrders = new ArrayList<Integer>();
 	
 	//ako je kupac
-	private Integer cart;
+	private Cart cart; //ili Integer?
 
 	//ako je menadzer
 	private Integer restaurant;
@@ -48,7 +48,7 @@ public class User {
 
 
 	public User(String username, String password, String firstName, String lastName, boolean gender, Date birthDate,
-			UserRole role, List<Integer> myOrders, Integer cart, Integer restaurant, List<Integer> deliveryOrders,
+			UserRole role, List<Integer> myOrders, Cart cart, Integer restaurant, List<Integer> deliveryOrders,
 			Integer points, CustomerType customerType) {
 		super();
 		this.username = username;
@@ -147,12 +147,15 @@ public class User {
 	}
 
 
-	public Integer getCart() {
+
+
+
+	public Cart getCart() {
 		return cart;
 	}
 
 
-	public void setCart(Integer cart) {
+	public void setCart(Cart cart) {
 		this.cart = cart;
 	}
 
