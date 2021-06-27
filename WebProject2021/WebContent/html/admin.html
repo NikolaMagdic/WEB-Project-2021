@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Naruči - admin page</title>
+<link rel="stylesheet" href="../css/admin.css"/>
+<script src="../jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../js/admin.js"></script>
+</head>
+<body>
+	<div class="meni">
+	  <button id="buttonAddUser">Dodaj korisnika</button>
+	</div>
+	<div id="divAddUser">
+		<form id="formAddUser">
+		<h1>Dodavanje novih dostavljača i menadžera</h1>
+		<table>
+			<tr>
+				<td>Username</td>
+				<td><input type="text" id="username"></td>
+			</tr>
+			<tr>
+				<td>Password</td>
+				<td><input type="password" id="password"></td>
+			</tr>
+			<tr>
+				<td>Ime</td>
+				<td><input type="text" id="name"></td>
+			</tr>
+			<tr>
+				<td>Prezime</td>
+				<td><input type="text" id="lastName"></td>
+			</tr>
+			<tr>
+				<td>Pol</td>
+				<td>
+				<label>Muški</label>
+				<input type="radio" name="gender" id="male" checked>
+				<label>Ženski</label>
+				<input type="radio" name="gender" id="female">
+				</td>
+			</tr>
+			<tr>
+				<td>Datum rođenja</td>
+				<td><input type="date" id="date"></td>
+			</tr>
+			<tr>
+				<td>Uloga</td>
+				<td>
+				<select id="role">
+        			<option value="MENADZER">Menadžer</option>
+        			<option value="DOSTAVLJAC">Dostavljač</option>
+      			</select> 
+      			</td>
+			</tr>
+			<tr>
+				<td></td>						
+				<td><input type="submit" value="Dodaj korisnika" class="submit"></td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</body>
+</html>

@@ -20,7 +20,7 @@ $(document).ready(function(){
 			success: function(message){
 				console.log(message);
 				if(message === "ADMIN"){
-					window.location = "./admin.html";
+					window.location = "./html/admin.html";
 					alert("Welcome!");
 				} else if(message === "MENADZER"){
 					

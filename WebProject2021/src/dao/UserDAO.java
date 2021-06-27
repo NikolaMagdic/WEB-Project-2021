@@ -80,8 +80,10 @@ public class UserDAO {
 			return null;
 	}
 	
-	public User addUser (User user) {
-		usersMap.put(user.getUsername(), user);
+	public User addUser(User user) {
+		
+		this.usersMap.put(user.getUsername(), user);
+		
 		return user;
 	}
 }
