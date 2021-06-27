@@ -8,6 +8,10 @@ body {
 	margin: 0%;
 }
 
+#divAddUser {
+	display: none;
+}
+
 h1 {
 	text-align: center;	 
 }
@@ -38,18 +42,13 @@ table {
   	border-radius: 30px;
 }
 
-#divLogin {
-	display: none;
-	align-items: center;
-}
-
 .meni {
   background-color: #003d66;
   overflow: hidden;
   color: #f2f2f2;
 }
 
-#loginMenu {
+#buttonAddUser {
   background-color: #cc0000;
   color: white;
   float: right;
@@ -60,8 +59,7 @@ table {
   font-size: 17px;
 }
 
-#loginMenu:hover {
+#buttonAddUser:hover {
   background-color: #ff1a1a;
   color: white;
-  cursor: pointer;
 }
