@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,4 +87,15 @@ public class UserDAO {
 		
 		return user;
 	}
+	
+	
+	public User updateUser (User user) {
+		usersMap.put(user.getUsername(), user);
+		return user;
+	}
+	
+	public Collection<User> findAllUsers(){
+		return usersMap.values();
+	}
+	
 }

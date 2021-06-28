@@ -1,0 +1,98 @@
+
+<head>
+	<meta charset="UTF-8">
+	<title>My Page</title>
+	<link rel="stylesheet" href="userPage.css">
+	<script src="jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="userPage.js"></script>
+</head>
+<body>
+	<div class="dropdown">
+	  <button class="dropbtn">Dropdown</button>
+	  <div class="dropdown-content">
+	    <a href="#">Link 1</a>
+	    <a href="#">Link 2</a>
+	    <a href="#">Link 3</a>
+	  </div>
+	</div>
+	<div id='divMyAccount' align='center'>
+		<div>
+			<h1 id="h1Edit">Edit Account</h1>
+		</div>
+		<br>
+			<form id="formEdit">
+		 		<table>
+		 				<tr></tr>
+						<tr>
+							<td>
+								<div>
+									<div>
+										<span>Username*: </span>
+									</div>
+									<input type="text" required id="usernameEdit">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="input-group mb-3">
+									<div>
+										<span>Password*: </span>
+									</div>
+									<input type="password" required  id="passwordEdit">
+								</div>
+							</td>
+						</tr>
+										<tr>
+							<td>
+								<div class="input-group mb-3">
+									<div>
+										<span>Confirm Password*: </span>
+									</div>
+									<input type="password" required id="confirm-password">
+								</div>
+							</td>
+						</tr>
+						<tr>
+		
+							<td>
+								<div class="input-group mb-3">
+									<div>
+										<span>Name*: </span>
+									</div>
+									<input type="text" required id="nameEdit" >
+								</div>
+							</td>
+						</tr>
+						<tr>
+		
+							<td><div class="input-group mb-3">
+									<div>
+										<span>Last
+											Name* : </span>
+									</div>
+									<input type="text" required id="lastNameEdit">
+								</div></td>
+						</tr>
+						
+						<tr>
+							<div class="btn-group">
+							  <label>
+							    <input type="radio" name="optionsCheck" id="male" checked> Male
+							  </label>
+							  <label>
+							    <input type="radio" name="optionsCheck" id="female"> Female
+							  </label>
+							</div>		
+						</tr>
+						
+						<tr>
+							<td>
+								<input type="submit"
+									id="submitEdit" value="Edit" class="submit">
+							</td>
+						</tr>
+					</table>
+				</form>
+		</div>
+</body>

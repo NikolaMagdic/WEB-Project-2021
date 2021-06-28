@@ -1,11 +1,15 @@
 package services;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -58,5 +62,37 @@ public class UserService {
 		userDAO.saveUsers(contextPath);
 		
 		return Response.status(200).entity(user).build();
+	}
+	
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public User updateUser(User user, @Context HttpServletRequest request) {
+		
+		UserDAO userDAO = (UserDAO)ctx.getAttribute("users");
+		User userForUpdate = userDAO.findUser(user.getUsername());
+		
+		userForUpdate.setPassword(user.getPassword());
+		userForUpdate.setFirstName(user.getFirstName());
+		userForUpdate.setLastName(user.getLastName());
+		userForUpdate.setGender(user.isGender());
+		
+		userDAO.updateUser(userForUpdate);
+		
+		String contextPath = ctx.getRealPath("");
+		userDAO.saveUsers(contextPath);
+		
+		return userForUpdate;
+	}
+	
+	@GET
+	@Path("/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<User> getAllUsers(){
+		
+		UserDAO userDAO = (UserDAO) ctx.getAttribute("users");
+		
+		return userDAO.findAllUsers();
+		
 	}
 }

@@ -27,7 +27,7 @@ $(document).ready(function(){
 				} else if(message === "DOSTAVLJAC") {
 					
 				} else if(message === "KUPAC"){
-					//window.location = "./admin.html";
+					window.location = "./userPage.html";
 					alert("Welcome!");
 				} else {
 					alert(message)
@@ -72,6 +72,7 @@ $(document).ready(function(){
 		let firstName = $("#nameRegister").val();
 		let lastName = $("#lastNameRegister").val();
 		let male = $("#male:checked").val();
+		
 		let confirm_password = $("#confirm-password").val();
 		console.log(confirm_password);
 		let gender;
@@ -95,7 +96,7 @@ $(document).ready(function(){
 						success : function(){
 							alert("You are registred");
 							console.log("success");
-							window.location = "./index.html";
+							window.location = "./userPage.html";
 						},
 						error : function(){
 							console.log("error");
