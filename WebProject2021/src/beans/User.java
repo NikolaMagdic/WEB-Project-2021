@@ -147,9 +147,6 @@ public class User {
 	}
 
 
-
-
-
 	public Cart getCart() {
 		return cart;
 	}
@@ -198,11 +195,15 @@ public class User {
 	public void setCustomerType(CustomerType customerType) {
 		this.customerType = customerType;
 	}
-	
-	
-	
-	
-	
+
+
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", gender=" + gender + ", birthDate=" + birthDate + ", role=" + role + ", myOrders="
+				+ myOrders + ", cart=" + cart + ", restaurant=" + restaurant + ", deliveryOrders=" + deliveryOrders
+				+ ", points=" + points + ", customerType=" + customerType + "]";
+	}
 	
 	
 }

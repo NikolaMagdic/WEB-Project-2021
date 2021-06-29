@@ -42,6 +42,23 @@ public class UserService {
 		
 	}
 	
+	// Vraća kolekciju svih korisnika u sistemu
+	@GET
+	@Path("/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response allUsers(@Context HttpServletRequest request) {
+		
+		if(getUserRole(request) != UserRole.ADMIN)
+			return Response.status(403).build();
+		
+		UserDAO userDAO = (UserDAO) ctx.getAttribute("users");
+		
+		Collection<User> allUsers = userDAO.getAllUsers();
+		
+		return Response.status(200).entity(allUsers).build();
+	}
+	
+	// Dodavanje novog korisnika
 	@POST
 	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -84,15 +101,13 @@ public class UserService {
 		
 		return userForUpdate;
 	}
-	
-	@GET
-	@Path("/all")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<User> getAllUsers(){
 		
-		UserDAO userDAO = (UserDAO) ctx.getAttribute("users");
+	public UserRole getUserRole(@Context HttpServletRequest request) {
+		User loggedUser = (User) request.getSession().getAttribute("user");
 		
-		return userDAO.findAllUsers();
-		
+		if(loggedUser!= null) {
+			return loggedUser.getRole();
+		}	
+		return null;
 	}
 }

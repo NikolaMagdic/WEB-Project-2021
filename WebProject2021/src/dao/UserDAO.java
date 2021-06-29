@@ -81,6 +81,10 @@ public class UserDAO {
 			return null;
 	}
 	
+	public Collection<User> getAllUsers() {
+		return this.usersMap.values();
+	}
+	
 	public User addUser(User user) {
 		
 		this.usersMap.put(user.getUsername(), user);
