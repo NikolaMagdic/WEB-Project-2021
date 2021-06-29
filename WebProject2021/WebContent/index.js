@@ -4,8 +4,8 @@ $(document).ready(function(){
 	$("#formLogin").submit(function(event){
 		event.preventDefault();
 		
-		let username = $("#username").val();
-		let password = $("#password").val();
+		let username = $("#usernameLogin").val();
+		let password = $("#passwordLogin").val();
 		
 		let data = {
 			username: username,

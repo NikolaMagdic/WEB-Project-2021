@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -94,5 +95,19 @@ public class LoginService {
 		
 		return Response.status(200).entity(user).build();
 	}
+
+	@GET
+	@Path("/loggedIn")
+	@Produces(MediaType.APPLICATION_JSON)
+	public User getLoggedInUser(@Context HttpServletRequest request) {
+		User loggedUser = (User) request.getSession().getAttribute("user"); 
+	
+		if(loggedUser == null) {
+			return null;
+		} else {
+			return loggedUser;
+		} 
+	}
+	
 	
 }
