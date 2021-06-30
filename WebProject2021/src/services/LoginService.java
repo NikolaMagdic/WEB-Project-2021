@@ -110,4 +110,11 @@ public class LoginService {
 	}
 	
 	
+	@GET
+	@Path("/logout")
+	public Response logout(@Context HttpServletRequest request) {
+		request.getSession().invalidate();
+		return Response.status(200).build();
+	}
+	
 }

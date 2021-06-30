@@ -110,4 +110,18 @@ public class UserService {
 		}	
 		return null;
 	}
+	
+	/**Vraca objekat ulogovanog korisnika.*/
+	@GET
+	@Path("/loggedIn")
+	@Produces(MediaType.APPLICATION_JSON)
+	public User getLoggedInUser(@Context HttpServletRequest request) {
+		User loggedUser = (User) request.getSession().getAttribute("user");
+	
+		if(loggedUser == null) {
+			return null;
+		}
+		
+		return loggedUser;
+	}
 }
