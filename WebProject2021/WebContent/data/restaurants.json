@@ -1,0 +1,19 @@
+{
+	"1": {
+		"id": 1,
+		"name": "KFC",
+		"restaurantType": "ITALIAN",
+		"articals": [],
+		"open": true,
+		"location" : {
+      		"latitude" : 45.014,
+      		"longitude" : 19.821,
+      		"address" : {
+        		"streetAndNumber" : "Bulevar Cara Lazara 16",
+        		"city" : "Novi Sad",
+        		"postalCode" : 21000
+        	}
+      	},
+		"image": ""
+	}
+}

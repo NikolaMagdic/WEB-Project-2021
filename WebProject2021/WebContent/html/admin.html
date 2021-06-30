@@ -11,6 +11,7 @@
 	<div class="meni">
 	  <button id="buttonAddUser" class="meni-button">Dodaj korisnika</button>
 	  <button id="buttonAllUsers" class="meni-button">Korisnici</button>
+	  <button id="buttonAddRestaurant" class="meni-button">Dodaj restoran</button>
 	</div>
 	<div id="divAddUser">
 		<form id="formAddUser">
@@ -76,5 +77,52 @@
 			</thead>
 		</table>
 	</div>
+	<div id="divAddRestaurant">
+		<form id="formAddRestaurant">
+		<h1>Dodavanje novog restorana</h1>
+		<table>
+			<tr>
+				<td>Name</td>
+				<td><input type="text" id="restaurantName"></td>
+			</tr>
+			<tr>
+				<td>Tip</td>
+				<td>
+				<select id="type">
+        			<option value="ITALIAN">Italijanski</option>
+        			<option value="CHINESE">Kineski</option>
+        			<option value="BARBEQUE">Barbeque</option>
+        			<option value="MEXICAN">Mexican</option>
+      			</select> 
+      			</td>
+			</tr>
+			<tr>
+				<td>Latitude</td>
+				<td><input type="number" id="latitude"></td>
+			</tr>
+			<tr>
+				<td>Longitude</td>
+				<td><input type="number" id="longitude"></td>
+			</tr>
+			<tr>
+				<td>Grad</td>
+				<td><input type="text" id="city"></td>
+			</tr>
+			<tr>
+				<td>Ulica i broj</td>
+				<td><input type="text" id="streetAndNumber"></td>
+			</tr>
+			<tr>
+				<td>Postanski broj</td>
+				<td><input type="number" id="postalCode"></td>
+			</tr>
+			<tr>
+				<td></td>						
+				<td><input type="submit" value="Dodaj restoran" class="submit"></td>
+			</tr>
+		</table>
+		</form>
+	</div>	
+	
 </body>
 </html>

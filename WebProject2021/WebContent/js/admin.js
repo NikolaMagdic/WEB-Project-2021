@@ -2,17 +2,25 @@ function changeView() {
 	
 	$("#divAddUser").hide();
 	$("#divAllUsers").hide();
+	$("#divAddRestaurant").hide();
 	
 	$("#buttonAddUser").click(function(event){
 		$("#divAddUser").show();
 		$("#divAllUsers").hide();
+		$("#divAddRestaurant").hide();
 	});
 	
 	$("#buttonAllUsers").click(function(event){
 		$("#divAllUsers").show();
 		$("#divAddUser").hide();
+		$("#divAddRestaurant").hide();
 	});
 	
+	$("#buttonAddRestaurant").click(function(event){
+		$("#divAllUsers").hide();
+		$("#divAddUser").hide();
+		$("#divAddRestaurant").show();
+	});
 }
 
 // Formatiranje datuma
@@ -123,5 +131,54 @@ $(document).ready(function(){
 		});
 		
 	});
+	
+	// Dodavanje novog menadzera ili dostavljaca
+	$("#formAddRestaurant").submit(function(event){
+		event.preventDefault();
+		
+		let name = $("#restaurantName").val();
+		let type = $("#type option:selected").val();
+		let latitude = $("#latitude").val();
+		let longitude = $("#longitude").val();
+		let city = $("#city").val();
+		let streetAndNumber = $("#streetAndNumber").val();
+		let postalCode = $("#postalCode").val();
+		
+		let address = {
+			streetAndNumber: streetAndNumber,
+			city: city,
+			postalCode: postalCode
+		}
+		
+		let location = {
+			latitude: latitude,
+			longitude: longitude,
+			address: address
+		}
+		
+		let data = {
+			id: 0,
+			name: name,
+			restaurantType: type,
+			open: true,
+			location: location,
+		}
+		console.log(data);
+		
+		$.post({
+			url: "../rest/restaurant/add",
+			data: JSON.stringify(data),
+			contentType: "application/json",
+			success : function(message){
+				alert(message);
+			},
+			error: function(message){
+				
+			}
+		});
+		
+	});
+
+	
 	
 });

@@ -7,7 +7,7 @@ import enumerations.RestaurantType;
 
 public class Restaurant {
 	
-	private Long id;
+	private Integer id;
 	
 	private String name;
 	
@@ -29,7 +29,7 @@ public class Restaurant {
 	}
 
 
-	public Restaurant(Long id, String name, RestaurantType restaurantType, List<Integer> articals, boolean open,
+	public Restaurant(Integer id, String name, RestaurantType restaurantType, List<Integer> articals, boolean open,
 			Location location, String image) {
 		super();
 		this.id = id;
@@ -47,10 +47,21 @@ public class Restaurant {
 
 
 	//GETERI I SETERI
+	
+
+	public Integer getId() {
+		return id;
+	}
+
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	
 	public String getName() {
 		return name;
 	}
-
 
 	public void setName(String name) {
 		this.name = name;
@@ -105,8 +116,13 @@ public class Restaurant {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	
-	
+
+
+	@Override
+	public String toString() {
+		return "Restaurant [id=" + id + ", name=" + name + ", restaurantType=" + restaurantType + ", articals="
+				+ articals + ", open=" + open + ", location=" + location + ", image=" + image + "]";
+	}
 	
 	
 	
