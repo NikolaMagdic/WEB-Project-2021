@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -93,6 +94,13 @@ public class LoginService {
 		userDAO.saveUsers(contextPath);
 		
 		return Response.status(200).entity(user).build();
+	}
+	
+	@GET
+	@Path("/logout")
+	public Response logout(@Context HttpServletRequest request) {
+		request.getSession().invalidate();
+		return Response.status(200).build();
 	}
 	
 }

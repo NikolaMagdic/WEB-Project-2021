@@ -1,4 +1,52 @@
+function getLoggedInUser(){
+	    $.get({
+		type: "GET",
+		url: 'rest/user/loggedIn',
+		success: function(user) {
+			console.log(user);
+			$('#usernameEdit').val(user.username);
+			$('#passwordEdit').val(user.password);
+			$('#nameEdit').val(user.firstName);
+			$('#lastNameEdit').val(user.lastName);
+			if(user.gender == true){
+				$('input#male').prop("checked", true);
+			} else {
+				$('input#female').prop("checked", true);
+			}
+		}
+	})
+}
+
+function logout(){
+ 	$( "#logoutMenu").click(function() {
+ 		$.ajax({
+ 			type: "GET",
+ 			url: 'rest/logout',
+ 			contentType: 'application/json',
+ 			success: function() {
+ 				window.location = "./index.html";
+ 			}
+ 		});
+ 		
+	});
+}
+
+
 $(document).ready(function(){
+	
+	getLoggedInUser();
+	
+	logout();
+	
+	// Show/hide edit form
+	$("#editMenu").click(function(event){
+		if($("#divMyAccount").css("display") == "none") {
+			$("#divMyAccount").show();
+		} else {
+			$("#divMyAccount").hide();
+		}
+		
+	});
 
 	$("#formEdit").submit(function(event){
 	

@@ -7,13 +7,14 @@
 	<script type="text/javascript" src="userPage.js"></script>
 </head>
 <body>
-	<div class="dropdown">
-	  <button class="dropbtn">Dropdown</button>
-	  <div class="dropdown-content">
-	    <a href="#">Link 1</a>
-	    <a href="#">Link 2</a>
-	    <a href="#">Link 3</a>
-	  </div>
+	<div class="meni">
+		<div class="dropdown">
+		  <button class="dropbtn">Dropdown</button>
+		  <div class="dropdown-content">
+		    <a href="#" id="editMenu">Edit Account</a>
+		    <a href="#" id="logoutMenu">Logout</a>
+		  </div>
+		</div>
 	</div>
 	<div id='divMyAccount' align='center'>
 		<div>
@@ -29,7 +30,7 @@
 									<div>
 										<span>Username*: </span>
 									</div>
-									<input type="text" required id="usernameEdit">
+									<input type="text" required id="usernameEdit" disabled>
 								</div>
 							</td>
 						</tr>
