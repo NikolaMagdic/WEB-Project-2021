@@ -6,6 +6,8 @@ public class Address {
 	
 	private String city;
 	
+	private String country;
+	
 	private int postalCode;
 	
 	
@@ -14,10 +16,11 @@ public class Address {
 	}
 
 
-	public Address(String streetAndNumber, String city, int postalCode) {
+	public Address(String streetAndNumber, String city, String country, int postalCode) {
 		super();
 		this.streetAndNumber = streetAndNumber;
 		this.city = city;
+		this.country = country;
 		this.postalCode = postalCode;
 	}
 
@@ -45,6 +48,16 @@ public class Address {
 
 	public void setPostalCode(int postalCode) {
 		this.postalCode = postalCode;
+	}
+
+
+	public String getCountry() {
+		return country;
+	}
+
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 	
 	

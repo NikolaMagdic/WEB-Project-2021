@@ -11,9 +11,50 @@
       		"address" : {
         		"streetAndNumber" : "Bulevar Cara Lazara 16",
         		"city" : "Novi Sad",
+        		"country" : "Srbija",
         		"postalCode" : 21000
         	}
       	},
-		"image": ""
+		"image": "",
+		"rating" : 3.8
+	},
+	"2": {
+		"id": 2,
+		"name": "Burrito",
+		"restaurantType": "MEXICAN",
+		"articals": [],
+		"open": true,
+		"location" : {
+      		"latitude" : 41.019,
+      		"longitude" : 15.232,
+      		"address" : {
+        		"streetAndNumber" : "Bulevar Mihajla Pupina 80",
+        		"city" : "Beograd",
+        		"country" : "Srbija",
+        		"postalCode" : 22000
+        	}
+      	},
+		"image": "",
+		"rating" : 4.2
+	},
+	"3": {
+		"id": 3,
+		"name": "Sarma i prijatelji",
+		"restaurantType": "SERBIAN",
+		"articals": [],
+		"open": true,
+		"location" : {
+      		"latitude" : 51.331,
+      		"longitude" : 20.971,
+      		"address" : {
+        		"streetAndNumber" : "Futoski Put 2",
+        		"city" : "Zrenjanin",
+        		"country" : "Srbija",
+        		"postalCode" : 23200
+        	}
+      	},
+		"image": "",
+		"rating" : 4.6
 	}
+	
 }

@@ -141,12 +141,14 @@ $(document).ready(function(){
 		let latitude = $("#latitude").val();
 		let longitude = $("#longitude").val();
 		let city = $("#city").val();
+		let country = $("#country").val();
 		let streetAndNumber = $("#streetAndNumber").val();
 		let postalCode = $("#postalCode").val();
 		
 		let address = {
 			streetAndNumber: streetAndNumber,
 			city: city,
+			country: country,
 			postalCode: postalCode
 		}
 		

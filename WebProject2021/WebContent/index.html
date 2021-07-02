@@ -11,6 +11,8 @@
 	<div class="meni">
 	  <button id="loginMenu">Log in</button>
 	  <button id="registerMenu">Register</button>
+	  <button id="restaurantsMenu">Restaurants</button>
+	  <button id = "openSearchBox" > Search </button>
 	</div>
 	<div id="divLogin">
 		<h1>Prijava</h1>
@@ -107,6 +109,44 @@
 					</tr>
 				</table>
 			</form>
+	</div>
+	
+	<div id='divSearchInfo' align="left">
+				<h4>Search</h4>
+				<table>
+					<tbody>
+						<tr>
+							<td>Name</td>
+							<td>Type</td>
+							<td>City</td>
+							<td>Rating</td>
+						</tr>
+						<tr>
+							<td> <input type="text" id='searchName'> </td>
+							<td> <input type="text" id='searchType'> </td>
+							<td> <input type="text" id='searchCity'> </td>
+							<td> <input type="number" id='searchRating'> </td>
+						</tr>
+					</tbody>
+				</table>
+				<button id='search'>Search</button>
+	</div>
+	
+	<div id="divAllRestaurants">
+		<h1>Pregled restorana</h1>
+		<table id="tableRestaurants">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Type</th>
+					<th>Open</th>
+					<th>City</th>
+					<th>Country</th>
+					<th>Rating</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
 	</div>
 </body>
 </html>

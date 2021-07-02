@@ -21,6 +21,8 @@ public class Restaurant {
 	private Location location;
 	
 	private String image;
+	
+	private Double rating = 0.0;
 
 	
 	//KONSTRUKTORI
@@ -116,13 +118,26 @@ public class Restaurant {
 	public void setImage(String image) {
 		this.image = image;
 	}
+	
+
+
+	public Double getRating() {
+		return rating;
+	}
+
+
+	public void setRating(Double rating) {
+		this.rating = rating;
+	}
 
 
 	@Override
 	public String toString() {
 		return "Restaurant [id=" + id + ", name=" + name + ", restaurantType=" + restaurantType + ", articals="
-				+ articals + ", open=" + open + ", location=" + location + ", image=" + image + "]";
+				+ articals + ", open=" + open + ", location=" + location + ", image=" + image + ", rating=" + rating
+				+ "]";
 	}
+
 	
 	
 	

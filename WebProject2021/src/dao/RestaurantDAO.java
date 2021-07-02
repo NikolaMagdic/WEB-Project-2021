@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import beans.Restaurant;
+import beans.User;
 
 public class RestaurantDAO {
 
@@ -83,5 +84,6 @@ public class RestaurantDAO {
 	public Collection<Restaurant> findAllRestaurants() {
 		return this.restaurantsMap.values();
 	}
+
 	
 }
