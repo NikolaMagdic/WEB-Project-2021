@@ -1,14 +1,20 @@
 package services;
 
 import java.util.ArrayList;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -20,6 +26,7 @@ import beans.Restaurant;
 import beans.User;
 import dao.RestaurantDAO;
 import dto.RestaurantDTO;
+import dao.UserDAO;
 import enumerations.UserRole;
 import filters.RestaurantFilter;
 
@@ -28,53 +35,82 @@ public class RestaurantService {
 
 	@Context
 	ServletContext ctx;
-	
+
 	public RestaurantService() {
-		
+
 	}
-	
+
 	@PostConstruct
 	public void init() {
 		String contextPath = ctx.getRealPath("");
 
 		RestaurantDAO restaurantDAO = new RestaurantDAO(contextPath);
-		if(ctx.getAttribute("restaurants") == null) {
+		if (ctx.getAttribute("restaurants") == null) {
 			ctx.setAttribute("restaurants", restaurantDAO);
 		}
+
+		UserDAO userDAO = new UserDAO(contextPath);
+		if (ctx.getAttribute("users") == null) {
+			ctx.setAttribute("users", userDAO);
+		}
 	}
-	
+
+	/** Dodavanje novog restorana */
 	@POST
-	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addRestaurant(Restaurant restaurant) {
-		
+	public Response addRestaurant(Restaurant restaurant, @HeaderParam("Manager-Username") String managerUsername) {
+
 		RestaurantDAO restaurantDAO = (RestaurantDAO) ctx.getAttribute("restaurants");
+
+		String contextPath = ctx.getRealPath("");
+		
+		System.out.println(restaurant.getImage());
+		String base64Image = (restaurant.getImage()).split(",")[1];
+		byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
+
+		String imagePath = contextPath + "images\\" + restaurant.getName() + ".jpg";
+		System.out.println(imagePath);
+		BufferedImage img;
+		try {
+			img = ImageIO.read(new ByteArrayInputStream(imageBytes));
+			File outputfile = new File(imagePath);
+			ImageIO.write(img, "jpg", outputfile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		restaurant.setImage(imagePath);
 		
 		Integer maxId = 1;
 		Collection<Restaurant> restaurants = restaurantDAO.findAllRestaurants();
 		for (Restaurant res : restaurants) {
-			System.out.println(res);
 			if (res.getId() > maxId)
 				maxId = res.getId();
 		}
 		restaurant.setId(++maxId);
-		
+
 		Restaurant addedRestaurant = restaurantDAO.addRestaurant(restaurant);
-		
-		String contextPath = ctx.getRealPath("");
+
+		UserDAO userDAO = (UserDAO) ctx.getAttribute("users");
+
+		if (managerUsername != null) {
+			User manager = userDAO.findUser(managerUsername);
+			manager.setRestaurant(restaurant.getId());
+		}
+
 		restaurantDAO.saveRestaurants(contextPath);
-		
+		userDAO.saveUsers(contextPath);
+
 		return Response.status(200).entity(addedRestaurant).build();
 	}
-	
-	
+
 	public UserRole getUserRole(@Context HttpServletRequest request) {
 		User loggedUser = (User) request.getSession().getAttribute("user");
-		
-		if(loggedUser!= null) {
+
+		if (loggedUser != null) {
 			return loggedUser.getRole();
-		}	
+		}
 		return null;
 	}
 	
@@ -147,4 +183,5 @@ public class RestaurantService {
 		return dto;
 	}
 	
+
 }

@@ -12,6 +12,7 @@
 	  <button id="buttonAddUser" class="meni-button">Dodaj korisnika</button>
 	  <button id="buttonAllUsers" class="meni-button">Korisnici</button>
 	  <button id="buttonAddRestaurant" class="meni-button">Dodaj restoran</button>
+	  <button id="buttonLogout" class="logout-button">Logout</button>
 	</div>
 	<div id="divAddUser">
 		<form id="formAddUser">
@@ -82,8 +83,12 @@
 		<h1>Dodavanje novog restorana</h1>
 		<table>
 			<tr>
-				<td>Name</td>
+				<td>Naziv</td>
 				<td><input type="text" id="restaurantName"></td>
+				<!--Polje za prikaz dodate slike restorana -->
+				<td rowspan="9">
+					<img id="image" alt="" src="">
+				</td>
 			</tr>
 			<tr>
 				<td>Tip</td>
@@ -91,8 +96,8 @@
 				<select id="type">
         			<option value="ITALIAN">Italijanski</option>
         			<option value="CHINESE">Kineski</option>
-        			<option value="BARBEQUE">Barbeque</option>
-        			<option value="MEXICAN">Mexican</option>
+        			<option value="BARBEQUE">Roštilj</option>
+        			<option value="MEXICAN">Meksički</option>
       			</select> 
       			</td>
 			</tr>
@@ -117,8 +122,19 @@
 				<td><input type="text" id="streetAndNumber"></td>
 			</tr>
 			<tr>
-				<td>Postanski broj</td>
+				<td>Poštanski broj</td>
 				<td><input type="number" id="postalCode"></td>
+			</tr>
+			<tr>
+				<td>Logo</td>
+				<td><input type="file" id="restaurantImage" accept="image/*"></td>
+			</tr>
+			<tr>
+				<td>Menadžer</td>
+				<td>
+					<select id="managerOfRestaurant">
+      				</select>
+				</td>
 			</tr>
 			<tr>
 				<td></td>						
@@ -127,6 +143,45 @@
 		</table>
 		</form>
 	</div>	
-	
+	<div id="divAddManager">
+		<form id="formAddManager">
+		<h1>Dodavanje menadžera za prethodno dodat restoran</h1>
+		<table>
+			<tr>
+				<td>Username</td>
+				<td><input type="text" id="managerUsername"></td>
+			</tr>
+			<tr>
+				<td>Password</td>
+				<td><input type="password" id="managerPassword"></td>
+			</tr>
+			<tr>
+				<td>Ime</td>
+				<td><input type="text" id="managerName"></td>
+			</tr>
+			<tr>
+				<td>Prezime</td>
+				<td><input type="text" id="managerLastName"></td>
+			</tr>
+			<tr>
+				<td>Pol</td>
+				<td>
+				<label>Muški</label>
+				<input type="radio" name="managerGender" id="managerMale" checked>
+				<label>Ženski</label>
+				<input type="radio" name="managerGender" id="managerFemale">
+				</td>
+			</tr>
+			<tr>
+				<td>Datum rođenja</td>
+				<td><input type="date" id="managerDate"></td>
+			</tr>
+			<tr>
+				<td></td>						
+				<td><input type="submit" value="Dodaj menadžera" class="submit"></td>
+			</tr>
+		</table>
+		</form>
+	</div>	
 </body>
 </html>
