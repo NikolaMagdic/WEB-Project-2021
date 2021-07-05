@@ -2,6 +2,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -102,6 +103,29 @@ public class UserService {
 		return userForUpdate;
 	}
 		
+	
+	/**Metoda koja vraca sve menadzere koji nisu povezani sa restoranom*/
+	@GET
+	@Path("/available-managers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllAvailableManagers() {
+		
+		UserDAO userDAO = (UserDAO) ctx.getAttribute("users");
+		Collection<User> allUsers = userDAO.findAllUsers();
+		
+		List<User> availableManagers = new ArrayList<User>();
+		
+		for (User user : allUsers) {
+			if(user.getRole().equals(UserRole.MENADZER))
+				if(user.getRestaurant() == null)
+					availableManagers.add(user);
+		}
+		
+		return Response.status(200).entity(availableManagers).build();
+		
+	}
+	
+	/**Pomocna funkcija za proveru prava pristupa */
 	public UserRole getUserRole(@Context HttpServletRequest request) {
 		User loggedUser = (User) request.getSession().getAttribute("user");
 		

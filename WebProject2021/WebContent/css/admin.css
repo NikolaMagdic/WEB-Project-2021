@@ -69,6 +69,23 @@ table {
 .meni-button {
   background-color: #cc0000;
   color: white;
+  float: left;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  padding: 14px 16px; 
+  font-size: 17px;
+}
+
+
+.meni-button:hover {
+  background-color: #ff1a1a;
+  color: white;
+}
+
+.logout-button {
+  background-color: #1eae30;
+  color: white;
   float: right;
   display: block;
   text-align: center;
@@ -77,7 +94,7 @@ table {
   font-size: 17px;
 }
 
-.meni-button:hover {
-  background-color: #ff1a1a;
+.logout-button:hover {
+  background-color: #32e73c;
   color: white;
 }
