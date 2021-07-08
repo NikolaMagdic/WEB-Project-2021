@@ -23,7 +23,7 @@
 		"name": "Burrito",
 		"restaurantType": "MEXICAN",
 		"articals": [],
-		"open": true,
+		"open": false,
 		"location" : {
       		"latitude" : 41.019,
       		"longitude" : 15.232,
@@ -55,6 +55,63 @@
       	},
 		"image": "",
 		"rating" : 4.6
+	},
+	"4": {
+		"id": 4,
+		"name": "Burgers",
+		"restaurantType": "AMERICAN",
+		"articals": [],
+		"open": false,
+		"location" : {
+      		"latitude" : 48.331,
+      		"longitude" : 21.111,
+      		"address" : {
+        		"streetAndNumber" : "Main Road 137",
+        		"city" : "Edgartown",
+        		"country" : "USA",
+        		"postalCode" : 25390
+        	}
+      	},
+		"image": "",
+		"rating" : 3.5
+	},
+	"5": {
+		"id": 5,
+		"name": "PIZZA",
+		"restaurantType": "ITALIAN",
+		"articals": [],
+		"open": true,
+		"location" : {
+      		"latitude" : 33.117,
+      		"longitude" : 18.911,
+      		"address" : {
+        		"streetAndNumber" : "Via del Corso 11",
+        		"city" : "Roma",
+        		"country" : "Italy",
+        		"postalCode" : 31000
+        	}
+      	},
+		"image": "",
+		"rating" : 4.8
+	},
+	"6": {
+		"id": 6,
+		"name": "Chinese Fast Food",
+		"restaurantType": "CHINESE",
+		"articals": [],
+		"open": true,
+		"location" : {
+      		"latitude" : 27.999,
+      		"longitude" : 17.898,
+      		"address" : {
+        		"streetAndNumber" : "Old Beijing Custom Street 132",
+        		"city" : "Beijing",
+        		"country" : "China",
+        		"postalCode" : 100000
+        	}
+      	},
+		"image": "",
+		"rating" : 4.5
 	}
 	
 }

@@ -177,17 +177,123 @@ function sortRestaurantsByRating(){
 	});
 }
 
+function strcmp(a, b)
+{   
+    return (a<b?-1:(a>b?1:0));  
+}
+
+function sortRestaurantsByName(){
+
+ 	$( "#sortRestaurantsByName").click(function() {
+ 		
+ 		event.preventDefault();
+ 		
+ 		$("#tableRestaurants tbody").empty();
+ 		$.ajax({
+ 			
+ 			type: "GET",
+ 			url: './rest/restaurant/all',
+ 			contentType: 'application/json',
+ 			success: function(restaurants) {
+				console.log("Usao u sortByName");
+				
+ 			    restaurants.sort(function(a, b){
+				    if(a.name < b.name) { return -1; }
+				    if(a.name > b.name) { return 1; }
+				    return 0;
+				})
+ 				
+ 				
+ 				for(let res of restaurants) {
+ 					addRestaurantInTable(res);
+ 				}
+ 				
+
+ 			}
+ 		});
+	});
+}
+
+
+function sortRestaurantsByCity(){
+
+ 	$( "#sortRestaurantsByCity").click(function() {
+ 		
+ 		event.preventDefault();
+ 		
+ 		$("#tableRestaurants tbody").empty();
+ 		$.ajax({
+ 			
+ 			type: "GET",
+ 			url: './rest/restaurant/all',
+ 			contentType: 'application/json',
+ 			success: function(restaurants) {
+				console.log("Usao u sortByCity");
+				
+ 			    restaurants.sort(function(a, b){
+				    if(a.city < b.city) { return -1; }
+				    if(a.city > b.city) { return 1; }
+				    return 0;
+				})
+ 				
+ 				
+ 				for(let res of restaurants) {
+ 					addRestaurantInTable(res);
+ 				}
+ 				
+
+ 			}
+ 		});
+	});
+}
+
+function sortRestaurantsByCountry(){
+
+ 	$( "#sortRestaurantsByCountry").click(function() {
+ 		
+ 		event.preventDefault();
+ 		
+ 		$("#tableRestaurants tbody").empty();
+ 		$.ajax({
+ 			
+ 			type: "GET",
+ 			url: './rest/restaurant/all',
+ 			contentType: 'application/json',
+ 			success: function(restaurants) {
+				console.log("Usao u sortByCountry");
+				
+ 			    restaurants.sort(function(a, b){
+				    if(a.country < b.country) { return -1; }
+				    if(a.country > b.country) { return 1; }
+				    return 0;
+				})
+ 				
+ 				
+ 				for(let res of restaurants) {
+ 					addRestaurantInTable(res);
+ 				}
+ 				
+
+ 			}
+ 		});
+	});
+}
+
+
 
 
 $(document).ready(function(){
 
 	initShowButtons();
 	
-	//getAllRestaurants();
 	
 	search();
 	filterByType();
+	
 	sortRestaurantsByRating();
+	sortRestaurantsByName();
+	sortRestaurantsByCity();
+	sortRestaurantsByCountry();
 	
 	// Log-in na sistem
 	$("#formLogin").submit(function(event){

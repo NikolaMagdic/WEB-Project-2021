@@ -5,5 +5,6 @@ public enum RestaurantType {
 	CHINESE,
 	BARBEQUE,
 	MEXICAN,
-	SERBIAN
+	SERBIAN,
+	AMERICAN
 }
