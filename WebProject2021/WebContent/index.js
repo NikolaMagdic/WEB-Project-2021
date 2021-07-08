@@ -120,6 +120,63 @@ function search(){
 	});
 }
 
+function filterByType(){
+ 	$("#typeZaFiltraciju").change(function() {
+ 		event.preventDefault();
+ 		
+ 		$("#tableRestaurants tbody").empty();
+ 		$.ajax({
+ 			
+ 			type: "GET",
+ 			url: 'rest/restaurant/open',
+ 			contentType: 'application/json',
+ 			success: function(restaurants) {
+ 		    	for(let res of restaurants) {
+ 		    		if($("#typeZaFiltraciju").val() == '' || res.type.toLowerCase().includes($("#typeZaFiltraciju").val().toLowerCase())){
+ 	 					addRestaurantInTable(res);
+ 		    		}
+
+ 				}
+ 			}
+ 		});	
+ 		
+	});
+}
+
+
+function sortRestaurantsByRating(){
+
+ 	$( "#sortRestaurantsByRating").click(function() {
+ 		
+ 		event.preventDefault();
+ 		
+ 		$("#tableRestaurants tbody").empty();
+ 		$.ajax({
+ 			
+ 			type: "GET",
+ 			url: './rest/restaurant/all',
+ 			contentType: 'application/json',
+ 			success: function(restaurants) {
+				console.log("Usao u sortByRating");
+ 				for(let i=0; i<restaurants.length; i++){
+ 					for(let j = i+1; j < restaurants.length; j++){
+ 	 					if(restaurants[i].rating < restaurants[j].rating){
+ 	 						temp = restaurants[i];
+ 	 						restaurants[i] = restaurants[j];
+ 	 						restaurants[j] = temp;
+ 	 					}
+ 					}
+ 				}
+ 				
+ 			    for(let res of restaurants) {
+ 	 				addRestaurantInTable(res);
+ 				}
+
+ 			}
+ 		});
+	});
+}
+
 
 
 $(document).ready(function(){
@@ -129,6 +186,8 @@ $(document).ready(function(){
 	//getAllRestaurants();
 	
 	search();
+	filterByType();
+	sortRestaurantsByRating();
 	
 	// Log-in na sistem
 	$("#formLogin").submit(function(event){

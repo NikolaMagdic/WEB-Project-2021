@@ -183,5 +183,25 @@ public class RestaurantService {
 		return dto;
 	}
 	
+	//svi otvoreni restorani
+	@GET
+	@Path("/open")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response allOpenRestaurants(@Context HttpServletRequest request) {
+		
+		RestaurantDAO restaurantDAO = (RestaurantDAO) ctx.getAttribute("restaurants");
+		
+		Collection<Restaurant> allRestaurants = restaurantDAO.findAllRestaurants();
+		
+		List<RestaurantDTO> dtoRestaurants = new ArrayList<>();
+		
+		for(Restaurant res : allRestaurants) {
+			if(res.isOpen()) {
+				dtoRestaurants.add(convertToDTO(res));
+			}
+		}
+		
+		return Response.status(200).entity(dtoRestaurants).build();
+	}
 
 }
