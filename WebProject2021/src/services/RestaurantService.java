@@ -17,6 +17,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -116,6 +117,22 @@ public class RestaurantService {
 	
 	
 	@GET
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRestaurant(@PathParam("id") Integer id) {
+
+		RestaurantDAO restaurantDAO = (RestaurantDAO) ctx.getAttribute("restaurants");
+		Restaurant restaurant = restaurantDAO.findRestaurant(id);
+
+		if (restaurant == null) {
+			return Response.status(400).build();
+		}
+
+		return Response.status(200).entity(convertToDTO(restaurant)).build();
+	}
+	
+	
+	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response allRestaurants(@Context HttpServletRequest request) {
@@ -168,11 +185,13 @@ public class RestaurantService {
 	
 	public RestaurantDTO convertToDTO(Restaurant res) {
 		RestaurantDTO dto = new RestaurantDTO();
+		dto.setId(res.getId());
 		dto.setName(res.getName());
 		dto.setType(res.getRestaurantType().toString());
 		dto.setCity(res.getLocation().getAddress().getCity());
 		dto.setCountry(res.getLocation().getAddress().getCountry());
 		dto.setRating(res.getRating());
+		dto.setAddress(res.getLocation().getAddress().getStreetAndNumber());
 		
 		if(res.isOpen()) {
 			dto.setOpen("Open");

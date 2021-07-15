@@ -48,6 +48,9 @@ function getAllRestaurants(){
 		success: function(restaurants) {
 			for(let restaurant of restaurants) {
 				addRestaurantInTable(restaurant);
+					$( "#detaljiRestorana" + restaurant.id).click(function() {
+						getRestaurantById(restaurant.id);
+					});
 			}
 			console.log("All restaurants method");
 		}
@@ -64,11 +67,51 @@ function addRestaurantInTable(restaurant) {
 			"<td>" + restaurant.city + "</td>" +
 			"<td>" + restaurant.country + "</td>" +
 			"<td>" + restaurant.rating + "</td>" +
+			" <td> <button id='detaljiRestorana" + restaurant.id + "' class='btn-edit'> Details </button></td>" +
 			"</tr>";
 	table.append(tr);
 
 	$("#tableRestaurants").css("background-color", "aqua");
 
+}
+
+function getRestaurantById(id){
+	$('#tableSadrzaj tbody').empty();
+	$.ajax({
+		
+		type: "GET",
+		url: './rest/amenity/' + id,
+		contentType: 'application/json',
+		success: function(amenities) {
+	    	for(let amenity of amenities) {
+				dodajSadrzajRestorana(amenity);
+				}
+		}
+	});	
+	$.ajax({
+		
+		type: "GET",
+		url: './rest/restaurant/' + id,
+		contentType: 'application/json',
+		success: function(res) {
+			$('#txtIdRestorana').val(res.id);
+			$('#txtNameRestorana').val(res.name);
+			$('#txtCityRestorana').val(res.city);
+			$('#txtAddressRestorana').val(res.address);
+			$('#txtCountryRestorana').val(res.country);
+			$('#txtTypeRestorana').val(res.type);
+			$('#txtStatusRestorana').val(res.open);
+			$('#txtRatingRestorana').val(res.rating);
+	
+		}
+	});	
+
+}
+
+function dodajSadrzajRestorana(amenity){
+	let c = "<tr align='center'> " +
+	" <td>" + amenity.name + "</td> "
+	$("#tableSadrzaj").append(c);
 }
 
 function search(){	
@@ -113,6 +156,9 @@ function search(){
  				console.log(restaurants);
  		    	for(let res of restaurants) {
  					addRestaurantInTable(res);
+	 					$( "#detaljiRestorana" + res.id).click(function() {
+							getRestaurantById(res.id);
+						});
  				}
  			}
  		});
@@ -134,6 +180,9 @@ function filterByType(){
  		    	for(let res of restaurants) {
  		    		if($("#typeZaFiltraciju").val() == '' || res.type.toLowerCase().includes($("#typeZaFiltraciju").val().toLowerCase())){
  	 					addRestaurantInTable(res);
+ 	 					$( "#detaljiRestorana" + res.id).click(function() {
+							getRestaurantById(res.id);
+						});
  		    		}
 
  				}
@@ -170,6 +219,9 @@ function sortRestaurantsByRating(){
  				
  			    for(let res of restaurants) {
  	 				addRestaurantInTable(res);
+ 	 				$( "#detaljiRestorana" + res.id).click(function() {
+						getRestaurantById(res.id);
+					});
  				}
 
  			}
@@ -206,6 +258,9 @@ function sortRestaurantsByName(){
  				
  				for(let res of restaurants) {
  					addRestaurantInTable(res);
+ 					$( "#detaljiRestorana" + res.id).click(function() {
+						getRestaurantById(res.id);
+					});
  				}
  				
 
@@ -239,6 +294,9 @@ function sortRestaurantsByCity(){
  				
  				for(let res of restaurants) {
  					addRestaurantInTable(res);
+ 					$( "#detaljiRestorana" + res.id).click(function() {
+						getRestaurantById(res.id);
+					});
  				}
  				
 
@@ -271,6 +329,9 @@ function sortRestaurantsByCountry(){
  				
  				for(let res of restaurants) {
  					addRestaurantInTable(res);
+ 					$( "#detaljiRestorana" + res.id).click(function() {
+						getRestaurantById(res.id);
+					});
  				}
  				
 

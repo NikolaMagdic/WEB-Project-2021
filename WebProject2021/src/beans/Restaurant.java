@@ -23,7 +23,11 @@ public class Restaurant {
 	private String image;
 	
 	private Double rating = 0.0;
+	
+	private List<Integer> amenities = new ArrayList<Integer>();
 
+	private boolean deleted;
+	
 	
 	//KONSTRUKTORI
 	public Restaurant() {
@@ -42,10 +46,23 @@ public class Restaurant {
 		this.location = location;
 		this.image = image;
 	}
+	
 
 
-
-
+	public Restaurant(Integer id, String name, RestaurantType restaurantType, List<Integer> articals, boolean open,
+			Location location, String image, Double rating, List<Integer> amenities, boolean deleted) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.restaurantType = restaurantType;
+		this.articals = articals;
+		this.open = open;
+		this.location = location;
+		this.image = image;
+		this.rating = rating;
+		this.amenities = amenities;
+		this.deleted = deleted;
+	}
 
 
 	//GETERI I SETERI
@@ -129,14 +146,38 @@ public class Restaurant {
 	public void setRating(Double rating) {
 		this.rating = rating;
 	}
+	
+	
+
+
+	public List<Integer> getAmenities() {
+		return amenities;
+	}
+
+
+	public void setAmenities(List<Integer> amenities) {
+		this.amenities = amenities;
+	}
+
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
 
 	@Override
 	public String toString() {
 		return "Restaurant [id=" + id + ", name=" + name + ", restaurantType=" + restaurantType + ", articals="
 				+ articals + ", open=" + open + ", location=" + location + ", image=" + image + ", rating=" + rating
-				+ "]";
+				+ ", amenities=" + amenities + ", deleted=" + deleted + "]";
 	}
+
+
 
 	
 	

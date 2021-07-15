@@ -86,4 +86,16 @@ public class RestaurantDAO {
 	}
 
 	
+	public Restaurant findRestaurant(Integer id) {
+		return restaurantsMap.containsKey(id) ? restaurantsMap.get(id) : null;
+	}
+	
+	public Restaurant updateApartment(Restaurant restaurant) {
+		return restaurantsMap.put(restaurant.getId(), restaurant);
+	}
+	
+	public Restaurant removeRestaurant(Restaurant restaurant) {
+		return restaurantsMap.remove(restaurant.getId());
+	}
+	
 }
