@@ -12,8 +12,15 @@
 	  <button id="buttonAddUser" class="meni-button">Dodaj korisnika</button>
 	  <button id="buttonAllUsers" class="meni-button">Korisnici</button>
 	  <button id="buttonAddRestaurant" class="meni-button">Dodaj restoran</button>
-	  <button id="buttonLogout" class="logout-button">Logout</button>
+	  <div class="dropdown">
+	  	  <button id="buttonAccount" class="account-button">Nalog</button>
+	  	  <div class="dropdown-content">
+	  	  	  <button id="buttonEditAccount" class="meni-button">Izmeni podatke</button>
+	  	  	  <button id="buttonLogout" class="meni-button">Logout</button>
+	  	  </div>	  	  
+	  </div>	  
 	</div>
+	
 	<div id="divAddUser">
 		<form id="formAddUser">
 		<h1>Dodavanje novih dostavljača i menadžera</h1>
@@ -64,8 +71,31 @@
 		</form>
 	</div>
 	<div id="divAllUsers">
-		<h1>Pregled korisnika</h1>
-		<table id="tableUsers" class="table-data">
+		<h1>Pregled korisnika <button id="buttonSearch"><img id="buttonSearch" alt="Pretraga" src="../images/search-icon.png" width="15px" height="15px"></button></h1>
+		<div id="divSearchUsers" hidden="true">
+			<form id="formSearchUsers">
+				<table>
+					<tr>
+						<th>
+							<label>Pretraga:</label>
+						</th>
+						<td>
+							<input type="text" id="searchUsername" placeholder="Username">
+						</td>
+						<td>
+							<input type="text" id="searchFirstName" placeholder="Ime">
+						</td>
+						<td>
+							<input type="text" id="searchLastName" placeholder="Prezime">
+						</td>
+						<td>
+							<input type="submit" value="Pretraži" id="submitSearch" class="submit">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<table class="table-data">
 			<thead>
 				<tr>
 					<th>Username</th>
@@ -76,6 +106,7 @@
 					<th>Datum rođenja</th>
 				</tr>
 			</thead>
+			<tbody id="tableUsers"></tbody>
 		</table>
 	</div>
 	<div id="divAddRestaurant">
@@ -183,5 +214,70 @@
 		</table>
 		</form>
 	</div>	
+	<div id="divEditAccount">
+		<form id="formEdit">
+		<h1>Izmeni svoje podatke</h1>
+			<table>
+				<tr>
+					<td>
+						Username: 
+					</td>
+					<td>			
+						<input type="text" id="usernameEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Password: 
+					</td>
+					<td>			
+						<input type="password" id="passwordEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Confirm Password: 
+					</td>
+					<td>			
+						<input type="password" id="confirmPasswordEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Ime: 
+					</td>
+					<td>			
+						<input type="text" id="nameEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Prezime: 
+					</td>
+					<td>			
+						<input type="text" id="lastNameEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>Pol:</td>
+					<td>
+					<label>Muški</label>
+					<input type="radio" name="genderEdit" id="maleEdit" checked>
+					<label>Ženski</label>
+					<input type="radio" name="genderEdit" id="femaleEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>Datum rođenja:</td>
+					<td><input type="date" id="dateEdit"></td>
+				</tr>
+				<tr>
+					<td></td>						
+					<td><input type="submit" value="Izmeni" class="submit"></td>
+				</tr>
+			</table>				
+		</form>
+	</div>
+
 </body>
 </html>

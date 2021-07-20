@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import beans.Restaurant;
-import beans.User;
 
 public class RestaurantDAO {
 

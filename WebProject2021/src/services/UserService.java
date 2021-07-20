@@ -13,6 +13,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -94,6 +95,7 @@ public class UserService {
 		userForUpdate.setFirstName(user.getFirstName());
 		userForUpdate.setLastName(user.getLastName());
 		userForUpdate.setGender(user.isGender());
+		userForUpdate.setBirthDate(user.getBirthDate());
 		
 		userDAO.updateUser(userForUpdate);
 		
@@ -123,6 +125,32 @@ public class UserService {
 		
 		return Response.status(200).entity(availableManagers).build();
 		
+	}
+	
+	@GET
+	@Path("/search")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response searchUser(@QueryParam("firstName") String firstName, @QueryParam("lastName") String lastName, @QueryParam("username") String username) {
+		
+		UserDAO userDAO = (UserDAO) ctx.getAttribute("users");
+		Collection<User> users = userDAO.getAllUsers(); 
+		
+		List<User> filteredUsers = new ArrayList<User>();
+		
+		System.out.println(firstName);
+		System.out.println(lastName);
+		System.out.println(username);
+		
+		for (User user : users) {
+			if((firstName.equals("") || user.getFirstName().toLowerCase().contains(firstName.toLowerCase()))
+				&& (lastName.equals("") || user.getLastName().toLowerCase().contains(lastName.toLowerCase()))
+				&& (username.equals("") || user.getUsername().toLowerCase().contains(username.toLowerCase()))) {
+					filteredUsers.add(user);
+			}
+		}
+		
+		
+		return Response.status(200).entity(filteredUsers).build();
 	}
 	
 	/**Pomocna funkcija za proveru prava pristupa */
