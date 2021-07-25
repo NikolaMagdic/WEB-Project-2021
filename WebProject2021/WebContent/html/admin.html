@@ -95,15 +95,35 @@
 				</table>
 			</form>
 		</div>
+		<div id="divFilter">
+			<label><b>Uloga:</b></label>
+			<select id="filterRole">
+				<option value="SVI">Svi</option>
+				<option value="ADMIN">Administrator</option>
+				<option value="MENADZER">Menadžer</option>
+				<option value="DOSTAVLJAC">Dostavljač</option>
+				<option value="KUPAC">Kupac</option>
+			</select>
+			<label><b>Tip kupca:</b></label>
+			<select id="filterType">
+				<option value="SVI">Svi</option>
+				<option value="NONE">None</option>
+				<option value="BRONZE">Bronzani</option>
+				<option value="SILVER">Srebrni</option>
+				<option value="GOLD">Zlatni</option>
+			</select>
+		</div>	
 		<table class="table-data">
 			<thead>
 				<tr>
-					<th>Username</th>
-					<th>Ime</th>
-					<th>Prezime</th>
+					<th id="sortUsername" class="sort-header">Username  <img id="imageSortUsername" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortName" class="sort-header">Ime  <img id="imageSortName" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortLastName" class="sort-header">Prezime  <img id="imageSortLastName" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
 					<th>Uloga</th>
 					<th>Pol</th>
 					<th>Datum rođenja</th>
+					<th id="sortPoints" class="sort-header">Broj bodova  <img id="imageSortPoints" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th>Tip kupca</th>
 				</tr>
 			</thead>
 			<tbody id="tableUsers"></tbody>

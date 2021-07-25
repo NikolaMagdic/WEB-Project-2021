@@ -138,3 +138,12 @@ table {
   background-color: #ff1a1a;
   color: white;
 }
+
+.sort-header:hover {
+	cursor: pointer;
+}
+
+#divFilter {
+	margin-left: 25%;
+	
+}
