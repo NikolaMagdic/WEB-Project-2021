@@ -3,6 +3,7 @@ function initHide(){
 	$("#divRegister").hide();
 	$("#divAllRestaurants").hide();
 	$("#divSearchInfo").hide();
+	$("#divRestaurantDetails").hide();
 
 }
 
@@ -14,12 +15,14 @@ function initShowButtons(){
 			$("#divRegister").hide();
 			$("#divAllRestaurants").hide();
 			$("#divSearchInfo").hide();
+			$("#divRestaurantDetails").hide();
 		});	
 		$("#registerMenu").click( function(){
 			$("#divLogin").hide();
 			$("#divRegister").show();
 			$("#divAllRestaurants").hide();
 			$("#divSearchInfo").hide();
+			$("#divRestaurantDetails").hide();
 		});	
 		$("#restaurantsMenu").click( function(){
 			console.log("Clicked restaurants menu");
@@ -27,6 +30,7 @@ function initShowButtons(){
 			$("#divRegister").hide();
 			$("#divAllRestaurants").show();
 			$("#divSearchInfo").hide();
+			$("#divRestaurantDetails").hide();
 			$("#tableRestaurants tbody").empty();
 			getAllRestaurants();
 		});
@@ -35,6 +39,7 @@ function initShowButtons(){
 			$("#divRegister").hide();
 			$("#divAllRestaurants").show();
 			$("#divSearchInfo").show();
+			$("#divRestaurantDetails").hide();
 			$("#tableRestaurants tbody").empty();
 			getAllRestaurants();
 		});
@@ -50,6 +55,7 @@ function getAllRestaurants(){
 				addRestaurantInTable(restaurant);
 					$( "#detaljiRestorana" + restaurant.id).click(function() {
 						getRestaurantById(restaurant.id);
+						$("#divRestaurantDetails").show();
 					});
 			}
 			console.log("All restaurants method");
@@ -158,6 +164,7 @@ function search(){
  					addRestaurantInTable(res);
 	 					$( "#detaljiRestorana" + res.id).click(function() {
 							getRestaurantById(res.id);
+							$("#divRestaurantDetails").show();
 						});
  				}
  			}
@@ -182,6 +189,7 @@ function filterByType(){
  	 					addRestaurantInTable(res);
  	 					$( "#detaljiRestorana" + res.id).click(function() {
 							getRestaurantById(res.id);
+							$("#divRestaurantDetails").show();
 						});
  		    		}
 
@@ -221,6 +229,7 @@ function sortRestaurantsByRating(){
  	 				addRestaurantInTable(res);
  	 				$( "#detaljiRestorana" + res.id).click(function() {
 						getRestaurantById(res.id);
+						$("#divRestaurantDetails").show();
 					});
  				}
 
@@ -260,6 +269,7 @@ function sortRestaurantsByName(){
  					addRestaurantInTable(res);
  					$( "#detaljiRestorana" + res.id).click(function() {
 						getRestaurantById(res.id);
+						$("#divRestaurantDetails").show();
 					});
  				}
  				
@@ -296,6 +306,7 @@ function sortRestaurantsByCity(){
  					addRestaurantInTable(res);
  					$( "#detaljiRestorana" + res.id).click(function() {
 						getRestaurantById(res.id);
+						$("#divRestaurantDetails").show();
 					});
  				}
  				
@@ -331,6 +342,7 @@ function sortRestaurantsByCountry(){
  					addRestaurantInTable(res);
  					$( "#detaljiRestorana" + res.id).click(function() {
 						getRestaurantById(res.id);
+						$("#divRestaurantDetails").show();
 					});
  				}
  				

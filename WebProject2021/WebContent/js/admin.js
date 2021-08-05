@@ -574,6 +574,7 @@ $(document).ready(function(){
 			contentType: "application/json",
 			success : function(message){
 				alert(message);
+				window.location = "../managerPage.html";
 			},
 			error: function(message){
 				
