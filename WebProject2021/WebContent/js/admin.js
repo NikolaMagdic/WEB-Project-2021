@@ -5,12 +5,14 @@ function changeView() {
 	$("#divAllUsers").hide();
 	$("#divAddRestaurant").hide();
 	$("#divAddManager").hide();
+	$("#divEditAccount").hide();
 	
 	$("#buttonAddUser").click(function(event){
 		$("#divAddUser").show();
 		$("#divAllUsers").hide();
 		$("#divAddRestaurant").hide();
 		$("#divAddManager").hide();
+		$("#divEditAccount").hide();
 	});
 	
 	$("#buttonAllUsers").click(function(event){
@@ -18,6 +20,7 @@ function changeView() {
 		$("#divAddUser").hide();
 		$("#divAddRestaurant").hide();
 		$("#divAddManager").hide();
+		$("#divEditAccount").hide();
 	});
 	
 	$("#buttonAddRestaurant").click(function(event){
@@ -25,8 +28,17 @@ function changeView() {
 		$("#divAddUser").hide();
 		$("#divAddRestaurant").show();
 		$("#divAddManager").hide();
+		$("#divEditAccount").hide();
 	});
-	
+
+	$("#buttonEditAccount").click(function(event){
+		getLoggedUserData();
+		$("#divAllUsers").hide();
+		$("#divAddUser").hide();
+		$("#divAddRestaurant").hide();
+		$("#divAddManager").hide();
+		$("#divEditAccount").show();
+	});
 }
 
 // Formatiranje datuma
@@ -39,6 +51,17 @@ function formatDate(newDate) {
 	return day + "." + month + "." + year + ".";
 }
 
+// Formatiranje datuma za date picker
+function formatDatePicker(newDate) {
+	let date = new Date(newDate);
+	let day = date.getDate();
+	let month = date.getMonth() + 1;
+	let year = date.getFullYear();
+
+	return year + "-" + month + "-" + day;
+}
+
+// Svi korisnici koji su registrovani (sve role)
 function getAllUsers(){
 	$.get({
 		url: "../rest/user/all",
@@ -47,6 +70,7 @@ function getAllUsers(){
 			for(let user of users) {
 				addUserInTable(user);
 			}
+			shownUsers = users;
 		}
 	});
 }
@@ -68,6 +92,8 @@ function addUserInTable(user) {
 			"<td>" + user.role + "</td>" +
 			"<td>" + gender + "</td>" +
 			"<td>" + formatDate(user.birthDate) + "</td>" + 
+			"<td>" + ((user.points === null) ? "/" : user.points) + "</td>" +
+			"<td>" + ((user.customerType === null) ? "/" : user.customerType.customerTypeName) + "</td>" +
 			"</tr>";
 	table.append(tr);
 
@@ -77,6 +103,7 @@ function addUserInTable(user) {
 
 }
 
+// Menadzeri koji ne upravljaju restoranima
 function getAllAvailableManagers() {
 	$.get({
 		url: "../rest/user/available-managers",
@@ -99,16 +126,293 @@ function addManagerInDropDown(manager) {
 	select.append(option);
 }
 
+function editAccount() {
+	
+	let username = $("#usernameEdit").val();
+	let password = $("#passwordEdit").val();
+	let confirmPassword = $("#confirmPasswordEdit").val();
+	let firstName = $("#nameEdit").val();
+	let lastName = $("#lastNameEdit").val();
+	let male = $("#maleEdit:checked").val();
+	let date = $("#dateEdit").val();
+	
+	if(password != confirmPassword){
+		alert("Passwords do not match");
+		return;
+	}
+	
+	let gender;
+	if(male){
+		gender = "True";
+	}else {
+		gender = "False";
+	}
+	
+	let user = {
+		username: username,
+		password: password,
+		firstName: firstName,
+		lastName: lastName,
+		gender: gender,
+		birthDate: date,
+		
+	}
+	
+	$("#formEdit").submit(function (event){
+		$.ajax({
+			type: "PUT",
+			url: "../rest/user",
+			data: JSON.stringify(user),
+			contentType: "application/json",
+			success: function(){
+				alert("Uspesno izmenjeni podaci");
+			},
+			error: function() {}
+		});
+	});
+}
+
+function searchUsers() {
+	
+	$("#formSearchUsers").submit(function (event){
+		event.preventDefault();
+		let queryParams = {
+			firstName: $("#searchFirstName").val(),
+			lastName: $("#searchLastName").val(),
+			username: $("#searchUsername").val()	
+		};
+		
+		$.get({
+			url: "../rest/user/search",
+			//contentType: "application/x-www-form-urlencoded",
+			data: queryParams,
+			success: function(users){
+				// Prvo brisem postojece korisnike iz tabele pa dodajem filtrirane - pretraga
+				$("#tableUsers").empty();
+				for (let user of users) {
+					addUserInTable(user);
+				}
+				shownUsers = users;
+			}
+		})
+	});
+}
+
+// SORTIRANJE
+
+function sortUsersByUsername() {
+	$("#sortUsername").click(function() {
+		$("#tableUsers").empty();
+		// selection sort
+		// videti da li treba koristiti localeCompare
+		for (var i = 0; i < shownUsers.length - 1; i++) {
+			var min_idx = i;
+			for (var j = i + 1; j < shownUsers.length; j++) {
+				if(shownUsers[j].username.toLowerCase() < shownUsers[i].username.toLowerCase())
+					min_idx = j;
+			}
+			let temp = shownUsers[i];
+			shownUsers[i] = shownUsers[min_idx];
+			shownUsers[min_idx] = temp;
+		}
+		if(sortUsernameDesc) {
+			sortUsernameDesc = false;
+			$("#imageSortUsername").attr("src", "../images/sort-up.png");
+		} else {
+			shownUsers.reverse();
+			sortUsernameDesc = true;
+			$("#imageSortUsername").attr("src", "../images/sort-down.png");
+		}
+		for(let user of shownUsers) {
+			addUserInTable(user);
+		}
+
+	});
+}
+
+function sortUsersByLastName() {
+	$("#sortLastName").click(function() {
+		$("#tableUsers").empty();
+		for (var i = 0; i < shownUsers.length - 1; i++) {
+			var min_idx = i;
+			for (var j = i + 1; j < shownUsers.length; j++) {
+				if(shownUsers[j].lastName.toLowerCase() < shownUsers[i].lastName.toLowerCase())
+					min_idx = j;
+			}
+			let temp = shownUsers[i];
+			shownUsers[i] = shownUsers[min_idx];
+			shownUsers[min_idx] = temp;
+		}
+		if(sortLastNameDesc) {
+			sortLastNameDesc = false;
+			$("#imageSortLastName").attr("src", "../images/sort-up.png");
+		} else {
+			shownUsers.reverse();
+			sortLastNameDesc = true;
+			$("#imageSortLastName").attr("src", "../images/sort-down.png");
+		}
+		for(let user of shownUsers) {
+			addUserInTable(user);
+		}
+	});
+}
+
+function sortUsersByName() {
+	$("#sortName").click(function() {
+		$("#tableUsers").empty();
+		for (var i = 0; i < shownUsers.length - 1; i++) {
+			var min_idx = i;
+			for (var j = i + 1; j < shownUsers.length; j++) {
+				if(shownUsers[j].firstName.toLowerCase() < shownUsers[i].firstName.toLowerCase())
+					min_idx = j;
+			}
+			let temp = shownUsers[i];
+			shownUsers[i] = shownUsers[min_idx];
+			shownUsers[min_idx] = temp;
+		}
+		if(sortNameDesc) {
+			sortNameDesc = false;
+			$("#imageSortName").attr("src", "../images/sort-up.png");
+		} else {
+			shownUsers.reverse();
+			sortNameDesc = true;
+			$("#imageSortName").attr("src", "../images/sort-down.png");
+		}
+		for(let user of shownUsers) {
+			addUserInTable(user);
+		}
+	});
+}
+
+function sortUsersByPoints() {
+	$("#sortPoints").click(function() {
+		$("#tableUsers").empty();
+		// selection sort
+		for (var i = 0; i < shownUsers.length - 1; i++) {
+			var min_idx = i;
+			for (var j = i + 1; j < shownUsers.length; j++) {
+				if(shownUsers[j].points < shownUsers[i].points)
+					min_idx = j;
+			}
+			let temp = shownUsers[i];
+			shownUsers[i] = shownUsers[min_idx];
+			shownUsers[min_idx] = temp;
+		}
+		if(sortPointsDesc) {
+			sortPointsDesc = false;
+			$("#imageSortPoints").attr("src", "../images/sort-up.png");
+		} else {
+			shownUsers.reverse();
+			sortPointsDesc = true;
+			$("#imageSortPoints").attr("src", "../images/sort-down.png");
+		}
+		for(let user of shownUsers) {
+			addUserInTable(user);
+		}
+	});
+}
+
+// FILTRIRANJE
+
+function filterUsersByRole() {
+	$("#filterRole").change(function(){
+		$.get({
+			url: "../rest/user/all",
+			contentType: "application/json",
+			success: function(users) {
+				$("#tableUsers").empty();
+				shownUsers = [];
+				let role = $("#filterRole option:selected").val();
+				for (let user of users) {					
+					if((user.role === role) || role === "SVI") {
+						addUserInTable(user);
+						shownUsers.push(user);
+					}
+				}
+			}
+		});
+	});
+}
+
+function filterUsersByType() {
+	$("#filterType").change(function(){
+		$.get({
+			url: "../rest/user/all",
+			contentType: "application/json",
+			success: function(users) {
+				shownUsers = [];
+				$("#tableUsers").empty();
+				let role = $("#filterType option:selected").val();
+				for (let user of users) {					
+					if((user.role === role) || role === "SVI") {
+						addUserInTable(user);
+						shownUsers.push(user);
+					}
+				}
+			}
+		});
+	});
+}
+
+function getLoggedUserData() {
+	$.get({
+		type: "GET",
+		url: "../rest/loggedIn",
+		dataType: "json",
+		success: function(user) {
+			$("#usernameEdit").val(user.username);
+			$("#passwordEdit").val(user.password);
+			$("#nameEdit").val(user.firstName);
+			$("#lastNameEdit").val(user.lastName);
+			if(user.gender == true){
+				$('input#male').prop("checked", true);
+			} else {
+				$('input#female').prop("checked", true);
+			}
+			$("#dateEdit").val(formatDatePicker(user.birthDate));
+		}
+		
+	});
+}
+
+// GLOBALNE PROMENLJIVE
+
 // Globalna promenljiva koja nam treba da znamo koji je restoran prethodno dodat
 var restaurantId; 
 
+// Svi sortovi su podrazumevano od veceg ka manjem
+var sortUsernameDesc;
+var sortNameDesc;
+var sortLastNameDesc;
+var sortPointsDesc;
+
+// Svi trenutno prikazani korisnici  (na pregledu korisnika)
+var shownUsers;
+
 $(document).ready(function(){
-	
+
 	getAllUsers();
+	searchUsers();
 	changeView();
 	getAllAvailableManagers();
-	
+	editAccount();
+	sortUsersByUsername();
+	sortUsersByName();
+	sortUsersByLastName();
+	sortUsersByPoints();
+	filterUsersByRole();
+	filterUsersByType();
 	console.log($("#managerOfRestaurant option:selected").val());
+	
+	sortUsernameDesc = true;
+	sortNameDesc = true;
+	sortLastNameDesc = true;
+	sortPointsDesc = true;
+	
+	// Slide up/down za search
+	$("#buttonSearch").click(function(){
+		$("#divSearchUsers").slideToggle();
+	});
 	
 	// Dodavanje novog menadzera ili dostavljaca
 	$("#formAddUser").submit(function(event){
