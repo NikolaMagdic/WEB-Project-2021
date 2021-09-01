@@ -88,6 +88,7 @@ function getRestaurantById(id){
 				}
 		}
 	});	
+	
 	$.ajax({
 		
 		type: "GET",
