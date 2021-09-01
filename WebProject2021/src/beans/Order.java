@@ -8,12 +8,10 @@ import enumerations.OrderStatus;
 
 public class Order {
 	
-	private Long id;
-
 	// 10 karaktera
 	private String orderId;
 	
-	private List<Integer> products = new ArrayList<Integer>();
+	private List<CartItem> products = new ArrayList<CartItem>();
 	
 	private Integer restaurant;
 	
@@ -34,10 +32,9 @@ public class Order {
 	
 	
 
-	public Order(Long id, String orderId, List<Integer> products, Integer restaurant, Date date, Double price,
+	public Order(String orderId, List<CartItem> products, Integer restaurant, Date date, Double price,
 			String customer, OrderStatus orderStatus) {
 		super();
-		this.id = id;
 		this.orderId = orderId;
 		this.products = products;
 		this.restaurant = restaurant;
@@ -47,8 +44,7 @@ public class Order {
 		this.orderStatus = orderStatus;
 	}
 
-
-
+	
 	public String getOrderId() {
 		return orderId;
 	}
@@ -57,11 +53,11 @@ public class Order {
 		this.orderId = orderId;
 	}
 
-	public List<Integer> getProducts() {
+	public List<CartItem> getProducts() {
 		return products;
 	}
 
-	public void setProducts(List<Integer> products) {
+	public void setProducts(List<CartItem> products) {
 		this.products = products;
 	}
 

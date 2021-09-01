@@ -1,12 +1,10 @@
 package beans;
 
 public class CartItem {
-	
-	private Long id;
-	
+		
 	private Integer item;
 	
-	private Double amount;
+	private int amount;
 	
 
 	public CartItem() {
@@ -14,13 +12,11 @@ public class CartItem {
 	}
 
 
-	public CartItem(Long id, Integer item, Double amount) {
+	public CartItem(Integer item, int amount) {
 		super();
-		this.id = id;
 		this.item = item;
 		this.amount = amount;
 	}
-
 
 
 	public Integer getItem() {
@@ -31,11 +27,11 @@ public class CartItem {
 		this.item = item;
 	}
 
-	public Double getAmount() {
+	public int getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Double amount) {
+	public void setAmount(int amount) {
 		this.amount = amount;
 	}
 	

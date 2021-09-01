@@ -1,3 +1,10 @@
+function changeView() {
+	$("#buttonCart").click(function(event){
+		$("#divMyAccount").hide();
+		$("#divCart").show();
+	});
+}
+
 function getLoggedInUser(){
 	    $.get({
 		type: "GET",
@@ -31,12 +38,24 @@ function logout(){
 	});
 }
 
+// Shopping cart
+function getCart() {
+	$.get({
+		url: "/rest/cart",
+		contentType: "application/json",
+		success: function (cart) {
+			console.log(cart);
+		}
+	});
+}
 
 $(document).ready(function(){
 	
 	getLoggedInUser();
 	
 	logout();
+	
+	viewCart();
 	
 	// Show/hide edit form
 	$("#editMenu").click(function(event){

@@ -8,6 +8,7 @@
 </head>
 <body>
 	<div class="meni">
+		<button id="buttonCart" class="dropbtn">Cart</button>
 		<div class="dropdown">
 		  <button class="dropbtn">Dropdown</button>
 		  <div class="dropdown-content">
@@ -77,14 +78,12 @@
 						</tr>
 						
 						<tr>
-							<div class="btn-group">
-							  <label>
+							<td>
 							    <input type="radio" name="optionsCheck" id="male" checked> Male
-							  </label>
-							  <label>
-							    <input type="radio" name="optionsCheck" id="female"> Female
-							  </label>
-							</div>		
+							</td>
+							<td>
+							  <input type="radio" name="optionsCheck" id="female"> Female
+							</td>
 						</tr>
 						
 						<tr>
@@ -96,4 +95,17 @@
 					</table>
 				</form>
 		</div>
+	<div id="divCart">
+		<table>
+			<thead>
+				<tr>
+					<th>Naziv</th>
+					<th>Količina</th>
+					<th>Cena</th>
+					<th>Slika</th>
+				</tr>
+			</thead>
+			<tbody id="tableCart"></tbody>
+		</table>
+	</div>
 </body>
