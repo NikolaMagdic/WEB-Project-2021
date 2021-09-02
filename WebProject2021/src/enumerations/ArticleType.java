@@ -1,6 +1,6 @@
 package enumerations;
 
-public enum ProductType {
+public enum ArticleType {
 	FOOD,
 	DRINK
 }

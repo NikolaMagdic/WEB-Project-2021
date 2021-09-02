@@ -19,13 +19,10 @@ public class RestaurantDTO {
 	private Double rating;
 
 	
+	
 	public RestaurantDTO() {
 		super();
 	}
-
-	
-
-
 
 
 

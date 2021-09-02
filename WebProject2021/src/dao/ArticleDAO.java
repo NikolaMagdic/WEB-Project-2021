@@ -14,25 +14,25 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-import beans.Amenity;
+import beans.Article;
 
 
-public class AmenityDAO {
+public class ArticleDAO {
 
-	private Map<Integer, Amenity> amenities = new HashMap<>();
+	private Map<Long, Article> articles = new HashMap<>();
 	
-	public AmenityDAO() {
+	public ArticleDAO() {
 		
 	}
 	
-	public AmenityDAO(String contextPath) {
-		loadAmenities(contextPath);
+	public ArticleDAO(String contextPath) {
+		loadArticles(contextPath);
 	}
 	
-	public void loadAmenities(String path) {
+	public void loadArticles(String path) {
 		BufferedReader in = null;
 		try {
-			File file = new File(path + "/data/amenities.json");
+			File file = new File(path + "/data/articles.json");
 			in = new BufferedReader(new FileReader(file));
 			String line;
 			StringBuilder sb = new StringBuilder();
@@ -40,7 +40,7 @@ public class AmenityDAO {
 				sb.append(line);
 			}
 			ObjectMapper mapper = new ObjectMapper();
-			this.amenities = mapper.readValue(sb.toString(), new TypeReference<Map<Integer, Amenity>>(){});
+			this.articles = mapper.readValue(sb.toString(), new TypeReference<Map<Integer, Article>>(){});
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -52,14 +52,14 @@ public class AmenityDAO {
 		}
 	}
 	
-	public void saveAmenities(String path) {
+	public void saveArticles(String path) {
 		BufferedWriter out = null;
 		try {
-			File file = new File(path + "/data/amenities.json");
+			File file = new File(path + "/data/articles.json");
 			out = new BufferedWriter(new FileWriter(file));
 			ObjectMapper mapper = new ObjectMapper();
 			ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-			String content = writer.writeValueAsString(this.amenities);
+			String content = writer.writeValueAsString(this.articles);
 			out.write(content);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -74,24 +74,24 @@ public class AmenityDAO {
 		}
 	}
 	
-	public Amenity findAmenity(Integer id) {
-		return this.amenities.get(id);
+	public Article findArticle(Integer id) {
+		return this.articles.get(id);
 	}
 	
-	public Collection<Amenity> findAllAmenities() {
-		return this.amenities.values();
+	public Collection<Article> findAllArticles() {
+		return this.articles.values();
 	}
 	
-	public Amenity addAmenity(Amenity amenity) {
-		return this.amenities.put(amenity.getId(), amenity);
+	public Article addArticle(Article article) {
+		return this.articles.put(article.getId(), article);
 	}
 	
-	public Amenity updateAmenity(Amenity amenity) {
-		return this.amenities.replace(amenity.getId(), amenity);
+	public Article updateArticle(Article article) {
+		return this.articles.replace(article.getId(), article);
 	}
 	
 	// ne koristimo; za fizicko brisanje
-	public Amenity removeAmenity(Integer id) {
-		return this.amenities.remove(id);
+	public Article removeArticle(Integer id) {
+		return this.articles.remove(id);
 	}
 }

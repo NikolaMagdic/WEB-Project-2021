@@ -13,7 +13,7 @@ public class Restaurant {
 	
 	private RestaurantType restaurantType;
 	
-	private List<Integer> articals = new ArrayList<Integer>();
+	private List<Integer> articles = new ArrayList<Integer>();
 	
 	//radi ako je true, ne radi ako je false
 	private boolean open;
@@ -23,8 +23,6 @@ public class Restaurant {
 	private String image;
 	
 	private Double rating = 0.0;
-	
-	private List<Integer> amenities = new ArrayList<Integer>();
 
 	private boolean deleted;
 	
@@ -35,13 +33,13 @@ public class Restaurant {
 	}
 
 
-	public Restaurant(Integer id, String name, RestaurantType restaurantType, List<Integer> articals, boolean open,
+	public Restaurant(Integer id, String name, RestaurantType restaurantType, List<Integer> articles, boolean open,
 			Location location, String image) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.restaurantType = restaurantType;
-		this.articals = articals;
+		this.articles = articles;
 		this.open = open;
 		this.location = location;
 		this.image = image;
@@ -49,18 +47,17 @@ public class Restaurant {
 	
 
 
-	public Restaurant(Integer id, String name, RestaurantType restaurantType, List<Integer> articals, boolean open,
-			Location location, String image, Double rating, List<Integer> amenities, boolean deleted) {
+	public Restaurant(Integer id, String name, RestaurantType restaurantType, List<Integer> articles, boolean open,
+			Location location, String image, Double rating, boolean deleted) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.restaurantType = restaurantType;
-		this.articals = articals;
+		this.articles = articles;
 		this.open = open;
 		this.location = location;
 		this.image = image;
 		this.rating = rating;
-		this.amenities = amenities;
 		this.deleted = deleted;
 	}
 
@@ -94,16 +91,6 @@ public class Restaurant {
 
 	public void setRestaurantType(RestaurantType restaurantType) {
 		this.restaurantType = restaurantType;
-	}
-
-
-	public List<Integer> getArticals() {
-		return articals;
-	}
-
-
-	public void setArticals(List<Integer> articals) {
-		this.articals = articals;
 	}
 
 
@@ -150,16 +137,6 @@ public class Restaurant {
 	
 
 
-	public List<Integer> getAmenities() {
-		return amenities;
-	}
-
-
-	public void setAmenities(List<Integer> amenities) {
-		this.amenities = amenities;
-	}
-
-
 	public boolean isDeleted() {
 		return deleted;
 	}
@@ -170,11 +147,13 @@ public class Restaurant {
 	}
 
 
-	@Override
-	public String toString() {
-		return "Restaurant [id=" + id + ", name=" + name + ", restaurantType=" + restaurantType + ", articals="
-				+ articals + ", open=" + open + ", location=" + location + ", image=" + image + ", rating=" + rating
-				+ ", amenities=" + amenities + ", deleted=" + deleted + "]";
+	public List<Integer> getArticles() {
+		return articles;
+	}
+
+
+	public void setArticles(List<Integer> articles) {
+		this.articles = articles;
 	}
 
 

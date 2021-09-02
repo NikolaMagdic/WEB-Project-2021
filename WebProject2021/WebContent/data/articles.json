@@ -1,0 +1,61 @@
+{
+	"1": {
+		"id": 1,
+		"name": "Batak",
+		"price": 200.0,
+		"articleType": "FOOD",
+		"restaurant": 1,
+		"amount" : 150.0,
+		"description" : "Pileci batak",
+		"image": "",
+		"deleted" : false
+	},
+	
+	"2": {
+		"id": 2,
+		"name": "Buritto",
+		"price": 300.0,
+		"articleType": "FOOD",
+		"restaurant": 2,
+		"amount" : 300.0,
+		"description" : "Pileci buritto",
+		"image": "",
+		"deleted" : false
+	},
+	
+	"3": {
+		"id": 3,
+		"name": "Sarma",
+		"price": 200.0,
+		"articleType": "FOOD",
+		"restaurant": 3,
+		"amount" : 200.0,
+		"description" : "Kupus punjen mlevenim mesom sa pirincem",
+		"image": "",
+		"deleted" : false
+	},
+	
+	"4": {
+		"id": 4,
+		"name": "Burger",
+		"price": 250.0,
+		"articleType": "FOOD",
+		"restaurant": 4,
+		"amount" : 200.0,
+		"description" : "American beef burger",
+		"image": "",
+		"deleted" : false
+	},
+	
+	"5": {
+		"id": 5,
+		"name": "Pizza",
+		"price": 150.0,
+		"articleType": "FOOD",
+		"restaurant": 5,
+		"amount" : 100,
+		"description" : "Margarita sa papricicama",
+		"image": "",
+		"deleted" : false
+	}
+}

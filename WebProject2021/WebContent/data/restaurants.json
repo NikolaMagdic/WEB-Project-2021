@@ -3,7 +3,7 @@
 		"id": 1,
 		"name": "KFC",
 		"restaurantType": "ITALIAN",
-		"articals": [],
+		"articles": [1],
 		"open": true,
 		"location" : {
       		"latitude" : 45.014,
@@ -22,7 +22,7 @@
 		"id": 2,
 		"name": "Burrito",
 		"restaurantType": "MEXICAN",
-		"articals": [],
+		"articles": [2],
 		"open": false,
 		"location" : {
       		"latitude" : 41.019,
@@ -41,7 +41,7 @@
 		"id": 3,
 		"name": "Sarma i prijatelji",
 		"restaurantType": "SERBIAN",
-		"articals": [],
+		"articles": [3],
 		"open": true,
 		"location" : {
       		"latitude" : 51.331,
@@ -60,7 +60,7 @@
 		"id": 4,
 		"name": "Burgers",
 		"restaurantType": "AMERICAN",
-		"articals": [],
+		"articles": [4],
 		"open": false,
 		"location" : {
       		"latitude" : 48.331,
@@ -79,7 +79,7 @@
 		"id": 5,
 		"name": "PIZZA",
 		"restaurantType": "ITALIAN",
-		"articals": [],
+		"articles": [5],
 		"open": true,
 		"location" : {
       		"latitude" : 33.117,
@@ -98,7 +98,7 @@
 		"id": 6,
 		"name": "Chinese Fast Food",
 		"restaurantType": "CHINESE",
-		"articals": [],
+		"articles": [],
 		"open": true,
 		"location" : {
       		"latitude" : 27.999,

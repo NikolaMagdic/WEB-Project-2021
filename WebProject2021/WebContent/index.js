@@ -187,12 +187,14 @@ function filterByType(){
  			url: 'rest/restaurant/open',
  			contentType: 'application/json',
  			success: function(restaurants) {
+				shownRestaurants = [];
  		    	for(let res of restaurants) {
  		    		if($("#typeZaFiltraciju").val() == '' || res.type.toLowerCase().includes($("#typeZaFiltraciju").val().toLowerCase())){
  	 					addRestaurantInTable(res);
  	 					$( "#detaljiRestorana" + res.id).click(function() {
 							getRestaurantById(res.id);
 						});
+						shownRestaurants.push(res);
  		    		}
 
  				}
@@ -242,36 +244,28 @@ function sortRestaurantsByRating(){
  			contentType: 'application/json',
  			success: function(restaurants) {
 				console.log("Usao u sortByRating");
-// 				for(let i=0; i<restaurants.length; i++){
-// 					for(let j = i+1; j < restaurants.length; j++){
-// 	 					if(restaurants[i].rating < restaurants[j].rating){
-// 	 						temp = restaurants[i];
-// 	 						restaurants[i] = restaurants[j];
-// 	 						restaurants[j] = temp;
-// 	 					}
-// 					}
-// 				}
  				
  				if(sortRatingDesc) {
- 					for(let i=0; i<restaurants.length; i++){
- 	 					for(let j = i+1; j < restaurants.length; j++){
- 	 	 					if(restaurants[i].rating < restaurants[j].rating){
- 	 	 						temp = restaurants[i];
- 	 	 						restaurants[i] = restaurants[j];
- 	 	 						restaurants[j] = temp;
+ 					for(let i=0; i<shownRestaurants.length; i++){
+ 	 					for(let j = i+1; j < shownRestaurants.length; j++){
+ 	 	 					if(shownRestaurants[i].rating < shownRestaurants[j].rating){
+ 	 	 						temp = shownRestaurants[i];
+ 	 	 						shownRestaurants[i] = shownRestaurants[j];
+ 	 	 						shownRestaurants[j] = temp;
  	 	 					}
  	 					}
  	 				}
+			
  					sortRatingDesc = false;
  					$("#imageSortRating").attr("src", "./images/sort-down.png");
  				} else {
  					//shownUsers.reverse();
- 					for(let i=0; i<restaurants.length; i++){
- 	 					for(let j = i+1; j > restaurants.length; j++){
- 	 	 					if(restaurants[i].rating < restaurants[j].rating){
- 	 	 						temp = restaurants[i];
- 	 	 						restaurants[i] = restaurants[j];
- 	 	 						restaurants[j] = temp;
+ 					for(let i=0; i<shownRestaurants.length; i++){
+ 	 					for(let j = i+1; j < shownRestaurants.length; j++){
+ 	 	 					if(shownRestaurants[i].rating > shownRestaurants[j].rating){
+ 	 	 						temp = shownRestaurants[i];
+ 	 	 						shownRestaurants[i] = shownRestaurants[j];
+ 	 	 						shownRestaurants[j] = temp;
  	 	 					}
  	 					}
  	 				}
@@ -279,7 +273,7 @@ function sortRestaurantsByRating(){
  					$("#imageSortRating").attr("src", "./images/sort-up.png");
  				}
  				
- 			    for(let res of restaurants) {
+ 			    for(let res of shownRestaurants) {
  	 				addRestaurantInTable(res);
  	 				$( "#detaljiRestorana" + res.id).click(function() {
 						getRestaurantById(res.id);

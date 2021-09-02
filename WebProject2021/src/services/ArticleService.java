@@ -13,20 +13,20 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import beans.Amenity;
+import beans.Article;
 import beans.Restaurant;
-import dao.AmenityDAO;
+import dao.ArticleDAO;
 import dao.RestaurantDAO;
 
-@Path("amenity")
-public class AmenityService {
+@Path("article")
+public class ArticleService {
 
 	@Context
 	ServletContext ctx;
 	
 	private String contextPath;
 	
-	public AmenityService() {
+	public ArticleService() {
 		
 	}
 	
@@ -34,9 +34,9 @@ public class AmenityService {
 	public void init() {
 		this.contextPath = ctx.getRealPath("");
 		
-		AmenityDAO amenityDAO = new AmenityDAO(contextPath);
-		if (ctx.getAttribute("amenities") == null) {
-			ctx.setAttribute("amenities", amenityDAO);
+		ArticleDAO articleDAO = new ArticleDAO(contextPath);
+		if (ctx.getAttribute("articles") == null) {
+			ctx.setAttribute("articles", articleDAO);
 		}
 		
 		RestaurantDAO restaurantDAO = new RestaurantDAO(contextPath);
@@ -49,19 +49,19 @@ public class AmenityService {
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Amenity> getAllAmenities() {
+	public List<Article> getAllAmenities() {
 		
-		AmenityDAO amenityDAO = (AmenityDAO) ctx.getAttribute("amenities");
-		Collection<Amenity> amenities = amenityDAO.findAllAmenities();
+		ArticleDAO articleDAO = (ArticleDAO) ctx.getAttribute("articles");
+		Collection<Article> articles = articleDAO.findAllArticles();
 		
-		List<Amenity> amenitiesList = new ArrayList<>();
+		List<Article> articlesList = new ArrayList<>();
 		
-		for (Amenity amenity : amenities) {
-			if(!amenity.isDeleted())
-				amenitiesList.add(amenity);
+		for (Article article : articles) {
+			if(!article.isDeleted())
+				articlesList.add(article);
 		}
 		
-		return amenitiesList;
+		return articlesList;
 	
 	}
 	
@@ -69,19 +69,19 @@ public class AmenityService {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Amenity> getMyAmenities(@PathParam("id") Integer id){
+	public List<Article> getMyArticles(@PathParam("id") Integer id){
 		
 		RestaurantDAO restaurantDAO = (RestaurantDAO) ctx.getAttribute("restaurants");
 		Restaurant restaurant = restaurantDAO.findRestaurant(id);
-		AmenityDAO amenityDAO = (AmenityDAO) ctx.getAttribute("amenities");
+		ArticleDAO articleDAO = (ArticleDAO) ctx.getAttribute("articles");
 		
-		List<Integer> amenitiesId = restaurant.getAmenities();
-		List<Amenity> amenities = new ArrayList<>();
+		List<Integer> articlesId = restaurant.getArticles();
+		List<Article> articles = new ArrayList<>();
 		
-		for (Integer amenityId : amenitiesId) {
-			amenities.add(amenityDAO.findAmenity(amenityId));
+		for (Integer articleId : articlesId) {
+			articles.add(articleDAO.findArticle(articleId));
 		}
 		
-		return amenities;
+		return articles;
 	}
 }

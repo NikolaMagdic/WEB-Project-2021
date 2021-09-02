@@ -1,8 +1,8 @@
 package beans;
 
-import enumerations.ProductType;
+import enumerations.ArticleType;
 
-public class Product {
+public class Article {
 	
 	private Long id;
 
@@ -10,7 +10,7 @@ public class Product {
 	
 	private Double price;
 	
-	private ProductType itemType;
+	private ArticleType articleType;
 	
 	private Integer restaurant;
 	
@@ -19,26 +19,34 @@ public class Product {
 	private String description;
 	
 	private String image;
+	
+	private boolean deleted;
 
 	
-	public Product() {
-		
+
+
+	public Article() {
+		super();
 	}
 	
+	
 
-
-	public Product(Long id, String name, Double price, ProductType itemType, Integer restaurant, Double amount,
-			String description, String image) {
+	public Article(Long id, String name, Double price, ArticleType articleType, Integer restaurant, Double amount,
+			String description, String image, boolean deleted) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.price = price;
-		this.itemType = itemType;
+		this.articleType = articleType;
 		this.restaurant = restaurant;
 		this.amount = amount;
 		this.description = description;
 		this.image = image;
+		this.deleted = deleted;
 	}
+
+
+
 
 
 
@@ -58,13 +66,32 @@ public class Product {
 		this.price = price;
 	}
 
-	public ProductType getItemType() {
-		return itemType;
+	
+
+
+	public Long getId() {
+		return id;
 	}
 
-	public void setItemType(ProductType itemType) {
-		this.itemType = itemType;
+
+
+	public void setId(Long id) {
+		this.id = id;
 	}
+
+
+
+	public ArticleType getArticleType() {
+		return articleType;
+	}
+
+
+
+	public void setArticleType(ArticleType articleType) {
+		this.articleType = articleType;
+	}
+
+
 
 	public Integer getRestaurant() {
 		return restaurant;
@@ -98,11 +125,17 @@ public class Product {
 		this.image = image;
 	}
 
-	@Override
-	public String toString() {
-		return "Item [name=" + name + ", price=" + price + ", itemType=" + itemType + ", restaurant=" + restaurant
-				+ ", amount=" + amount + ", description=" + description + ", image=" + image + "]";
+
+
+	public boolean isDeleted() {
+		return deleted;
 	}
-	
+
+
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	
 }
