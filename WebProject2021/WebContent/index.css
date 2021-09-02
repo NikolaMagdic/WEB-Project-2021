@@ -13,7 +13,7 @@ h1 {
 }
 
 form {
-	text-align: center;
+	
 }
 
 input {
@@ -23,6 +23,8 @@ input {
 table {
 	margin-left: auto;
 	margin-right: auto;
+	text-align: center;	
+	width: 70%;
 }
 
 .submit {

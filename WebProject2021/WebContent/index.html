@@ -12,7 +12,7 @@
 	  <button id="loginMenu">Log in</button>
 	  <button id="registerMenu">Register</button>
 	  <button id="restaurantsMenu">Restaurants</button>
-	  <button id = "openSearchBox" > Search </button>
+	  
 	</div>
 	<div id="divLogin">
 		<h1>Prijava</h1>
@@ -112,7 +112,6 @@
 	</div>
 	
 	<div id='divSearchInfo' align="left">
-				<h4>Search</h4>
 				<table>
 					<tbody>
 						<tr>
@@ -134,16 +133,19 @@
 	
 	<div id="divAllRestaurants">
 		<h1>Pregled restorana</h1>
+		<div>
+			<button id="openSearchBox" ><img id="imageSortName" alt="" src="./images/search.png" width="12px" height="12px">Search </button>
+		</div>
 		<table id="tableRestaurants">
 			<thead>
 				<tr>
-					<td> <button id='sortRestaurantsByName'>Name</button> </td>
-					<td> <input id="typeZaFiltraciju" placeholder="Type"></td>
-					<td>Status</td>
-					<td> <button id='sortRestaurantsByCity'>City</button> </td>
-					<td> <button id='sortRestaurantsByCountry'>Country</button> </td>
-					<td> <button id='sortRestaurantsByRating'>Rating</button> </td>
-					<td>Details</td>
+					<th id='sortRestaurantsByName' class="sort-header">Name <img id="imageSortName" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
+					<th> <input id="typeZaFiltraciju" placeholder="Type"></th>
+					<th id='sortRestaurantsByStatus'>Status</th>
+					<th id='sortRestaurantsByCity' class="sort-header">City<img id="imageSortCity" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id='sortRestaurantsByCountry' class="sort-header">Country<img id="imageSortCountry" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id='sortRestaurantsByRating' class="sort-header">Rating<img id="imageSortRating" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
+					<th>Detalji</th>
 				</tr>
 
 			</thead>
@@ -152,9 +154,10 @@
 	</div>
 	
 	<div id="divRestaurantDetails">
-		<h5>Details </h5></br>
 
-			<table id="tableDetails">
+		<h2 align="center">Details </h2></br>
+
+			<table id="tableDetails" >
 				<tr>
 					<td>Restaurant id:</td>
 					<td><input type="text" disabled id="txtIdRestorana"> </td>
