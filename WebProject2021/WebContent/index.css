@@ -151,6 +151,20 @@ table {
 }
 
 .divSearchInfo {
-  text-align: center;
+  width: 50%;
+  border: 3px light-blue;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
+#openSearchBox {
+  background-color: #0298d0;
+  color: white;
+  float: right;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  padding: 14px 16px; 
+  font-size: 17px;
+}

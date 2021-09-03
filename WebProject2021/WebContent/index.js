@@ -3,6 +3,7 @@ function initHide(){
 	$("#divRegister").hide();
 	$("#divAllRestaurants").hide();
 	$("#divSearchInfo").hide();
+	$("#divRestaurantDetails").hide();
 
 }
 
@@ -14,12 +15,14 @@ function initShowButtons(){
 			$("#divRegister").hide();
 			$("#divAllRestaurants").hide();
 			$("#divSearchInfo").hide();
+			$("#divRestaurantDetails").hide();
 		});	
 		$("#registerMenu").click( function(){
 			$("#divLogin").hide();
 			$("#divRegister").show();
 			$("#divAllRestaurants").hide();
 			$("#divSearchInfo").hide();
+			$("#divRestaurantDetails").hide();
 		});	
 		$("#restaurantsMenu").click( function(){
 			console.log("Clicked restaurants menu");
@@ -28,6 +31,7 @@ function initShowButtons(){
 			$("#divAllRestaurants").show();
 			$("#divSearchInfo").hide();
 			$("#tableRestaurants tbody").empty();
+			$("#divRestaurantDetails").hide();
 			getAllRestaurants();
 		});
 		$("#openSearchBox").click( function(){
@@ -38,6 +42,19 @@ function initShowButtons(){
 			$("#tableRestaurants tbody").empty();
 			getAllRestaurants();
 		});
+		
+		$(document).on("click", "button[name = 'detaljiRestorana']", function(){
+			$("#divLogin").hide();
+			$("#divRegister").hide();
+			$("#divAllRestaurants").hide();
+			$("#divSearchInfo").hide();
+			$("#divRestaurantDetails").show();
+			$("#tableRestaurants tbody").empty();
+			getAllRestaurants();
+		});
+		
+		
+		
 		
 	}
 }
@@ -76,7 +93,7 @@ function addRestaurantInTable(restaurant) {
 			"<td>" + restaurant.city + "</td>" +
 			"<td>" + restaurant.country + "</td>" +
 			"<td>" + restaurant.rating + "</td>" +
-			" <td> <button id='detaljiRestorana" + restaurant.id + "' class='buttonDetails'> Details </button></td>" +
+			" <td> <button id='detaljiRestorana" + restaurant.id + "' class='buttonDetails' name='detaljiRestorana'> Details </button></td>" +
 			"</tr>";
 	table.append(tr);
 
