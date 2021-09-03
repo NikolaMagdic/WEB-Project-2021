@@ -6,6 +6,7 @@ body {
 	/*background-color: blue;*/
 	background: -webkit-gradient(linear, left top, left bottom, from(#99d6ff), to(#006bb3));
 	margin: 0%;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 #divAddUser {
@@ -20,8 +21,14 @@ form {
 	text-align: center;
 }
 
-input {
-	border-radius: 10px;
+input, select {
+	width: 200px;
+  	padding: 8px 10px;
+  	margin: 8px 0;
+  	display: inline-block;
+  	border: 1px solid #ccc;
+  	border-radius: 8px;
+  	box-sizing: border-box;
 }
 
 table {
@@ -60,13 +67,13 @@ table {
   	border-radius: 30px;
 }
 
-.meni {
+.menu {
   background-color: #003d66;
   overflow: hidden;
   color: #f2f2f2;
 }
 
-.meni-button {
+.menu-button {
   background-color: #cc0000;
   color: white;
   float: left;
@@ -75,6 +82,7 @@ table {
   text-decoration: none;
   padding: 14px 16px; 
   font-size: 17px;
+  cursor: pointer;
 }
 
 .dropdown {
@@ -98,7 +106,7 @@ table {
   display: block;
 }
 
-.meni-button:hover {
+.menu-button:hover {
   background-color: #ff1a1a;
   color: white;
 }
@@ -113,10 +121,10 @@ table {
   z-index: 1;
 }
 
-.dropdown-content button {
+.dropdown-content a {
   background-color: #cc0000;
   color: white;
-  float: none;
+  float: right;
   display: block;
   text-decoration: none;
   padding: 14px 16px; 
@@ -134,7 +142,7 @@ table {
 	display: block;
 }
 
-.dropdown-meni-button:hover {
+.dropdown-menu a:hover {
   background-color: #ff1a1a;
   color: white;
 }

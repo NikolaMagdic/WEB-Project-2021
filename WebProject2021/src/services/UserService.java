@@ -12,6 +12,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -75,6 +76,8 @@ public class UserService {
 		if(userDAO.findUser(user.getUsername()) != null) {
 			return Response.status(400).build();
 		}
+		
+		user.setBlocked(false);
 		
 		userDAO.addUser(user);
 		String contextPath = ctx.getRealPath("");
@@ -175,5 +178,49 @@ public class UserService {
 		}
 		
 		return loggedUser;
+	}
+	
+	
+	// Blokiranje korisnika
+	@PUT
+	@Path("/block/{username}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response blockUser(@PathParam ("username") String username) {
+		
+		UserDAO userDAO = (UserDAO) ctx.getAttribute("users");
+		User user = userDAO.findUser(username);
+		
+		if(user.getRole().equals(UserRole.ADMIN))
+			return Response.status(400).build();
+		
+		user.setBlocked(true);
+		userDAO.updateUser(user);
+		
+		String contextPath = ctx.getRealPath("");
+		userDAO.saveUsers(contextPath);
+		
+		return Response.status(200).entity(user).build();
+		
+	}
+	
+	@PUT
+	@Path("/unblock/{username}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response unblockUser(@PathParam ("username") String username) {
+		
+		UserDAO userDAO = (UserDAO) ctx.getAttribute("users");
+		User user = userDAO.findUser(username);
+		
+		if(user.getRole().equals(UserRole.ADMIN))
+			return Response.status(400).build();
+		
+		user.setBlocked(false);
+		userDAO.updateUser(user);
+		
+		String contextPath = ctx.getRealPath("");
+		userDAO.saveUsers(contextPath);
+		
+		return Response.status(200).entity(user).build();
+		
 	}
 }

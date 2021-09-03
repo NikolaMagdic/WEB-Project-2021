@@ -40,6 +40,8 @@ public class User {
 	
 	//ako je kupac
 	private CustomerType customerType;
+	
+	private boolean blocked;
 
 	
 	public User() {
@@ -49,7 +51,7 @@ public class User {
 
 	public User(String username, String password, String firstName, String lastName, boolean gender, Date birthDate,
 			UserRole role, List<Integer> myOrders, Cart cart, Integer restaurant, List<Integer> deliveryOrders,
-			Integer points, CustomerType customerType) {
+			Integer points, CustomerType customerType, boolean blocked) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -64,6 +66,7 @@ public class User {
 		this.deliveryOrders = deliveryOrders;
 		this.points = points;
 		this.customerType = customerType;
+		this.blocked = blocked;
 	}
 
 
@@ -197,12 +200,21 @@ public class User {
 	}
 
 
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
+	}
+
+
 	@Override
 	public String toString() {
 		return "User [username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName="
 				+ lastName + ", gender=" + gender + ", birthDate=" + birthDate + ", role=" + role + ", myOrders="
 				+ myOrders + ", cart=" + cart + ", restaurant=" + restaurant + ", deliveryOrders=" + deliveryOrders
-				+ ", points=" + points + ", customerType=" + customerType + "]";
+				+ ", points=" + points + ", customerType=" + customerType + ", blocked=" + blocked + "]";
 	}
 	
 	
