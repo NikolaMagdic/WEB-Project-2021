@@ -8,15 +8,15 @@
 <script type="text/javascript" src="../js/admin.js"></script>
 </head>
 <body>
-	<div class="meni">
-	  <button id="buttonAddUser" class="meni-button">Dodaj korisnika</button>
-	  <button id="buttonAllUsers" class="meni-button">Korisnici</button>
-	  <button id="buttonAddRestaurant" class="meni-button">Dodaj restoran</button>
+	<div class="menu">
+	  <a id="buttonAddUser" class="menu-button">Dodaj korisnika</a>
+	  <a id="buttonAllUsers" class="menu-button">Korisnici</a>
+	  <a id="buttonAddRestaurant" class="menu-button">Dodaj restoran</a>
 	  <div class="dropdown">
 	  	  <button id="buttonAccount" class="account-button">Nalog</button>
 	  	  <div class="dropdown-content">
-	  	  	  <button id="buttonEditAccount" class="meni-button">Izmeni podatke</button>
-	  	  	  <button id="buttonLogout" class="meni-button">Logout</button>
+	  	  	  <a id="buttonEditAccount" class="menu-button">Izmeni podatke</a>
+	  	  	  <a id="buttonLogout" class="menu-button">Logout</a>
 	  	  </div>	  	  
 	  </div>	  
 	</div>
@@ -46,6 +46,7 @@
 				<td>
 				<label>Muški</label>
 				<input type="radio" name="gender" id="male" checked>
+				<br>
 				<label>Ženski</label>
 				<input type="radio" name="gender" id="female">
 				</td>
@@ -124,6 +125,7 @@
 					<th>Datum rođenja</th>
 					<th id="sortPoints" class="sort-header">Broj bodova  <img id="imageSortPoints" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
 					<th>Tip kupca</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody id="tableUsers"></tbody>

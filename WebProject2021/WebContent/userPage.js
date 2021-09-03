@@ -1,3 +1,12 @@
+function changeView() {
+	$("#divCart").hide();
+	
+	$("#buttonCart").click(function(event){
+		$("#divCart").show();
+		$("#divMyAccount").hide();
+	});
+}
+
 function getLoggedInUser(){
 	    $.get({
 		type: "GET",
@@ -33,6 +42,8 @@ function logout(){
 
 
 $(document).ready(function(){
+	
+	changeView();
 	
 	getLoggedInUser();
 	

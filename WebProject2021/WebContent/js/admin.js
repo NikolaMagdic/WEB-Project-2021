@@ -93,13 +93,72 @@ function addUserInTable(user) {
 			"<td>" + gender + "</td>" +
 			"<td>" + formatDate(user.birthDate) + "</td>" + 
 			"<td>" + ((user.points === null) ? "/" : user.points) + "</td>" +
-			"<td>" + ((user.customerType === null) ? "/" : user.customerType.customerTypeName) + "</td>" +
+			"<td>" + ((user.customerType === null) ? "/" : user.customerType.customerTypeName) + "</td>";
+	if (user.role === "ADMIN") {
+		tr += "<td><td><tr>";
+	} else {
+		if (!user.blocked) {
+			tr += "<td>" +  "<button id=\"" + user.username + "\" name=\"block\">Blokiraj</button>"  + "</td>" +
 			"</tr>";
+		} else {
+			tr += "<td>" +  "<button id=\"" + user.username + "\" name=\"unblock\">Odblokiraj</button>"  + "</td>" +
+			"</tr>";
+		}
+	}
+	
 	table.append(tr);
 
 	if(user.role === "ADMIN") {
 		$("#trUser").css("background-color", "aqua");
 	}
+
+}
+
+//Dodavanje novog menadzera ili dostavljaca
+function addManagerOrDeliverer() {
+	$("#formAddUser").submit(function(event){
+		event.preventDefault();
+		
+		let username = $("#username").val();
+		let password = $("#password").val();
+		let name = $("#name").val();
+		let lastName = $("#lastName").val();
+		let male = $("#male:checked").val();
+		let date = $("#date").val();
+		let role = $("#role option:selected").val();
+		
+		let gender;
+		if(male) {
+			gender = true;
+		} else {
+			gender = false;
+		}
+		
+		let data = {
+			username: username,
+			password: password,
+			firstName: name,
+			lastName: lastName,
+			gender: gender,
+			birthDate: date,
+			role: role
+		}
+		console.log(data);
+		
+		$.post({
+			url: "../rest/user/add",
+			data: JSON.stringify(data),
+			contentType: "application/json",
+			success : function(user){
+				alert("Uspešno dodat " + user.role + " " + user.firstName + " " + user.lastName);
+				location.reload();
+			},
+			error: function(message){
+				
+			}
+		});
+		
+	});
 
 }
 
@@ -375,6 +434,43 @@ function getLoggedUserData() {
 	});
 }
 
+//Blokiranje korisnika
+function blockUser() {
+	// MORA OVAKO JER SE TABELA KREIRA DINAMICKI - korisitimo delegat!!!
+	$(document).on('click', 'button[name="block"]', function(){
+		console.log("USAOOOOOOOOOOO");
+		let username = $(this).attr("id");
+		$.ajax({
+			url: "../rest/user/block/" + username,
+			type: "PUT",
+			success: function(data) {
+				alert("Korisnik uspesno blokiran!");
+				$("button[id='" + username + "']").css("color", "red");
+				location.reload();
+				$("#divAllUsers").show();
+			}
+		});
+	});
+}
+
+function unblockUser() {
+	// MORA OVAKO JER SE TABELA KREIRA DINAMICKI - korisitimo delegat!!!
+	$(document).on('click', 'button[name="unblock"]', function(){
+
+		let username = $(this).attr("id");
+		$.ajax({
+			url: "../rest/user/unblock/" + username,
+			type: "PUT",
+			success: function(data) {
+				alert("Korisnik uspesno odblokiran!");
+				$("button[id='" + username + "']").css("color", "black");
+				location.reload();
+				$("#divAllUsers").show();
+			}
+		});
+	});
+}
+
 // GLOBALNE PROMENLJIVE
 
 // Globalna promenljiva koja nam treba da znamo koji je restoran prethodno dodat
@@ -394,7 +490,10 @@ $(document).ready(function(){
 	getAllUsers();
 	searchUsers();
 	changeView();
+	
+	addManagerOrDeliverer();
 	getAllAvailableManagers();
+	
 	editAccount();
 	sortUsersByUsername();
 	sortUsersByName();
@@ -403,6 +502,9 @@ $(document).ready(function(){
 	filterUsersByRole();
 	filterUsersByType();
 	console.log($("#managerOfRestaurant option:selected").val());
+	
+	blockUser();
+	unblockUser();
 	
 	sortUsernameDesc = true;
 	sortNameDesc = true;
@@ -414,50 +516,7 @@ $(document).ready(function(){
 		$("#divSearchUsers").slideToggle();
 	});
 	
-	// Dodavanje novog menadzera ili dostavljaca
-	$("#formAddUser").submit(function(event){
-		event.preventDefault();
 		
-		let username = $("#username").val();
-		let password = $("#password").val();
-		let name = $("#name").val();
-		let lastName = $("#lastName").val();
-		let male = $("#male:checked").val();
-		let date = $("#date").val();
-		let role = $("#role option:selected").val();
-		
-		let gender;
-		if(male) {
-			gender = true;
-		} else {
-			gender = false;
-		}
-		
-		let data = {
-			username: username,
-			password: password,
-			firstName: name,
-			lastName: lastName,
-			gender: gender,
-			birthDate: date,
-			role: role
-		}
-		console.log(data);
-		
-		$.post({
-			url: "../rest/user/add",
-			data: JSON.stringify(data),
-			contentType: "application/json",
-			success : function(message){
-				alert(message);
-			},
-			error: function(message){
-				
-			}
-		});
-		
-	});
-	
 	// Dodavanje novog restorana
 	$("#formAddRestaurant").submit(function(event){
 		event.preventDefault();

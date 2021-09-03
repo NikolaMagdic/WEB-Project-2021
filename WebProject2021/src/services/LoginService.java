@@ -55,6 +55,8 @@ public class LoginService {
 			return "User with that username does not exist.";
 		} else if(!loggedUser.getPassword().equals(user.getPassword())) {
 			return "Password that you have entered is incorrect.";
+		} else if (loggedUser.isBlocked()){
+			return "Your account has been blocked.";
 		} else {
 			request.getSession().setAttribute("user", loggedUser);
 			return loggedUser.getRole().toString();
@@ -77,6 +79,7 @@ public class LoginService {
 		user.setPoints(0);
 		CustomerType type = new CustomerType(CustomerTypeName.NONE, 0, 0);
 		user.setCustomerType(type); //?????
+		user.setBlocked(false);
 		System.out.println(user);
 		
 		UserDAO userDAO = (UserDAO) context.getAttribute("users");
