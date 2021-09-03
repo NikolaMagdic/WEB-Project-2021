@@ -40,6 +40,16 @@ function logout(){
 	});
 }
 
+// Shopping cart
+function getCart() {
+	$.get({
+		url: "/rest/cart",
+		contentType: "application/json",
+		success: function (cart) {
+			console.log(cart);
+		}
+	});
+}
 
 $(document).ready(function(){
 	
@@ -48,6 +58,8 @@ $(document).ready(function(){
 	getLoggedInUser();
 	
 	logout();
+	
+	viewCart();
 	
 	// Show/hide edit form
 	$("#editMenu").click(function(event){
