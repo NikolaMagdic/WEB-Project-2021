@@ -76,7 +76,7 @@ function addRestaurantInTable(restaurant) {
 			"<td>" + restaurant.city + "</td>" +
 			"<td>" + restaurant.country + "</td>" +
 			"<td>" + restaurant.rating + "</td>" +
-			" <td> <button id='detaljiRestorana" + restaurant.id + "' class='btn-edit'> Details </button></td>" +
+			" <td> <button id='detaljiRestorana" + restaurant.id + "' class='buttonDetails'> Details </button></td>" +
 			"</tr>";
 	table.append(tr);
 
@@ -89,11 +89,11 @@ function getRestaurantById(id){
 	$.ajax({
 		
 		type: "GET",
-		url: './rest/amenity/' + id,
+		url: './rest/article/' + id,
 		contentType: 'application/json',
-		success: function(amenities) {
-	    	for(let amenity of amenities) {
-				dodajSadrzajRestorana(amenity);
+		success: function(articles) {
+	    	for(let article of articles) {
+				dodajSadrzajRestorana(article);
 				}
 		}
 	});	
@@ -117,9 +117,9 @@ function getRestaurantById(id){
 
 }
 
-function dodajSadrzajRestorana(amenity){
+function dodajSadrzajRestorana(article){
 	let c = "<tr align='center'> " +
-	" <td>" + amenity.name + "</td> "
+	" <td>" + article.name + "</td> "
 	$("#tableSadrzaj").append(c);
 }
 
@@ -163,11 +163,13 @@ function search(){
  			contentType: 'application/json',
  			success: function(restaurants) {
  				console.log(restaurants);
+				shownRestaurants = [];
  		    	for(let res of restaurants) {
  					addRestaurantInTable(res);
 	 					$( "#detaljiRestorana" + res.id).click(function() {
 							getRestaurantById(res.id);
 						});
+					shownRestaurants.push(res);
  				}
  			}
  		});
@@ -210,22 +212,14 @@ function sortRestaurantsByStatus() {
  		
  		$("#tableRestaurants tbody").empty();
 		
-		$.ajax({
- 			
- 			type: "GET",
- 			url: './rest/restaurant/all',
- 			contentType: 'application/json',
- 			success: function(restaurants) {
-				for(let res of restaurants) {
-					if(res.open === "Open") {
-	 	 				addRestaurantInTable(res);
-	 	 				$( "#detaljiRestorana" + res.id).click(function() {
-							getRestaurantById(res.id);
-						});
-					}
- 				}
+		for(let res of shownRestaurants) {
+			if(res.open === "Open") {
+	 	 		addRestaurantInTable(res);
+	 	 		$( "#detaljiRestorana" + res.id).click(function() {
+					getRestaurantById(res.id);
+				});
 			}
-		})
+ 		}
 	})
 }
 
@@ -237,51 +231,43 @@ function sortRestaurantsByRating(){
  		event.preventDefault();
  		
  		$("#tableRestaurants tbody").empty();
- 		$.ajax({
- 			
- 			type: "GET",
- 			url: './rest/restaurant/all',
- 			contentType: 'application/json',
- 			success: function(restaurants) {
-				console.log("Usao u sortByRating");
- 				
- 				if(sortRatingDesc) {
- 					for(let i=0; i<shownRestaurants.length; i++){
- 	 					for(let j = i+1; j < shownRestaurants.length; j++){
- 	 	 					if(shownRestaurants[i].rating < shownRestaurants[j].rating){
- 	 	 						temp = shownRestaurants[i];
- 	 	 						shownRestaurants[i] = shownRestaurants[j];
- 	 	 						shownRestaurants[j] = temp;
- 	 	 					}
- 	 					}
- 	 				}
-			
- 					sortRatingDesc = false;
- 					$("#imageSortRating").attr("src", "./images/sort-down.png");
- 				} else {
- 					//shownUsers.reverse();
- 					for(let i=0; i<shownRestaurants.length; i++){
- 	 					for(let j = i+1; j < shownRestaurants.length; j++){
- 	 	 					if(shownRestaurants[i].rating > shownRestaurants[j].rating){
- 	 	 						temp = shownRestaurants[i];
- 	 	 						shownRestaurants[i] = shownRestaurants[j];
- 	 	 						shownRestaurants[j] = temp;
- 	 	 					}
- 	 					}
- 	 				}
- 					sortRatingDesc = true;
- 					$("#imageSortRating").attr("src", "./images/sort-up.png");
- 				}
- 				
- 			    for(let res of shownRestaurants) {
- 	 				addRestaurantInTable(res);
- 	 				$( "#detaljiRestorana" + res.id).click(function() {
-						getRestaurantById(res.id);
-					});
- 				}
 
- 			}
- 		});
+		console.log("Usao u sortByRating");
+ 		
+ 		if(sortRatingDesc) {
+ 			for(let i=0; i<shownRestaurants.length; i++){
+ 	 			for(let j = i+1; j < shownRestaurants.length; j++){
+ 	 	 			if(shownRestaurants[i].rating < shownRestaurants[j].rating){
+ 	 	 				temp = shownRestaurants[i];
+ 	 	 				shownRestaurants[i] = shownRestaurants[j];
+ 	 	 				shownRestaurants[j] = temp;
+ 	 	 			}
+ 	 			}
+ 	 		}
+			
+ 			sortRatingDesc = false;
+ 			$("#imageSortRating").attr("src", "./images/sort-down.png");
+ 		} else {
+ 			//shownUsers.reverse();
+ 			for(let i=0; i<shownRestaurants.length; i++){
+ 	 			for(let j = i+1; j < shownRestaurants.length; j++){
+ 	 	 			if(shownRestaurants[i].rating > shownRestaurants[j].rating){
+ 	 	 				temp = shownRestaurants[i];
+ 	 	 				shownRestaurants[i] = shownRestaurants[j];
+ 	 	 				shownRestaurants[j] = temp;
+ 	 	 			}
+ 	 			}
+ 	 		}
+ 			sortRatingDesc = true;
+ 			$("#imageSortRating").attr("src", "./images/sort-up.png");
+ 		}
+ 		
+ 			for(let res of shownRestaurants) {
+ 	 		addRestaurantInTable(res);
+ 	 		$( "#detaljiRestorana" + res.id).click(function() {
+				getRestaurantById(res.id);
+			});
+ 		}
 	});
 }
 
@@ -297,49 +283,36 @@ function sortRestaurantsByName(){
  		event.preventDefault();
  		
  		$("#tableRestaurants tbody").empty();
- 		$.ajax({
+	
+		console.log("Usao u sortByName");
+			
+			
+		if(sortNameDesc) {
+			shownRestaurants.sort(function(a, b){
+			    if(a.name < b.name) { return -1; }
+			    if(a.name > b.name) { return 1; }
+			    return 0;
+			});
+			sortNameDesc = false;
+			$("#imageSortName").attr("src", "./images/sort-down.png");
+		} else {
+			shownRestaurants.sort(function(a, b){
+			    if(a.name > b.name) { return -1; }
+			    if(a.name < b.name) { return 1; }
+			    return 0;
+			});
+			sortNameDesc = true;
+			$("#imageSortName").attr("src", "./images/sort-up.png");
+		}
  			
- 			type: "GET",
- 			url: './rest/restaurant/all',
- 			contentType: 'application/json',
- 			success: function(restaurants) {
-				console.log("Usao u sortByName");
-				
- 			    /*restaurants.sort(function(a, b){
-				    if(a.name < b.name) { return -1; }
-				    if(a.name > b.name) { return 1; }
-				    return 0;
-				});*/
-				
-				if(sortNameDesc) {
-					restaurants.sort(function(a, b){
-					    if(a.name < b.name) { return -1; }
-					    if(a.name > b.name) { return 1; }
-					    return 0;
-					});
-					sortNameDesc = false;
-					$("#imageSortName").attr("src", "./images/sort-down.png");
-				} else {
-					restaurants.sort(function(a, b){
-					    if(a.name > b.name) { return -1; }
-					    if(a.name < b.name) { return 1; }
-					    return 0;
-					});
-					sortNameDesc = true;
-					$("#imageSortName").attr("src", "./images/sort-up.png");
-				}
+ 			
+ 		for(let res of shownRestaurants) {
+ 			addRestaurantInTable(res);
+ 			$( "#detaljiRestorana" + res.id).click(function() {
+				getRestaurantById(res.id);
+			});
+ 		}
  				
- 				
- 				for(let res of restaurants) {
- 					addRestaurantInTable(res);
- 					$( "#detaljiRestorana" + res.id).click(function() {
-						getRestaurantById(res.id);
-					});
- 				}
- 				
-
- 			}
- 		});
 	});
 }
 
@@ -351,50 +324,35 @@ function sortRestaurantsByCity(){
  		event.preventDefault();
  		
  		$("#tableRestaurants tbody").empty();
- 		$.ajax({
- 			
- 			type: "GET",
- 			url: './rest/restaurant/all',
- 			contentType: 'application/json',
- 			success: function(restaurants) {
-				console.log("Usao u sortByCity");
-				
- 			    /*restaurants.sort(function(a, b){
-				    if(a.city < b.city) { return -1; }
-				    if(a.city > b.city) { return 1; }
-				    return 0;
-				});*/
-				
-				
-				if(sortCityDesc) {
-					restaurants.sort(function(a, b){
-					    if(a.city < b.city) { return -1; }
-					    if(a.city > b.city) { return 1; }
-					    return 0;
-					});
-					sortCityDesc = false;
-					$("#imageSortCity").attr("src", "./images/sort-down.png");
-				} else {
-					restaurants.sort(function(a, b){
-					    if(a.city > b.city) { return -1; }
-					    if(a.city < b.city) { return 1; }
-					    return 0;
-					});
-					sortCityDesc = true;
-					$("#imageSortCity").attr("src", "./images/sort-up.png");
-				}
- 				
- 				
- 				for(let res of restaurants) {
- 					addRestaurantInTable(res);
- 					$( "#detaljiRestorana" + res.id).click(function() {
-						getRestaurantById(res.id);
-					});
- 				}
- 				
 
- 			}
- 		});
+		console.log("Usao u sortByCity");
+
+		if(sortCityDesc) {
+			shownRestaurants.sort(function(a, b){
+			    if(a.city < b.city) { return -1; }
+			    if(a.city > b.city) { return 1; }
+			    return 0;
+			});
+			sortCityDesc = false;
+			$("#imageSortCity").attr("src", "./images/sort-down.png");
+		} else {
+			shownRestaurants.sort(function(a, b){
+			    if(a.city > b.city) { return -1; }
+			    if(a.city < b.city) { return 1; }
+			    return 0;
+			});
+			sortCityDesc = true;
+			$("#imageSortCity").attr("src", "./images/sort-up.png");
+		}
+ 		
+ 		
+ 		for(let res of shownRestaurants) {
+ 			addRestaurantInTable(res);
+ 			$( "#detaljiRestorana" + res.id).click(function() {
+				getRestaurantById(res.id);
+			});
+ 		}
+ 		
 	});
 }
 
@@ -405,50 +363,36 @@ function sortRestaurantsByCountry(){
  		event.preventDefault();
  		
  		$("#tableRestaurants tbody").empty();
- 		$.ajax({
- 			
- 			type: "GET",
- 			url: './rest/restaurant/all',
- 			contentType: 'application/json',
- 			success: function(restaurants) {
-				console.log("Usao u sortByCountry");
-				
- 			    /*restaurants.sort(function(a, b){
-				    if(a.country < b.country) { return -1; }
-				    if(a.country > b.country) { return 1; }
-				    return 0;
-				});*/
-				
-				
-				if(sortCountryDesc) {
-					restaurants.sort(function(a, b){
-					    if(a.country < b.country) { return -1; }
-					    if(a.country > b.country) { return 1; }
-					    return 0;
-					});
-					sortCountryDesc = false;
-					$("#imageSortCountry").attr("src", "./images/sort-down.png");
-				} else {
-					restaurants.sort(function(a, b){
-					    if(a.country > b.country) { return -1; }
-					    if(a.country < b.country) { return 1; }
-					    return 0;
-					});
-					sortCountryDesc = true;
-					$("#imageSortCountry").attr("src", "./images/sort-up.png");
-				}
- 				
- 				
- 				for(let res of restaurants) {
- 					addRestaurantInTable(res);
- 					$( "#detaljiRestorana" + res.id).click(function() {
-						getRestaurantById(res.id);
-					});
- 				}
- 				
 
- 			}
- 		});
+		console.log("Usao u sortByCountry");
+		
+		
+		if(sortCountryDesc) {
+			shownRestaurants.sort(function(a, b){
+			    if(a.country < b.country) { return -1; }
+			    if(a.country > b.country) { return 1; }
+			    return 0;
+			});
+			sortCountryDesc = false;
+			$("#imageSortCountry").attr("src", "./images/sort-down.png");
+		} else {
+			shownRestaurants.sort(function(a, b){
+			    if(a.country > b.country) { return -1; }
+			    if(a.country < b.country) { return 1; }
+			    return 0;
+			});
+			sortCountryDesc = true;
+			$("#imageSortCountry").attr("src", "./images/sort-up.png");
+		}
+ 		
+ 		
+ 		for(let res of shownRestaurants) {
+ 			addRestaurantInTable(res);
+ 			$( "#detaljiRestorana" + res.id).click(function() {
+				getRestaurantById(res.id);
+			});
+ 		}
+ 		
 	});
 }
 

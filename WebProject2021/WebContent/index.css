@@ -113,3 +113,44 @@ table {
   background-color: #32e73c;
   color: white;
 }
+
+#divOpenSearchBox {
+	text-align: center;
+}
+
+#divRestaurantDetails {
+	text-align: center;
+}
+
+.button {
+  background-color: #0298d0; 
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+}
+
+.buttonDetails {
+  background-color: #028dc1;
+  border: none;
+  color: white;
+  padding: 3px 7px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;	
+}
+
+.tr-top {
+  background-color: #02b0f2;
+  font-size: 20px;	
+  text-decoration: none;
+}
+
+.divSearchInfo {
+  text-align: center;
+}
+

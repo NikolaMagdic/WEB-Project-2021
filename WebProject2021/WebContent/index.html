@@ -12,6 +12,7 @@
 	  <button id="loginMenu">Log in</button>
 	  <button id="registerMenu">Register</button>
 	  <button id="restaurantsMenu">Restaurants</button>
+	  <button id="openSearchBox" class="button"><img id="imageSortName" alt="" src="./images/search.png" width="12px" height="12px">Search </button>
 	  
 	</div>
 	<div id="divLogin">
@@ -111,41 +112,46 @@
 			</form>
 	</div>
 	
-	<div id='divSearchInfo' align="left">
+	<div id='divSearchInfo' class="divSearchInfo">
 				<table>
 					<tbody>
 						<tr>
 							<td>Name</td>
-							<td>Type</td>
-							<td>City</td>
-							<td>Rating</td>
+							<td> <input type="text" id='searchName'> </td>
 						</tr>
 						<tr>
-							<td> <input type="text" id='searchName'> </td>
+							<td>Type</td>
 							<td> <input type="text" id='searchType'> </td>
+						</tr>
+						<tr>	
+							<td>City</td>
 							<td> <input type="text" id='searchCity'> </td>
+						</tr>
+						<tr>
+							<td>Rating</td>
 							<td> <input type="number" id='searchRating'> </td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+								<button id='search' class="button">Search</button>
+							</td>
 						</tr>
 					</tbody>
 				</table>
-				<button id='search'>Search</button>
 	</div>
 	
 	<div id="divAllRestaurants">
 		<h1>Pregled restorana</h1>
-		<div>
-			<button id="openSearchBox" ><img id="imageSortName" alt="" src="./images/search.png" width="12px" height="12px">Search </button>
-		</div>
 		<table id="tableRestaurants">
 			<thead>
-				<tr>
+				<tr class="tr-top">
 					<th id='sortRestaurantsByName' class="sort-header">Name <img id="imageSortName" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
-					<th> <input id="typeZaFiltraciju" placeholder="Type"></th>
+					<th> <input id="typeZaFiltraciju" placeholder="Type" ></th>
 					<th id='sortRestaurantsByStatus'>Status</th>
 					<th id='sortRestaurantsByCity' class="sort-header">City<img id="imageSortCity" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
 					<th id='sortRestaurantsByCountry' class="sort-header">Country<img id="imageSortCountry" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
 					<th id='sortRestaurantsByRating' class="sort-header">Rating<img id="imageSortRating" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
-					<th>Detalji</th>
+					<th >Detalji</th>
 				</tr>
 
 			</thead>
