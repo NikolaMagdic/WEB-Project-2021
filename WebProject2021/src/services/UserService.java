@@ -91,6 +91,11 @@ public class UserService {
 		UserDAO userDAO = (UserDAO)ctx.getAttribute("users");
 		User userForUpdate = userDAO.findUser(user.getUsername());
 		
+		System.out.println(user.getUsername());
+		System.out.println(user.getPassword());
+		System.out.println(user.getFirstName());
+		System.out.println(user.getLastName());
+		
 		userForUpdate.setPassword(user.getPassword());
 		userForUpdate.setFirstName(user.getFirstName());
 		userForUpdate.setLastName(user.getLastName());

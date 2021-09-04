@@ -1,0 +1,135 @@
+<head>
+	<meta charset="UTF-8">
+	<title>Manager Page</title>
+	<link rel="stylesheet" href="managerPage.css">
+	<script src="jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="./managerPage.js"></script>
+</head>
+<body>
+	<div class="meni">
+	  <button id="buttonAddArticle" class="meni-button">Dodaj Artikal</button>
+	  <button id="buttonMyRestaurant" class="meni-button">Moj Restoran</button>
+	  <div class="dropdown">
+	  	  <button id="buttonAccount" class="account-button">Nalog</button>
+	  	  <div class="dropdown-content">
+	  	  	  <button id="buttonEditAccount" class="meni-button">Izmeni podatke</button>
+	  	  	  <button id="buttonLogout" class="meni-button">Logout</button>
+	  	  </div>	  	  
+	  </div>	  
+	</div>
+	
+	<div id="divRestaurantDetails">
+
+		<h2 align="center">Details </h2></br>
+
+			<table id="tableDetails" >
+				<tr>
+					<td>Restaurant id:</td>
+					<td><input type="text" disabled id="txtIdRestorana"> </td>
+				</tr>
+				<tr>
+					<td>Name:</td>
+					<td><input type="text" disabled id="txtNameRestorana"> </td>
+				</tr>
+				<tr>
+					<td>City:</td>
+					<td><input type="text" disabled id="txtCityRestorana"> </td>
+				</tr>				
+				<tr>
+					<td>Street:</td>
+					<td><input type="text" disabled id="txtAddressRestorana"> </td>
+				</tr>
+				<tr>
+					<td>Country:</td>
+					<td><input type="text" disabled id="txtCountryRestorana"> </td>
+				</tr>
+				<tr>
+					<td>Type:</td>
+					<td><input type="text" disabled id="txtTypeRestorana"> </td>
+				</tr>
+				<tr>
+					<td>Status:</td>
+					<td><input type="text" disabled id="txtStatusRestorana"> </td>
+				</tr>
+				<tr>
+					<td>Rating:</td>
+					<td><input type="text" disabled id="txtRatingRestorana"> </td>
+				</tr>		
+				<tr>
+					<td></td>
+					<td>
+						<table id="tableSadrzaj">
+							<tbody>
+							</tbody>
+						</table>							
+					</td>
+				</tr>
+			</table>
+	</div>
+	
+	<div id="divEditAccount">
+		<form id="formEdit">
+		<h1>Izmeni svoje podatke</h1>
+			<table>
+				<tr>
+					<td>
+						Username: 
+					</td>
+					<td>			
+						<input type="text" id="usernameEdit" disabled>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Password: 
+					</td>
+					<td>			
+						<input type="password" id="passwordEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Confirm Password: 
+					</td>
+					<td>			
+						<input type="password" id="confirmPasswordEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Ime: 
+					</td>
+					<td>			
+						<input type="text" id="nameEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Prezime: 
+					</td>
+					<td>			
+						<input type="text" id="lastNameEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>Pol:</td>
+					<td>
+					<label>Muški</label>
+					<input type="radio" name="genderEdit" id="maleEdit" checked>
+					<label>Ženski</label>
+					<input type="radio" name="genderEdit" id="femaleEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>Datum rođenja:</td>
+					<td><input type="date" id="dateEdit"></td>
+				</tr>
+				<tr>
+					<td></td>						
+					<td><input type="submit" value="Izmeni" class="submit"></td>
+				</tr>
+			</table>				
+		</form>
+	</div>
+	
+</body>

@@ -15,5 +15,22 @@
 		"points": 0,
 		"customerType": null
 		
+	},
+	
+	"manager": {
+		"username": "manager",
+		"password": "123",
+		"firstName": "Rade",
+		"lastName": "Kornjaca",
+		"gender": true,
+		"birthDate": 1209762343511,
+		"role": "MENADZER",
+		"myOrders": [],
+		"cart": {},
+		"restaurant": 1,
+		"deliveryOrders": [],
+		"points": 0,
+		"customerType": null
+		
 	}
 }

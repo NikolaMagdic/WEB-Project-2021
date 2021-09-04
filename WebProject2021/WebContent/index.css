@@ -168,3 +168,8 @@ table {
   padding: 14px 16px; 
   font-size: 17px;
 }
+
+#openSearchBox:hover {
+  background-color: #00c8f2;
+  color: white;
+}
