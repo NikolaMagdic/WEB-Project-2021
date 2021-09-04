@@ -18,7 +18,7 @@ h1 {
 }
 
 form {
-	text-align: center;
+	text-align: left;
 }
 
 input, select {
@@ -44,6 +44,7 @@ table {
   border: 1px solid #ddd;
   border-color: #003d66;
   padding: 8px;
+  text-align: left;
 }
 
 .table-data th {

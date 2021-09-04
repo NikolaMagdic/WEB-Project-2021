@@ -95,7 +95,7 @@ function addUserInTable(user) {
 			"<td>" + ((user.points === null) ? "/" : user.points) + "</td>" +
 			"<td>" + ((user.customerType === null) ? "/" : user.customerType.customerTypeName) + "</td>";
 	if (user.role === "ADMIN") {
-		tr += "<td><td><tr>";
+		tr += "<td></td><tr>";
 	} else {
 		if (!user.blocked) {
 			tr += "<td>" +  "<button id=\"" + user.username + "\" name=\"block\">Blokiraj</button>"  + "</td>" +
@@ -446,8 +446,6 @@ function blockUser() {
 			success: function(data) {
 				alert("Korisnik uspesno blokiran!");
 				$("button[id='" + username + "']").css("color", "red");
-				location.reload();
-				$("#divAllUsers").show();
 			}
 		});
 	});
@@ -464,8 +462,6 @@ function unblockUser() {
 			success: function(data) {
 				alert("Korisnik uspesno odblokiran!");
 				$("button[id='" + username + "']").css("color", "black");
-				location.reload();
-				$("#divAllUsers").show();
 			}
 		});
 	});

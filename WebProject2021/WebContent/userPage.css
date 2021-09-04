@@ -91,3 +91,38 @@ table {
 
 
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+.table-data {
+	border-collapse: collapse;
+}
+
+.table-data td, .table-data th {
+  border: 1px solid #ddd;
+  border-color: #003d66;
+  padding: 8px;
+}
+
+.table-data th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #cc0000;
+  color: white;
+}
+
+.divButtonCreateOrder {
+	text-align: center;
+}
+
+.submit {
+	cursor: pointer;
+	background-color: #cc0000;
+  	border: none;
+  	color: white;
+  	padding: 8px 18px;
+  	text-align: center;
+  	text-decoration: none;
+  	display: inline-block;
+  	font-size: 12px;
+  	border-radius: 30px;
+}

@@ -65,7 +65,7 @@ public class ArticleService {
 	
 	}
 	
-	
+	// Vraca sve artikle koji pripadaju nekom restoranu {id restorana}
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -83,5 +83,17 @@ public class ArticleService {
 		}
 		
 		return articles;
+	}
+	
+	// Vraca artikal po njegovom id-ju
+	@GET
+	@Path("/one/{articleId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Article getArticle(@PathParam("articleId") Integer id) {
+		
+		ArticleDAO articleDAO = (ArticleDAO) ctx.getAttribute("articles");
+		Article article = articleDAO.findArticle(id);
+		
+		return article;
 	}
 }

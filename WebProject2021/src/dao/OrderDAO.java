@@ -88,6 +88,10 @@ public class OrderDAO {
 		this.ordersMap.put(order.getOrderId(), order);
 	}
 	
+	public Order getOrder(String orderId) {
+		return  this.ordersMap.get(orderId) == null ? null : this.ordersMap.get(orderId);
+	} 
+	
 	public Order updateOrder(Order order) {
 		return ordersMap.put(order.getOrderId(), order);
 	}

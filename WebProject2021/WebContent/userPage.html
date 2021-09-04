@@ -97,7 +97,7 @@
 				</form>
 		</div>
 	<div id="divCart">
-		<table>
+		<table class="table-data">
 			<thead>
 				<tr>
 					<th>Naziv</th>
@@ -107,6 +107,26 @@
 				</tr>
 			</thead>
 			<tbody id="tableCart"></tbody>
+			<tfoot id="totalSum"></tfoot>
+		</table>
+		<div class="divButtonCreateOrder">
+			<button id="buttonCreateOrder" class="submit">Poruči</button>
+		</div>
+	</div>
+	<div id="divOrders">
+		<table class="table-data">
+			<thead>
+				<tr>
+					<th>Restoran</th>
+					<th>Tip restorana</th>
+					<th>Cena</th>
+					<th>Datum</th>
+					<th>Customer</th>
+					<th>Status</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody id="tableOrders"></tbody>
 		</table>
 	</div>
 </body>
