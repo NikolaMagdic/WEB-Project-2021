@@ -136,6 +136,15 @@ function editAccount() {
 	let male = $("#maleEdit:checked").val();
 	let date = $("#dateEdit").val();
 	
+	console.log("EditAccount:");
+	console.log(username);
+	console.log(password);
+	console.log(confirmPassword);
+	console.log(firstName);
+	console.log(lastName);
+	console.log(male);
+	console.log(date);
+	
 	if(password != confirmPassword){
 		alert("Passwords do not match");
 		return;

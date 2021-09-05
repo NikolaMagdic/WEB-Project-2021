@@ -17,7 +17,7 @@ function initShowButtons(){
 }
 
 function logout(){
- 	$( "#logoutMenu").click(function() {
+ 	$( "#buttonLogout").click(function() {
  		$.ajax({
  			type: "GET",
  			url: './rest/logout',
@@ -123,52 +123,40 @@ function getLoggedUserData() {
 }
 
 function editAccount() {
-	
-	let username = $("#usernameEdit").val();
-	let password = $("#passwordEdit").val();
-	let confirmPassword = $("#confirmPasswordEdit").val();
-	let firstName = $("#nameEdit").val();
-	let lastName = $("#lastNameEdit").val();
-	let male = $("#maleEdit:checked").val();
-	let date = $("#dateEdit").val();
-	
-	console.log("EditAccount:");
-	console.log(username);
-	console.log(password);
-	console.log(confirmPassword);
-	console.log(firstName);
-	console.log(lastName);
-	console.log(male);
-	console.log(date);
-	
-	
-	
-	if(password != confirmPassword){
-		alert("Passwords do not match");
-		return;
-	}
-	
-	let gender;
-	if(male){
-		gender = "True";
-	}else {
-		gender = "False";
-	}
-	
-	let user = {
-		username: username,
-		password: password,
-		firstName: firstName,
-		lastName: lastName,
-		gender: gender,
-		birthDate: date,
-		
-	}
-	
 	$("#formEdit").submit(function (event){
+		let username = $("#usernameEdit").val();
+		let password = $("#passwordEdit").val();
+		let confirmPassword = $("#confirmPasswordEdit").val();
+		let firstName = $("#nameEdit").val();
+		let lastName = $("#lastNameEdit").val();
+		let male = $("#maleEdit:checked").val();
+		let date = $("#dateEdit").val();
+		
+		if(password != confirmPassword){
+			alert("Passwords do not match");
+			return;
+		}
+		
+		let gender;
+		if(male){
+			gender = "True";
+		}else {
+			gender = "False";
+		}
+		
+		let user = {
+			username: username,
+			password: password,
+			firstName: firstName,
+			lastName: lastName,
+			gender: gender,
+			birthDate: date,
+			
+		}
+		
 		$.ajax({
 			type: "PUT",
-			url: "./rest/user",
+			url: "rest/user",
 			data: JSON.stringify(user),
 			contentType: "application/json",
 			success: function(){
@@ -177,6 +165,7 @@ function editAccount() {
 			error: function() {}
 		});
 	});
+	
 }
 
 
@@ -187,7 +176,8 @@ $(document).ready(function(){
 	initHide();	
 	initShowButtons();
 	
-	getLoggedUserData();
+	//getLoggedUserData();
 	editAccount();
 	logout();
+	
 })

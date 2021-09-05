@@ -46,6 +46,8 @@ public class User {
 		super();
 	}
 
+	
+
 
 	public User(String username, String password, String firstName, String lastName, boolean gender, Date birthDate,
 			UserRole role, List<Integer> myOrders, Cart cart, Integer restaurant, List<Integer> deliveryOrders,
@@ -65,6 +67,8 @@ public class User {
 		this.points = points;
 		this.customerType = customerType;
 	}
+
+
 
 
 	public String getUsername() {
