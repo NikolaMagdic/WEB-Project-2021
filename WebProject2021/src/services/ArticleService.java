@@ -17,6 +17,8 @@ import beans.Article;
 import beans.Restaurant;
 import dao.ArticleDAO;
 import dao.RestaurantDAO;
+import dto.ArticleDTO;
+import dto.RestaurantDTO;
 
 @Path("article")
 public class ArticleService {
@@ -65,7 +67,7 @@ public class ArticleService {
 	
 	}
 	
-	
+	//metoda koja po ID restorana dobavlja sve njegove artikle
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -80,8 +82,41 @@ public class ArticleService {
 		
 		for (Integer articleId : articlesId) {
 			articles.add(articleDAO.findArticle(articleId));
+			System.out.println("Id artikla u restoranu je: " + articleId);
 		}
 		
 		return articles;
+	}
+	
+	//metoda koja trazi artikal preko njegovog ID
+	@GET
+	@Path("/Id/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArticleDTO getOneArticle(@PathParam("id") Integer id){
+		
+		ArticleDAO articleDAO = (ArticleDAO) ctx.getAttribute("articles");
+		System.out.println("Id artikla " + id);
+		ArticleDTO dto = null;
+		
+		if(id != 0) {
+			dto = convertToDTO(articleDAO.findArticle(id));
+		}
+		
+		return dto;
+		
+	}
+	
+	
+	public ArticleDTO convertToDTO(Article art) {
+		ArticleDTO dto = new ArticleDTO();
+		dto.setId(art.getId());
+		dto.setName(art.getName());
+		dto.setPrice(art.getPrice());
+		dto.setType(art.getArticleType().toString());
+		dto.setAmount(art.getAmount());
+		dto.setDescription(art.getDescription());
+		dto.setImage("IMAGE");
+		
+		return dto;
 	}
 }

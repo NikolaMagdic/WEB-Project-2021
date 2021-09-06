@@ -12,14 +12,18 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import beans.Restaurant;
 import beans.User;
+import dao.RestaurantDAO;
 import dao.UserDAO;
+import dto.RestaurantDTO;
 import enumerations.UserRole;
 
 @Path("user")
@@ -41,6 +45,12 @@ public class UserService {
 		if(ctx.getAttribute("users") == null) {
 			ctx.setAttribute("users", userDAO);
 		}	
+		
+		RestaurantDAO restaurantDAO = new RestaurantDAO(contextPath);
+		if (ctx.getAttribute("restaurants") == null) {
+			ctx.setAttribute("restaurants", restaurantDAO);
+		}
+
 		
 	}
 	
@@ -180,5 +190,79 @@ public class UserService {
 		}
 		
 		return loggedUser;
+	}
+	
+	
+	//metoda koja nalazi restoran na osnovu njegovog menadzera
+	@GET
+	@Path("/manager/{managerUsername}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRestaurantByManager(@PathParam("managerUsername") String managerUsername) {
+		
+		UserDAO userDAO = (UserDAO) ctx.getAttribute("users");
+		Collection<User> allUsers = userDAO.findAllUsers();
+		
+		Integer restaurantId = 0;
+		
+		System.out.println("USAO U getRestaurantByManager");
+		System.out.println("Username: " + managerUsername);
+		
+		for (User user : allUsers) {
+				if(user.getUsername().toLowerCase().equals(managerUsername.toLowerCase())) {
+					restaurantId = user.getRestaurant();
+					System.out.println("Nasao restoran sa id: " + user.getRestaurant());
+				}
+		}
+		
+		
+		RestaurantDAO restaurantDAO = (RestaurantDAO) ctx.getAttribute("restaurants");
+		Restaurant restaurant = null; 
+		if(restaurantId != 0) {
+			restaurant = restaurantDAO.findRestaurant(restaurantId);
+		}
+		
+		System.out.println("ID restorana je: " + restaurantId);
+		
+		if (restaurant == null) {
+			return Response.status(400).build();
+		}
+		
+		for(Integer articleId : restaurant.getArticles()) {
+			System.out.println("Id artikla u restoranu je: " + articleId);
+		}
+		
+		return Response.status(200).entity(convertToDTO(restaurant)).build();
+		
+	}
+	
+	
+	public RestaurantDTO convertToDTO(Restaurant res) {
+		RestaurantDTO dto = new RestaurantDTO();
+		dto.setId(res.getId());
+		dto.setName(res.getName());
+		dto.setType(res.getRestaurantType().toString());
+		dto.setCity(res.getLocation().getAddress().getCity());
+		dto.setCountry(res.getLocation().getAddress().getCountry());
+		dto.setRating(res.getRating());
+		dto.setAddress(res.getLocation().getAddress().getStreetAndNumber());
+		//dto.setArticles(res.getArticles());
+		
+		List<Integer> articlesId = new ArrayList<Integer>();
+		for(Integer articleId : res.getArticles()) {
+			if(articleId != 0) {
+				System.out.println("Id artikla koji dodajemo u dto artikala: " + articleId);
+				articlesId.add(articleId);
+			}
+		}
+		
+		dto.setArticles(articlesId);
+		
+		if(res.isOpen()) {
+			dto.setOpen("Open");
+		} else {
+			dto.setOpen("Closed");
+		}
+		
+		return dto;
 	}
 }

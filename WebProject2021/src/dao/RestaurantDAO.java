@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -96,5 +97,13 @@ public class RestaurantDAO {
 	public Restaurant removeRestaurant(Restaurant restaurant) {
 		return restaurantsMap.remove(restaurant.getId());
 	}
+	
+//	public Restaurant findRestaurantByManager(String managerUsername) {
+//		for (Map.Entry<Integer, Restaurant> entry : restaurantsMap.entrySet()) {
+//		    Integer key = entry.getKey();
+//		    Restaurant value = entry.getValue();
+//		    if(value.get)
+//		}
+//	}
 	
 }

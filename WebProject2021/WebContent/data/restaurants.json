@@ -3,7 +3,7 @@
 		"id": 1,
 		"name": "KFC",
 		"restaurantType": "ITALIAN",
-		"articles": [1],
+		"articles": [1, 6],
 		"open": true,
 		"location" : {
       		"latitude" : 45.014,

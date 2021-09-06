@@ -134,3 +134,33 @@ table {
   background-color: #ff1a1a;
   color: white;
 } 
+
+
+#divRestaurantArticles{
+	display: none;
+	align-items: center;
+}
+
+.tr-top {
+  background-color: #02b0f2;
+  font-size: 20px;	
+  text-decoration: none;
+}
+
+.buttonDetails {
+  background-color: #028dc1;
+  border: none;
+  color: white;
+  padding: 3px 7px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;	
+}
+
+.tdTable {
+  padding: 2px 5px;
+  text-align: center;
+  text-decoration: none;
+
+}

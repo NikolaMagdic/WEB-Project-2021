@@ -1,5 +1,8 @@
 package dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RestaurantDTO {
 	
 	private Integer id;
@@ -17,6 +20,8 @@ public class RestaurantDTO {
 	private String address;
 	
 	private Double rating;
+	
+	private List<Integer> articles = new ArrayList<Integer>();
 
 	
 	
@@ -27,7 +32,7 @@ public class RestaurantDTO {
 
 
 	public RestaurantDTO(Integer id, String name, String type, String open, String city, String country, String address,
-			Double rating) {
+			Double rating, List<Integer> articles) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -37,9 +42,8 @@ public class RestaurantDTO {
 		this.country = country;
 		this.address = address;
 		this.rating = rating;
+		this.articles = articles;
 	}
-
-
 
 
 
@@ -126,6 +130,20 @@ public class RestaurantDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
+
+
+	public List<Integer> getArticles() {
+		return articles;
+	}
+
+
+
+	public void setArticles(List<Integer> articles) {
+		this.articles = articles;
+	}
+	
+	
 	
 	
 	

@@ -1,6 +1,8 @@
 function initHide(){
 	$("#divRestaurantDetails").hide();
 	$("#divEditAccount").hide();
+	$("#divRestaurantArticles").hide();
+	
 }
 
 
@@ -9,10 +11,14 @@ function initShowButtons(){
 		getLoggedUserData();
 		$("#divEditAccount").show();
 		$("#divRestaurantDetails").hide();
+		$("#divRestaurantArticles").hide();
 	});
 	$("#buttonMyRestaurant").click( function(){
+		getManagerUsername();
+		getRestaurantByManager();
 		$("#divEditAccount").hide();
 		$("#divRestaurantDetails").show();
+		$("#divRestaurantArticles").show();
 	});
 }
 
@@ -31,6 +37,71 @@ function logout(){
 	});
 }
 
+function getManagerUsername(){
+	$.get({
+		type: "GET",
+		url: "./rest/loggedIn",
+		dataType: "json",
+		success: function(user) {
+			managerUsername = user.username;
+		}
+	})
+}
+
+function getRestaurantByManager(){
+	$.ajax({
+		
+		type: "GET",
+		url: './rest/user/manager/' + managerUsername,
+		contentType: 'application/json',
+		success: function(res) {
+			$('#txtIdRestorana').val(res.id);
+			$('#txtNameRestorana').val(res.name);
+			$('#txtCityRestorana').val(res.city);
+			$('#txtAddressRestorana').val(res.address);
+			$('#txtCountryRestorana').val(res.country);
+			$('#txtTypeRestorana').val(res.type);
+			$('#txtStatusRestorana').val(res.open);
+			$('#txtRatingRestorana').val(res.rating);
+			
+			//mora ici OF umesto IN da bi zapravo uzeo vrednost u listi
+			for(let articleId of res.articles) {
+				console.log("ArticleId na koji dobijemo na frontu: " + articleId);
+				addArticleInTable(articleId);
+			}
+			
+			shownArticles = res.articles;
+		}
+	});	
+}
+
+function addArticleInTable(articleId) {
+	let table = $("#tableArticles");
+	
+	$.get({
+		type: "GET",
+		url: "./rest/article/Id/" + articleId,
+		dataType: "json",
+		success: function(article) {
+
+			let tr = "<tr id=\"trArticle\">" +
+					"<td ' class='tdTable'>" + article.name + "</td>" +
+					"<td ' class='tdTable'>" + article.price + "</td>" +
+					"<td ' class='tdTable'>" + article.type + "</td>" +
+					"<td ' class='tdTable'>" + article.amount + "</td>" +
+					"<td ' class='tdTable'>" + article.description + "</td>" +
+					"<td ' class='tdTable'>" + article.image + "</td>" +
+					" <td> <button id='detaljiArticla" + article.id + "' class='buttonDetails' name='detaljiArticla'> Details </button></td>" +
+					"</tr>";
+			table.append(tr);
+		}
+	})
+
+	$("#tableArticles").css("background-color", "aqua");
+
+}
+
+
 function getRestaurantById(id){
 	$('#tableSadrzaj tbody').empty();
 	$.ajax({
@@ -41,7 +112,7 @@ function getRestaurantById(id){
 		success: function(articles) {
 	    	for(let article of articles) {
 				dodajSadrzajRestorana(article);
-				}
+			}
 		}
 	});	
 	$.ajax({
@@ -64,11 +135,6 @@ function getRestaurantById(id){
 
 }
 
-function dodajSadrzajRestorana(article){
-	let c = 
-	" <td>" + article.name + ", </td> "; 
-	$("#tableSadrzaj").append(c);
-}
 
 // Formatiranje datuma
 function formatDate(newDate) {
@@ -169,13 +235,21 @@ function editAccount() {
 }
 
 
+
+
+
+//globalna promenljiva koja nam cuva username ulogovanog menadzera
 var managerUsername; 
+
+//Svi trenutno prikazani artikli 
+var shownArticles;
 
 
 $(document).ready(function(){
 	initHide();	
 	initShowButtons();
 	
+	getManagerUsername();
 	//getLoggedUserData();
 	editAccount();
 	logout();

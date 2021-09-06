@@ -57,5 +57,17 @@
 		"description" : "Margarita sa papricicama",
 		"image": "",
 		"deleted" : false
+	},
+	
+	"6": {
+		"id": 6,
+		"name": "Punjeni batak",
+		"price": 250.0,
+		"articleType": "FOOD",
+		"restaurant": 1,
+		"amount" : 200.0,
+		"description" : "Pileci batak punjen sa vojvodjanskim sirom",
+		"image": "",
+		"deleted" : false
 	}
 }

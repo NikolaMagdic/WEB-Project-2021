@@ -222,5 +222,21 @@ public class RestaurantService {
 		
 		return Response.status(200).entity(dtoRestaurants).build();
 	}
+	
+//	//metoda koja trazi restoran po njegovom menadzeru
+//	@GET
+//	@Path("/{managerUsername}")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response getRestaurant(@PathParam("managerUsername") String managerUsername) {
+//
+//		RestaurantDAO restaurantDAO = (RestaurantDAO) ctx.getAttribute("restaurants");
+//		Restaurant restaurant = restaurantDAO.findRestaurantByManager(managerUsername);
+//
+//		if (restaurant == null) {
+//			return Response.status(400).build();
+//		}
+//
+//		return Response.status(200).entity(convertToDTO(restaurant)).build();
+//	}
 
 }

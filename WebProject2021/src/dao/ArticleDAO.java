@@ -19,7 +19,7 @@ import beans.Article;
 
 public class ArticleDAO {
 
-	private Map<Long, Article> articles = new HashMap<>();
+	private Map<Integer, Article> articles = new HashMap<>();
 	
 	public ArticleDAO() {
 		
@@ -75,7 +75,7 @@ public class ArticleDAO {
 	}
 	
 	public Article findArticle(Integer id) {
-		return this.articles.get(id);
+		return this.articles.get(Integer.parseInt(id.toString()));
 	}
 	
 	public Collection<Article> findAllArticles() {
@@ -83,15 +83,15 @@ public class ArticleDAO {
 	}
 	
 	public Article addArticle(Article article) {
-		return this.articles.put(article.getId(), article);
+		return this.articles.put(Integer.parseInt(article.getId().toString()), article);
 	}
 	
 	public Article updateArticle(Article article) {
-		return this.articles.replace(article.getId(), article);
+		return this.articles.replace(Integer.parseInt(article.getId().toString()), article);
 	}
 	
 	// ne koristimo; za fizicko brisanje
 	public Article removeArticle(Integer id) {
-		return this.articles.remove(id);
+		return this.articles.remove(Integer.parseInt(id.toString()));
 	}
 }
