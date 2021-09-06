@@ -170,6 +170,7 @@ table {
   padding: 14px 16px; 
   font-size: 17px;
 }
+
 footer {
   color: white;	
   background-color: #003d66;
@@ -180,4 +181,9 @@ footer {
   bottom: 0;
   position: absolute;
   height: 20px;  
+}
+
+#openSearchBox:hover {
+  background-color: #00c8f2;
+  color: white;
 }

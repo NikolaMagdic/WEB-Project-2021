@@ -1,0 +1,297 @@
+<head>
+	<meta charset="UTF-8">
+	<title>Manager Page</title>
+	<link rel="stylesheet" href="managerPage.css">
+	<script src="jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="./managerPage.js"></script>
+</head>
+<body>
+	<div class="meni">
+	  <button id="buttonAddArticle" class="meni-button">Dodaj Artikal</button>
+	  <button id="buttonMyRestaurant" class="meni-button">Moj Restoran</button>
+	  <div class="dropdown">
+	  	  <button id="buttonAccount" class="account-button">Nalog</button>
+	  	  <div class="dropdown-content">
+	  	  	  <button id="buttonEditAccount" class="meni-button">Izmeni podatke</button>
+	  	  	  <button id="buttonLogout" class="meni-button">Logout</button>
+	  	  </div>	  	  
+	  </div>	  
+	</div>
+	
+	<div id="divRestaurantDetails">
+
+		<h1 align="center">Details </h1></br>
+
+		<table id="tableDetails" >
+			<tr hidden=true>
+				<td>Restaurant id:</td>
+				<td><input type="text" disabled id="txtIdRestorana"> </td>
+			</tr>
+			<tr>
+				<td>Name:</td>
+				<td><input type="text" disabled id="txtNameRestorana"> </td>
+			</tr>
+			<tr>
+				<td>City:</td>
+				<td><input type="text" disabled id="txtCityRestorana"> </td>
+			</tr>				
+			<tr>
+				<td>Street:</td>
+				<td><input type="text" disabled id="txtAddressRestorana"> </td>
+			</tr>
+			<tr>
+				<td>Country:</td>
+				<td><input type="text" disabled id="txtCountryRestorana"> </td>
+			</tr>
+			<tr>
+				<td>Type:</td>
+				<td><input type="text" disabled id="txtTypeRestorana"> </td>
+			</tr>
+			<tr>
+				<td>Status:</td>
+				<td><input type="text" disabled id="txtStatusRestorana"> </td>
+			</tr>
+			<tr>
+				<td>Rating:</td>
+				<td><input type="text" disabled id="txtRatingRestorana"> </td>
+			</tr>		
+			<tr>
+				<td></td>
+				<td>
+					<table id="tableSadrzaj">
+						<tbody>
+						</tbody>
+					</table>							
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div id="divRestaurantArticles">
+		<h1 align="center">Pregled Artikala</h1>
+		<table id="tableArticles">
+			<thead>
+				<tr class="tr-top">
+					<th id='sortArticlesByName' class="sort-header">Name <img id="imageSortName" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id='sortArticlesByPrice' class="sort-header">Price <img id="imageSortPrice" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id='sortArticlesByType'>Type</th>
+					<th id='sortArticlesByAmount' class="sort-header">Amount (g)<img id="imageSortAmount" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id='sortArticlesByDescription' class="sort-header">Description<img id="imageSortDescription" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
+					<th>Image</th>
+					<th>Detalji</th>
+				</tr>
+
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	
+	<div id="divArticleDetails">
+
+		<h1 align="center">Article Details </h1></br>
+
+		<table id="tableArticleDetails" >
+			<tr hidden=true>
+				<td>Article id:</td>
+				<td><input type="text" disabled id="txtIdArticla"> </td>
+			</tr>
+			<tr>
+				<td>Name:</td>
+				<td><input type="text" disabled id="txtNameArticla"> </td>
+			</tr>
+			<tr>
+				<td>Price:</td>
+				<td><input type="text" disabled id="txtPriceArticla"> </td>
+			</tr>				
+			<tr>
+				<td>Type:</td>
+				<td><input type="text" disabled id="txtTypeArticla"> </td>
+			</tr>
+			<tr>
+				<td>Amount:</td>
+				<td><input type="text" disabled id="txtAmountArticla"> </td>
+			</tr>
+			<tr>
+				<td>Desription:</td>
+				<td><input type="text" disabled id="txtDescriptionArticla"> </td>
+			</tr>
+			<tr>
+				<td>Image:</td>
+				<td><input type="text" disabled id="txtImageArticla"> </td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<button id="buttonEditArticle" class="buttonEdit">Izmeni podatke</button>
+				</td>
+			</tr>		
+		</table>
+	</div>
+	
+	<div id='divEditArticle' align='center'>
+		<div>
+			<h1 id="h1Edit">Edit Article</h1>
+		</div>
+		<br>
+	<form id="formEditArticle">
+			<table>
+				<tr hidden=true>
+					<td>Article id:</td>
+					<td>
+						<input type="text" required id="txtIdArticlaEdit" disabled>
+					</td>
+				</tr>
+				<tr>
+					<td>Name:</td>
+					<td><input type="text" required id="txtNameArticlaEdit"></td>
+				</tr>
+					<td>Price:</td>
+					<td><input type="text" required id="txtPriceArticlaEdit"> </td>
+				</tr>
+				<tr>
+					<td>Type:</td>
+					<td><input type="text" disabled id="txtTypeArticlaEdit"> </td>
+				</tr>
+				<tr>
+					<td>Amount:</td>
+					<td><input type="text" required id="txtAmountArticlaEdit"> </td>
+				</tr>
+				<tr>
+					<td>Desription:</td>
+					<td><input type="text" required id="txtDescriptionArticlaEdit"> </td>
+				</tr>
+				<tr>
+					<td>Image:</td>
+					<td><input type="text" disabled id="txtImageArticlaEdit"> </td>
+				</tr>
+				
+				<tr>
+					<td colspan="2">
+						<input type="submit"
+							id="submitEditArticle" value="Edit" class="buttonEdit">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	<div id='divAddArticle' align='center'>
+		<div>
+			<h1 id="h1Add">Add Article</h1>
+		</div>
+		<br>
+	<form id="formAddArticle">
+			<table>
+				<tr hidden=true>
+					<td>Article id:</td>
+					<td>
+						<input type="text" required id="txtIdArticlaAdd" disabled>
+					</td>
+				</tr>
+				<tr>
+					<td>Name:</td>
+					<td><input type="text" required id="txtNameArticlaAdd"></td>
+				</tr>
+				<tr>
+					<td>Price:</td>
+					<td>
+						<input type="text" required id="txtPriceArticlaAdd">
+					</td>
+				</tr>
+				<tr>
+					<td>Type:</td>
+					<td>
+						<select id="typeArticlaAdd">
+		        			<option value="FOOD">FOOD</option>
+		        			<option value="DRINK">DRINK</option>
+		      			</select> 
+	      			</td>
+				</tr>
+				<tr>
+					<td>Amount:</td>
+					<td><input type="text" required id="txtAmountArticlaAdd"> </td>
+				</tr>
+				<tr>
+					<td>Desription:</td>
+					<td><input type="text" required id="txtDescriptionArticlaAdd"> </td>
+				</tr>
+				<tr>
+					<td>Image:</td>
+					<td><input type="text" disabled id="txtImageArticlaAdd" value="Dodati sliku"></td>
+				</tr>
+				
+				<tr>
+					<td colspan="2">
+						<input type="submit"
+							id="submitAddArticle" value="Add" class="buttonEdit">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	<div id="divEditAccount">
+		<form id="formEdit">
+		<h1>Izmeni svoje podatke</h1>
+			<table>
+				<tr>
+					<td>
+						Username: 
+					</td>
+					<td>			
+						<input type="text" id="usernameEdit" disabled>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Password: 
+					</td>
+					<td>			
+						<input type="password" id="passwordEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Confirm Password: 
+					</td>
+					<td>			
+						<input type="password" id="confirmPasswordEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Ime: 
+					</td>
+					<td>			
+						<input type="text" id="nameEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Prezime: 
+					</td>
+					<td>			
+						<input type="text" id="lastNameEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>Pol:</td>
+					<td>
+					<label>Muški</label>
+					<input type="radio" name="genderEdit" id="maleEdit" checked>
+					<label>Ženski</label>
+					<input type="radio" name="genderEdit" id="femaleEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>Datum rođenja:</td>
+					<td><input type="date" id="dateEdit"></td>
+				</tr>
+				<tr>
+					<td></td>						
+					<td><input type="submit" value="Izmeni" class="submit"></td>
+				</tr>
+			</table>				
+		</form>
+	</div>
+	
+</body>

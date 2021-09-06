@@ -53,9 +53,6 @@ function initShowButtons(){
 			getAllRestaurants();
 		});
 		
-		
-		
-		
 	}
 }
 
@@ -135,8 +132,8 @@ function getRestaurantById(id){
 }
 
 function dodajSadrzajRestorana(article){
-	let c = "<tr align='center'> " +
-	" <td>" + article.name + "</td> "
+	let c = 
+	" <td>" + article.name + ", </td> "; 
 	$("#tableSadrzaj").append(c);
 }
 
@@ -469,7 +466,7 @@ $(document).ready(function(){
 					window.location = "./html/admin.html";
 					alert("Welcome!");
 				} else if(message === "MENADZER"){
-					
+					window.location = "./managerPage.html";
 				} else if(message === "DOSTAVLJAC") {
 					
 				} else if(message === "KUPAC"){

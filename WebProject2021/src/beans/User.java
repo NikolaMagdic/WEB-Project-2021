@@ -48,6 +48,8 @@ public class User {
 		super();
 	}
 
+	
+
 
 	public User(String username, String password, String firstName, String lastName, boolean gender, Date birthDate,
 			UserRole role, List<Integer> myOrders, Cart cart, Integer restaurant, List<Integer> deliveryOrders,
@@ -68,6 +70,8 @@ public class User {
 		this.customerType = customerType;
 		this.blocked = blocked;
 	}
+
+
 
 
 	public String getUsername() {

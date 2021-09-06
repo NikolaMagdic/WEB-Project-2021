@@ -162,11 +162,11 @@ public class RestaurantService {
 		List<RestaurantDTO> filteredRestaurants = new ArrayList<>();
 		
 		for (Restaurant r : restaurants) {
-			if (filter.getCity() != null && r.getLocation().getAddress().getCity().toLowerCase().contains(filter.getCity().toLowerCase())) {
-				if (filter.getName() != null && r.getName().toLowerCase().contains(filter.getName().toLowerCase())) {
-					if (filter.getRating() != null && (r.getRating() > filter.getRating())) {
-						if (filter.getType() != null && r.getRestaurantType().toString().toLowerCase().contains(filter.getType().toLowerCase())) {
-							System.out.println(r.getRestaurantType().toString());
+			if ((filter.getCity() != null && r.getLocation().getAddress().getCity().toLowerCase().contains(filter.getCity().toLowerCase())) || filter.getCity() == null) {
+				if ((filter.getName() != null && r.getName().toLowerCase().contains(filter.getName().toLowerCase())) || filter.getName() == null) {
+					if ((filter.getRating() != null && (r.getRating() > filter.getRating())) || filter.getRating() == null) {
+						if ((filter.getType() != null && r.getRestaurantType().toString().toLowerCase().contains(filter.getType().toLowerCase())) || filter.getType() == null) {
+							//System.out.println(r.getRestaurantType().toString());
 							filteredRestaurants.add(convertToDTO(r));
 						}
 					}
@@ -222,5 +222,21 @@ public class RestaurantService {
 		
 		return Response.status(200).entity(dtoRestaurants).build();
 	}
+	
+//	//metoda koja trazi restoran po njegovom menadzeru
+//	@GET
+//	@Path("/{managerUsername}")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response getRestaurant(@PathParam("managerUsername") String managerUsername) {
+//
+//		RestaurantDAO restaurantDAO = (RestaurantDAO) ctx.getAttribute("restaurants");
+//		Restaurant restaurant = restaurantDAO.findRestaurantByManager(managerUsername);
+//
+//		if (restaurant == null) {
+//			return Response.status(400).build();
+//		}
+//
+//		return Response.status(200).entity(convertToDTO(restaurant)).build();
+//	}
 
 }
