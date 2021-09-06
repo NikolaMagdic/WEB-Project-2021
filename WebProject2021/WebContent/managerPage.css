@@ -167,3 +167,14 @@ table {
 #tableArticles {
 	background-color: #29c5f8;
 }
+
+.buttonEdit {
+  background-color: #05a018;
+  border: none;
+  color: white;
+  padding: 3px 7px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  width: 100%;	
+}

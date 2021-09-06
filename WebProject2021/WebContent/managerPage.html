@@ -20,55 +20,55 @@
 	
 	<div id="divRestaurantDetails">
 
-		<h2 align="center">Details </h2></br>
+		<h1 align="center">Details </h1></br>
 
-			<table id="tableDetails" >
-				<tr hidden=true>
-					<td>Restaurant id:</td>
-					<td><input type="text" disabled id="txtIdRestorana"> </td>
-				</tr>
-				<tr>
-					<td>Name:</td>
-					<td><input type="text" disabled id="txtNameRestorana"> </td>
-				</tr>
-				<tr>
-					<td>City:</td>
-					<td><input type="text" disabled id="txtCityRestorana"> </td>
-				</tr>				
-				<tr>
-					<td>Street:</td>
-					<td><input type="text" disabled id="txtAddressRestorana"> </td>
-				</tr>
-				<tr>
-					<td>Country:</td>
-					<td><input type="text" disabled id="txtCountryRestorana"> </td>
-				</tr>
-				<tr>
-					<td>Type:</td>
-					<td><input type="text" disabled id="txtTypeRestorana"> </td>
-				</tr>
-				<tr>
-					<td>Status:</td>
-					<td><input type="text" disabled id="txtStatusRestorana"> </td>
-				</tr>
-				<tr>
-					<td>Rating:</td>
-					<td><input type="text" disabled id="txtRatingRestorana"> </td>
-				</tr>		
-				<tr>
-					<td></td>
-					<td>
-						<table id="tableSadrzaj">
-							<tbody>
-							</tbody>
-						</table>							
-					</td>
-				</tr>
-			</table>
+		<table id="tableDetails" >
+			<tr hidden=true>
+				<td>Restaurant id:</td>
+				<td><input type="text" disabled id="txtIdRestorana"> </td>
+			</tr>
+			<tr>
+				<td>Name:</td>
+				<td><input type="text" disabled id="txtNameRestorana"> </td>
+			</tr>
+			<tr>
+				<td>City:</td>
+				<td><input type="text" disabled id="txtCityRestorana"> </td>
+			</tr>				
+			<tr>
+				<td>Street:</td>
+				<td><input type="text" disabled id="txtAddressRestorana"> </td>
+			</tr>
+			<tr>
+				<td>Country:</td>
+				<td><input type="text" disabled id="txtCountryRestorana"> </td>
+			</tr>
+			<tr>
+				<td>Type:</td>
+				<td><input type="text" disabled id="txtTypeRestorana"> </td>
+			</tr>
+			<tr>
+				<td>Status:</td>
+				<td><input type="text" disabled id="txtStatusRestorana"> </td>
+			</tr>
+			<tr>
+				<td>Rating:</td>
+				<td><input type="text" disabled id="txtRatingRestorana"> </td>
+			</tr>		
+			<tr>
+				<td></td>
+				<td>
+					<table id="tableSadrzaj">
+						<tbody>
+						</tbody>
+					</table>							
+				</td>
+			</tr>
+		</table>
 	</div>
 	
 	<div id="divRestaurantArticles">
-		<h2 align="center">Pregled Artikala</h2>
+		<h1 align="center">Pregled Artikala</h1>
 		<table id="tableArticles">
 			<thead>
 				<tr class="tr-top">
@@ -88,38 +88,145 @@
 	
 	<div id="divArticleDetails">
 
-		<h2 align="center">Article Details </h2></br>
+		<h1 align="center">Article Details </h1></br>
 
-			<table id="tableArticleDetails" >
+		<table id="tableArticleDetails" >
+			<tr hidden=true>
+				<td>Article id:</td>
+				<td><input type="text" disabled id="txtIdArticla"> </td>
+			</tr>
+			<tr>
+				<td>Name:</td>
+				<td><input type="text" disabled id="txtNameArticla"> </td>
+			</tr>
+			<tr>
+				<td>Price:</td>
+				<td><input type="text" disabled id="txtPriceArticla"> </td>
+			</tr>				
+			<tr>
+				<td>Type:</td>
+				<td><input type="text" disabled id="txtTypeArticla"> </td>
+			</tr>
+			<tr>
+				<td>Amount:</td>
+				<td><input type="text" disabled id="txtAmountArticla"> </td>
+			</tr>
+			<tr>
+				<td>Desription:</td>
+				<td><input type="text" disabled id="txtDescriptionArticla"> </td>
+			</tr>
+			<tr>
+				<td>Image:</td>
+				<td><input type="text" disabled id="txtImageArticla"> </td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<button id="buttonEditArticle" class="buttonEdit">Izmeni podatke</button>
+				</td>
+			</tr>		
+		</table>
+	</div>
+	
+	<div id='divEditArticle' align='center'>
+		<div>
+			<h1 id="h1Edit">Edit Article</h1>
+		</div>
+		<br>
+	<form id="formEditArticle">
+			<table>
 				<tr hidden=true>
 					<td>Article id:</td>
-					<td><input type="text" disabled id="txtIdArticla"> </td>
+					<td>
+						<input type="text" required id="txtIdArticlaEdit" disabled>
+					</td>
 				</tr>
 				<tr>
 					<td>Name:</td>
-					<td><input type="text" disabled id="txtNameArticla"> </td>
+					<td><input type="text" required id="txtNameArticlaEdit"></td>
+				</tr>
+					<td>Price:</td>
+					<td><input type="text" required id="txtPriceArticlaEdit"> </td>
 				</tr>
 				<tr>
-					<td>Price:</td>
-					<td><input type="text" disabled id="txtPriceArticla"> </td>
-				</tr>				
-				<tr>
 					<td>Type:</td>
-					<td><input type="text" disabled id="txtTypeArticla"> </td>
+					<td><input type="text" disabled id="txtTypeArticlaEdit"> </td>
 				</tr>
 				<tr>
 					<td>Amount:</td>
-					<td><input type="text" disabled id="txtAmountArticla"> </td>
+					<td><input type="text" required id="txtAmountArticlaEdit"> </td>
 				</tr>
 				<tr>
 					<td>Desription:</td>
-					<td><input type="text" disabled id="txtDescriptionArticla"> </td>
+					<td><input type="text" required id="txtDescriptionArticlaEdit"> </td>
 				</tr>
 				<tr>
 					<td>Image:</td>
-					<td><input type="text" disabled id="txtImageArticla"> </td>
-				</tr>		
+					<td><input type="text" disabled id="txtImageArticlaEdit"> </td>
+				</tr>
+				
+				<tr>
+					<td colspan="2">
+						<input type="submit"
+							id="submitEditArticle" value="Edit" class="buttonEdit">
+					</td>
+				</tr>
 			</table>
+		</form>
+	</div>
+	
+	<div id='divAddArticle' align='center'>
+		<div>
+			<h1 id="h1Add">Add Article</h1>
+		</div>
+		<br>
+	<form id="formAddArticle">
+			<table>
+				<tr hidden=true>
+					<td>Article id:</td>
+					<td>
+						<input type="text" required id="txtIdArticlaAdd" disabled>
+					</td>
+				</tr>
+				<tr>
+					<td>Name:</td>
+					<td><input type="text" required id="txtNameArticlaAdd"></td>
+				</tr>
+				<tr>
+					<td>Price:</td>
+					<td>
+						<input type="text" required id="txtPriceArticlaAdd">
+					</td>
+				</tr>
+				<tr>
+					<td>Type:</td>
+					<td>
+						<select id="typeArticlaAdd">
+		        			<option value="FOOD">FOOD</option>
+		        			<option value="DRINK">DRINK</option>
+		      			</select> 
+	      			</td>
+				</tr>
+				<tr>
+					<td>Amount:</td>
+					<td><input type="text" required id="txtAmountArticlaAdd"> </td>
+				</tr>
+				<tr>
+					<td>Desription:</td>
+					<td><input type="text" required id="txtDescriptionArticlaAdd"> </td>
+				</tr>
+				<tr>
+					<td>Image:</td>
+					<td><input type="text" disabled id="txtImageArticlaAdd" value="Dodati sliku"></td>
+				</tr>
+				
+				<tr>
+					<td colspan="2">
+						<input type="submit"
+							id="submitAddArticle" value="Add" class="buttonEdit">
+					</td>
+				</tr>
+			</table>
+		</form>
 	</div>
 	
 	<div id="divEditAccount">

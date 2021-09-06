@@ -87,11 +87,23 @@ public class ArticleDAO {
 	}
 	
 	public Article updateArticle(Article article) {
+		System.out.println("UpdateArticle metoda, article id: " + Integer.parseInt(article.getId().toString()) );
 		return this.articles.replace(Integer.parseInt(article.getId().toString()), article);
 	}
 	
 	// ne koristimo; za fizicko brisanje
 	public Article removeArticle(Integer id) {
 		return this.articles.remove(Integer.parseInt(id.toString()));
+	}
+	
+	//provera da li vec postoji artikal sa istiom imenom
+	public boolean checkArticle(String articleName) {
+		boolean flag = false;
+		for(Article art : this.articles.values()) {
+			if(art.getName().toLowerCase().equals(articleName.toLowerCase())) {
+				flag = true;
+			}
+		}
+		return flag;	
 	}
 }

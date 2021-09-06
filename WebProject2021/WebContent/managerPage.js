@@ -3,7 +3,8 @@ function initHide(){
 	$("#divEditAccount").hide();
 	$("#divRestaurantArticles").hide();
 	$("#divArticleDetails").hide();
-
+	$("#divEditArticle").hide();
+	$("#divAddArticle").hide();
 }
 
 
@@ -14,6 +15,8 @@ function initShowButtons(){
 		$("#divRestaurantDetails").hide();
 		$("#divRestaurantArticles").hide();
 		$("#divArticleDetails").hide();
+		$("#divEditArticle").hide();
+		$("#divAddArticle").hide();
 	});
 	$("#buttonMyRestaurant").click( function(){
 		getManagerUsername();
@@ -22,6 +25,8 @@ function initShowButtons(){
 		$("#divRestaurantDetails").show();
 		$("#divRestaurantArticles").show();
 		$("#divArticleDetails").hide();
+		$("#divEditArticle").hide();
+		$("#divAddArticle").hide();
 	});
 	
 	$(document).on("click", "button[name = 'detaljiArticla']", function(){
@@ -30,6 +35,27 @@ function initShowButtons(){
 		$("#divRestaurantDetails").hide();
 		$("#divRestaurantArticles").hide();
 		$("#divArticleDetails").show();
+		$("#divEditArticle").hide();
+		$("#divAddArticle").hide();
+	});
+	
+	$("#buttonEditArticle").click( function(){
+		$("#divEditAccount").hide();
+		$("#divRestaurantDetails").hide();
+		$("#divRestaurantArticles").hide();
+		$("#divArticleDetails").hide();
+		$("#divEditArticle").show();
+		$("#divAddArticle").hide();
+	}); 
+	$("#buttonAddArticle").click( function(){
+		getManagerUsername();
+		getRestaurantByManager();
+		$("#divEditAccount").hide();
+		$("#divRestaurantDetails").hide();
+		$("#divRestaurantArticles").hide();
+		$("#divArticleDetails").hide();
+		$("#divEditArticle").hide();
+		$("#divAddArticle").show();
 	});
 }
 
@@ -79,14 +105,13 @@ function getRestaurantByManager(){
 			
 			//mora ici OF umesto IN da bi zapravo uzeo vrednost u listi
 			for(let articleId of res.articles) {
-				//console.log("ArticleId na koji dobijemo na frontu: " + articleId);
 				addArticleInTable(articleId);
-					console.log("ArticleId pre nego sto mu se dodeli vrednost za details: " + articleId);
 					$(document).on("click", "#detaljiArticla" + articleId, function() {
-						console.log("Kliknuo details articla");
 						getArticleById(articleId);
 					});
 			}
+			
+			restaurantId = res.id;
 			
 			shownArticles = res.articles;
 		}
@@ -124,19 +149,13 @@ function getArticleById(articleId){
 	event.preventDefault();
 	console.log("ID artikla za koji nam trebaju detalji: " + articleId);
 	
+	
 	$.get({
 		type: "GET",
 		url: "./rest/article/Id/" + articleId,
 		dataType: "json",
 		success: function(article) {
 			
-			console.log(article.id);
-			console.log(article.name);
-			console.log(article.price);
-			console.log(article.type);
-			console.log(article.amount);
-			console.log(article.description);
-			console.log(article.image);
 
 			$('#txtIdArticla').val(article.id);
 			$('#txtNameArticla').val(article.name);
@@ -145,6 +164,8 @@ function getArticleById(articleId){
 			$('#txtAmountArticla').val(article.amount);
 			$('#txtDescriptionArticla').val(article.description);
 			$('#txtImageArticla').val(article.image);
+			
+			setSelectedArticleData(article);
 		}
 	})
 }
@@ -180,13 +201,6 @@ function getLoggedUserData() {
 		success: function(user) {
 			managerUsername = user.username;
 			
-			console.log("LoggedInData:");
-			console.log(user.username);
-			console.log(user.password);
-			console.log(user.firstName);
-			console.log(user.lastName);
-			console.log(user.gender);
-			console.log(user.birthDate);
 			
 			$("#usernameEdit").val(user.username);
 			$("#passwordEdit").val(user.password);
@@ -243,7 +257,98 @@ function editAccount() {
 			success: function(){
 				alert("Uspesno izmenjeni podaci");
 			},
-			error: function() {}
+			error: function(message) {
+				alert(message);
+			}
+		});
+	});
+	
+}
+
+function setSelectedArticleData(article) {
+	$('#txtIdArticlaEdit').val(article.id);
+	$('#txtNameArticlaEdit').val(article.name);
+	$('#txtPriceArticlaEdit').val(article.price);
+	$('#txtTypeArticlaEdit').val(article.type);
+	$('#txtAmountArticlaEdit').val(article.amount);
+	$('#txtDescriptionArticlaEdit').val(article.description);
+	$('#txtImageArticlaEdit').val(article.image);
+}
+
+
+function editArticle() {
+	$("#formEditArticle").submit(function (event){
+		event.preventDefault();
+		let id = $("#txtIdArticlaEdit").val();
+		let name = $("#txtNameArticlaEdit").val();
+		let price = $("#txtPriceArticlaEdit").val();
+		let type = $("#txtTypeArticlaEdit").val();
+		let amount = $("#txtAmountArticlaEdit").val();
+		let description = $("#txtDescriptionArticlaEdit").val();
+		let image = $("#txtImageArticlaEdit").val();
+		
+		
+		
+		let newArticle = {
+			id: id,
+			name: name,
+			price: price,
+			type: type,
+			amount: amount,
+			description: description,
+			image: image
+		}
+		
+		$.ajax({
+			type: "PUT",
+			url: "rest/article/edit",
+			data: JSON.stringify(newArticle),
+			contentType: "application/json",
+			success: function(){
+				alert("Uspesno izmenjeni podaci artikla");
+			},
+			error: function(message) {
+				alert(message);
+			}
+		});
+	});
+	
+}
+
+function addArticle() {
+	$("#formAddArticle").submit(function (event){
+		event.preventDefault();
+		let id = 0;
+		let name = $("#txtNameArticlaAdd").val();
+		let price = $("#txtPriceArticlaAdd").val();
+		let type = $("#typeArticlaAdd option:selected").val();
+		let amount = $("#txtAmountArticlaAdd").val();
+		let description = $("#txtDescriptionArticlaAdd").val();
+		let image = $("#txtImageArticlaAdd").val();
+		
+		
+		
+		let newArticle = {
+			id: id,
+			name: name,
+			price: price,
+			type: type,
+			amount: amount,
+			description: description,
+			image: image
+		}
+		
+		$.ajax({
+			type: "POST",
+			url: "rest/article/add/" + restaurantId,
+			data: JSON.stringify(newArticle),
+			contentType: "application/json",
+			success: function(){
+				alert("Uspesno dodat artikal");
+			},
+			error: function(message) {
+				alert(message);
+			}
 		});
 	});
 	
@@ -254,7 +359,8 @@ function editAccount() {
 
 
 //globalna promenljiva koja nam cuva username ulogovanog menadzera
-var managerUsername; 
+var managerUsername;
+var restaurantId; 
 
 //Svi trenutno prikazani artikli 
 var shownArticles;
@@ -267,6 +373,8 @@ $(document).ready(function(){
 	getManagerUsername();
 	//getLoggedUserData();
 	editAccount();
+	editArticle();
+	addArticle();
 	logout();
 	
 })

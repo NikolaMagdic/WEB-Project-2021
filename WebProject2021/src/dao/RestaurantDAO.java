@@ -90,7 +90,7 @@ public class RestaurantDAO {
 		return restaurantsMap.containsKey(id) ? restaurantsMap.get(id) : null;
 	}
 	
-	public Restaurant updateApartment(Restaurant restaurant) {
+	public Restaurant updateRestaurant(Restaurant restaurant) {
 		return restaurantsMap.put(restaurant.getId(), restaurant);
 	}
 	
