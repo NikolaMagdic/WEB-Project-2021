@@ -65,6 +65,10 @@ public class CartService {
 	public Response getMyCart(@Context HttpServletRequest request) {
 		Cart cart = getCart(request);
 
+		User loggedUser = (User) getLoggedInUser(request);
+		if (loggedUser == null)
+			return Response.status(400).build();
+		
 		return Response.status(200).entity(cart).build();
 	}
 	

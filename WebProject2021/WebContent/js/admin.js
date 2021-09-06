@@ -187,37 +187,37 @@ function addManagerInDropDown(manager) {
 
 function editAccount() {
 	
-	let username = $("#usernameEdit").val();
-	let password = $("#passwordEdit").val();
-	let confirmPassword = $("#confirmPasswordEdit").val();
-	let firstName = $("#nameEdit").val();
-	let lastName = $("#lastNameEdit").val();
-	let male = $("#maleEdit:checked").val();
-	let date = $("#dateEdit").val();
-	
-	if(password != confirmPassword){
-		alert("Passwords do not match");
-		return;
-	}
-	
-	let gender;
-	if(male){
-		gender = "True";
-	}else {
-		gender = "False";
-	}
-	
-	let user = {
-		username: username,
-		password: password,
-		firstName: firstName,
-		lastName: lastName,
-		gender: gender,
-		birthDate: date,
-		
-	}
-	
 	$("#formEdit").submit(function (event){
+		let username = $("#usernameEdit").val();
+		let password = $("#passwordEdit").val();
+		let confirmPassword = $("#confirmPasswordEdit").val();
+		let firstName = $("#nameEdit").val();
+		let lastName = $("#lastNameEdit").val();
+		let male = $("#maleEdit:checked").val();
+		let date = $("#dateEdit").val();
+		
+		if(password != confirmPassword){
+			alert("Passwords do not match");
+			return;
+		}
+		
+		let gender;
+		if(male){
+			gender = "True";
+		}else {
+			gender = "False";
+		}
+		
+		let user = {
+			username: username,
+			password: password,
+			firstName: firstName,
+			lastName: lastName,
+			gender: gender,
+			birthDate: date,
+			
+		}
+		
 		$.ajax({
 			type: "PUT",
 			url: "../rest/user",

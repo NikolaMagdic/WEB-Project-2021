@@ -86,6 +86,11 @@ table {
   cursor: pointer;
 }
 
+.menu-button:hover {
+  background-color: #ff1a1a;
+  color: white;
+}
+
 .dropdown {
   float: right;
   overflow: hidden;
@@ -107,11 +112,6 @@ table {
   display: block;
 }
 
-.menu-button:hover {
-  background-color: #ff1a1a;
-  color: white;
-}
-
 
 .dropdown-content {	
   right: 0;
@@ -120,6 +120,15 @@ table {
   background-color: #f1f1f1;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+}
+
+.dropdown:hover .account-button {
+    background-color: #32e73c;
+    color: white;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
 }
 
 .dropdown-content a {
@@ -134,14 +143,6 @@ table {
   width: 100%;
 }
 
-.dropdown:hover .account-button {
-    background-color: #32e73c;
-    color: white;
-}
-
-.dropdown:hover .dropdown-content {
-	display: block;
-}
 
 .dropdown-menu a:hover {
   background-color: #ff1a1a;

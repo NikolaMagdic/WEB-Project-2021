@@ -1,6 +1,7 @@
 package services;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -21,8 +23,10 @@ import javax.ws.rs.core.Response;
 import beans.Cart;
 import beans.CartItem;
 import beans.Order;
+import beans.Restaurant;
 import beans.User;
 import dao.OrderDAO;
+import dao.RestaurantDAO;
 import dao.UserDAO;
 import enumerations.OrderStatus;
 
@@ -45,6 +49,11 @@ public class OrderService {
 		if (context.getAttribute("orders") == null) {
 			context.setAttribute("orders", orderDAO);
 		}
+		
+		RestaurantDAO restaurantDAO = new RestaurantDAO(contextPath);
+		if (context.getAttribute("restaurants") == null) {
+			context.setAttribute("restaurants", restaurantDAO);
+		}
 	}
 	
 	
@@ -55,6 +64,8 @@ public class OrderService {
 		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
 		
 		User loggedInUser = (User) request.getSession().getAttribute("user");
+		if (loggedInUser == null)
+			return Response.status(400).build();
 		List<Order> myOrders = new ArrayList<Order>();
 		
 		for (String orderId : loggedInUser.getMyOrders()) {
@@ -162,6 +173,77 @@ public class OrderService {
 		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
 		orderDAO.updateOrder(order);
 		orderDAO.saveOrders(contextPath);
+	}
+
+	// Pretraga porudzbina za kupca (samo njegove porudzbine)
+	@GET
+	@Path("/search")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response searchOrders (@QueryParam("restaurant") String restaurant,
+			@QueryParam("minPrice") String minPrice, @QueryParam("maxPrice") String maxPrice,
+			@QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate,
+			@Context HttpServletRequest request) {
+		
+		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
+		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getAttribute("restaurants");
+		
+		User loggedInUser = (User) request.getSession().getAttribute("user");
+		List<Order> myOrders = new ArrayList<Order>();
+		
+		for (String orderId : loggedInUser.getMyOrders()) {
+			Order order = orderDAO.getOrder(orderId);
+			myOrders.add(order);
+		}
+		
+		List<Order> filteredOrders = new ArrayList<Order>();
+		List<Restaurant> filteredRestaurants = new ArrayList<Restaurant>();
+		
+		Collection<Restaurant> restaurants = restaurantDAO.findAllRestaurants();
+		if(!restaurant.trim().isEmpty()) {
+			for (Restaurant res : restaurants) {
+				if(res.getName().toLowerCase().contains(restaurant.toLowerCase())) {
+					filteredRestaurants.add(res);
+				}
+			}
+		} else {
+			List<Restaurant> list = new ArrayList<Restaurant>(restaurants);
+			filteredRestaurants = list;
+		}
+		
+		Double minimumPrice = 0.0;
+		Double maximumPrice = 0.0;
+		if(!minPrice.trim().isEmpty())
+			 minimumPrice = Double.parseDouble(minPrice);
+		if(!maxPrice.trim().isEmpty())
+			 maximumPrice = Double.parseDouble(maxPrice);
+		Long millisStart = 0L;
+		Long millisEnd = 0L;
+		if(!startDate.trim().isEmpty()) {
+			millisStart = Long.parseLong(startDate);
+		}
+		if(!endDate.trim().isEmpty()) {	
+			millisEnd = Long.parseLong(endDate);
+		}
+		Date startingDate = new Date(millisStart);
+		Date endingDate = new Date(millisEnd);
+		
+		for (Order o : myOrders) {
+			boolean flag = false;
+			for (Restaurant r : filteredRestaurants) {
+				if (o.getRestaurant() == r.getId()) {
+					flag = true;
+				}
+			}
+			if((((o.getPrice() <= maximumPrice) && (o.getPrice() >= minimumPrice)) || ((minPrice.trim().isEmpty()) && (o.getPrice() <= maximumPrice)) || ((maxPrice.trim().isEmpty()) && (o.getPrice() >= minimumPrice)) || ((minPrice.trim().isEmpty()) && (maxPrice.trim().isEmpty())))
+					&& ((o.getDate().after(startingDate) && o.getDate().before(endingDate)) || ((startDate.trim().isEmpty()) && o.getDate().before(endingDate)) || ((endDate.trim().isEmpty()) && o.getDate().after(startingDate)) || ((startDate.trim().isEmpty()) && (endDate.trim().isEmpty())))) {
+					if(flag == true) {	
+						filteredOrders.add(o);
+					}
+			}
+		}
+		
+		
+		return Response.status(200).entity(filteredOrders).build();
 	}
 	
 }
