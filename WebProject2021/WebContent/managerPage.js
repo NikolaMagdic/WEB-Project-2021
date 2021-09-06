@@ -327,6 +327,21 @@ function addArticle() {
 		let image = $("#txtImageArticlaAdd").val();
 		
 		
+		if(name == ""){
+			alert("Name field is empty!");
+			return;
+		}
+		
+		if(price == ""){
+			alert("Price field is empty!");
+			return;
+		}
+		
+		if(image == ""){
+			alert("Image field is empty!");
+			return;
+		}
+		
 		
 		let newArticle = {
 			id: id,
