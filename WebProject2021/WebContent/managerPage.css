@@ -162,5 +162,8 @@ table {
   padding: 2px 5px;
   text-align: center;
   text-decoration: none;
+}
 
+#tableArticles {
+	background-color: #29c5f8;
 }

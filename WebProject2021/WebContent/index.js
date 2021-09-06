@@ -53,9 +53,6 @@ function initShowButtons(){
 			getAllRestaurants();
 		});
 		
-		
-		
-		
 	}
 }
 

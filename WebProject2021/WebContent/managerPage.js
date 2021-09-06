@@ -2,7 +2,8 @@ function initHide(){
 	$("#divRestaurantDetails").hide();
 	$("#divEditAccount").hide();
 	$("#divRestaurantArticles").hide();
-	
+	$("#divArticleDetails").hide();
+
 }
 
 
@@ -12,6 +13,7 @@ function initShowButtons(){
 		$("#divEditAccount").show();
 		$("#divRestaurantDetails").hide();
 		$("#divRestaurantArticles").hide();
+		$("#divArticleDetails").hide();
 	});
 	$("#buttonMyRestaurant").click( function(){
 		getManagerUsername();
@@ -19,6 +21,15 @@ function initShowButtons(){
 		$("#divEditAccount").hide();
 		$("#divRestaurantDetails").show();
 		$("#divRestaurantArticles").show();
+		$("#divArticleDetails").hide();
+	});
+	
+	$(document).on("click", "button[name = 'detaljiArticla']", function(){
+		//getRestaurantByManager();
+		$("#divEditAccount").hide();
+		$("#divRestaurantDetails").hide();
+		$("#divRestaurantArticles").hide();
+		$("#divArticleDetails").show();
 	});
 }
 
@@ -64,10 +75,17 @@ function getRestaurantByManager(){
 			$('#txtStatusRestorana').val(res.open);
 			$('#txtRatingRestorana').val(res.rating);
 			
+			$('#tableArticles tbody').empty();
+			
 			//mora ici OF umesto IN da bi zapravo uzeo vrednost u listi
 			for(let articleId of res.articles) {
-				console.log("ArticleId na koji dobijemo na frontu: " + articleId);
+				//console.log("ArticleId na koji dobijemo na frontu: " + articleId);
 				addArticleInTable(articleId);
+					console.log("ArticleId pre nego sto mu se dodeli vrednost za details: " + articleId);
+					$(document).on("click", "#detaljiArticla" + articleId, function() {
+						console.log("Kliknuo details articla");
+						getArticleById(articleId);
+					});
 			}
 			
 			shownArticles = res.articles;
@@ -76,7 +94,9 @@ function getRestaurantByManager(){
 }
 
 function addArticleInTable(articleId) {
+	event.preventDefault();
 	let table = $("#tableArticles");
+	
 	
 	$.get({
 		type: "GET",
@@ -85,55 +105,50 @@ function addArticleInTable(articleId) {
 		success: function(article) {
 
 			let tr = "<tr id=\"trArticle\">" +
-					"<td ' class='tdTable'>" + article.name + "</td>" +
-					"<td ' class='tdTable'>" + article.price + "</td>" +
-					"<td ' class='tdTable'>" + article.type + "</td>" +
-					"<td ' class='tdTable'>" + article.amount + "</td>" +
-					"<td ' class='tdTable'>" + article.description + "</td>" +
-					"<td ' class='tdTable'>" + article.image + "</td>" +
+					"<td class=\"tdTable\">" + article.name + "</td>" +
+					"<td class=\"tdTable\">" + article.price + "</td>" +
+					"<td class=\"tdTable\">" + article.type + "</td>" +
+					"<td class=\"tdTable\">" + article.amount + "</td>" +
+					"<td class=\"tdTable\">" + article.description + "</td>" +
+					"<td class=\"tdTable\"'>" + article.image + "</td>" +
 					" <td> <button id='detaljiArticla" + article.id + "' class='buttonDetails' name='detaljiArticla'> Details </button></td>" +
 					"</tr>";
 			table.append(tr);
 		}
 	})
 
-	$("#tableArticles").css("background-color", "aqua");
 
 }
 
-
-function getRestaurantById(id){
-	$('#tableSadrzaj tbody').empty();
-	$.ajax({
-		
-		type: "GET",
-		url: './rest/article/' + id,
-		contentType: 'application/json',
-		success: function(articles) {
-	    	for(let article of articles) {
-				dodajSadrzajRestorana(article);
-			}
-		}
-	});	
-	$.ajax({
-		
-		type: "GET",
-		url: './rest/restaurant/' + id,
-		contentType: 'application/json',
-		success: function(res) {
-			$('#txtIdRestorana').val(res.id);
-			$('#txtNameRestorana').val(res.name);
-			$('#txtCityRestorana').val(res.city);
-			$('#txtAddressRestorana').val(res.address);
-			$('#txtCountryRestorana').val(res.country);
-			$('#txtTypeRestorana').val(res.type);
-			$('#txtStatusRestorana').val(res.open);
-			$('#txtRatingRestorana').val(res.rating);
+function getArticleById(articleId){
+	event.preventDefault();
+	console.log("ID artikla za koji nam trebaju detalji: " + articleId);
 	
-		}
-	});	
+	$.get({
+		type: "GET",
+		url: "./rest/article/Id/" + articleId,
+		dataType: "json",
+		success: function(article) {
+			
+			console.log(article.id);
+			console.log(article.name);
+			console.log(article.price);
+			console.log(article.type);
+			console.log(article.amount);
+			console.log(article.description);
+			console.log(article.image);
 
+			$('#txtIdArticla').val(article.id);
+			$('#txtNameArticla').val(article.name);
+			$('#txtPriceArticla').val(article.price);
+			$('#txtTypeArticla').val(article.type);
+			$('#txtAmountArticla').val(article.amount);
+			$('#txtDescriptionArticla').val(article.description);
+			$('#txtImageArticla').val(article.image);
+		}
+	})
 }
+
 
 
 // Formatiranje datuma
