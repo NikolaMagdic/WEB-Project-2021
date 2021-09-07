@@ -224,7 +224,6 @@ function cancelOrder() {
 }
 
 // Za popunjavanje podataka o restoranu u tabeli sa poruzbinama
-
 function getRestaurants() {
 	$.get({
 		url: "rest/restaurant/all",
@@ -236,7 +235,6 @@ function getRestaurants() {
 }
 
 // PRETRAGA - SEARCH
-
 function searchOrders() {
 	
 	$("#formSearchOrders").submit(function (event){

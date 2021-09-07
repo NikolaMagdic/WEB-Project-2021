@@ -26,6 +26,9 @@ public class Restaurant {
 
 	private boolean deleted;
 	
+	//mi dodali, ne pise u specifikaciji ali treba da znamo koje ordere ima restoran
+	private List<String> restaurantOrders = new ArrayList<String>();
+	
 	
 	//KONSTRUKTORI
 	public Restaurant() {
@@ -34,7 +37,7 @@ public class Restaurant {
 
 
 	public Restaurant(Integer id, String name, RestaurantType restaurantType, List<Integer> articles, boolean open,
-			Location location, String image) {
+			Location location, String image, List<String> restaurantOrders) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -43,12 +46,13 @@ public class Restaurant {
 		this.open = open;
 		this.location = location;
 		this.image = image;
+		this.restaurantOrders = restaurantOrders;
 	}
 	
 
 
 	public Restaurant(Integer id, String name, RestaurantType restaurantType, List<Integer> articles, boolean open,
-			Location location, String image, Double rating, boolean deleted) {
+			Location location, String image, Double rating, boolean deleted, List<String> restaurantOrders) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -59,6 +63,7 @@ public class Restaurant {
 		this.image = image;
 		this.rating = rating;
 		this.deleted = deleted;
+		this.restaurantOrders = restaurantOrders;
 	}
 
 
@@ -157,8 +162,14 @@ public class Restaurant {
 	}
 
 
+	public List<String> getRestaurantOrders() {
+		return restaurantOrders;
+	}
 
-	
-	
-	
+
+	public void setRestaurantOrders(List<String> restaurantOrders) {
+		this.restaurantOrders = restaurantOrders;
+	}
+
+
 }

@@ -14,8 +14,7 @@
 		"deliveryOrders": [],
 		"points": 0,
 		"customerType": null,
-		"blocked": false,
-		"customerType": null
+		"blocked": false
 		
 	},
 	
@@ -30,6 +29,22 @@
 		"myOrders": [],
 		"cart": {},
 		"restaurant": 1,
+		"deliveryOrders": [],
+		"points": 0,
+		"customerType": null
+	},
+	
+	"user": {
+		"username": "user",
+		"password": "123",
+		"firstName": "Miki",
+		"lastName": "Maus",
+		"gender": true,
+		"birthDate": 1508762343511,
+		"role": "KUPAC",
+		"myOrders": [],
+		"cart": {},
+		"restaurant": 0,
 		"deliveryOrders": [],
 		"points": 0,
 		"customerType": null

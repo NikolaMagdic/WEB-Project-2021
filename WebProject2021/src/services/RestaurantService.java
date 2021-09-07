@@ -66,12 +66,12 @@ public class RestaurantService {
 
 		String contextPath = ctx.getRealPath("");
 		
-		System.out.println(restaurant.getImage());
+		//System.out.println(restaurant.getImage());
 		String base64Image = (restaurant.getImage()).split(",")[1];
 		byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
 
 		String imagePath = contextPath + "images\\" + restaurant.getName() + ".jpg";
-		System.out.println(imagePath);
+		//System.out.println(imagePath);
 		BufferedImage img;
 		try {
 			img = ImageIO.read(new ByteArrayInputStream(imageBytes));
@@ -223,20 +223,6 @@ public class RestaurantService {
 		return Response.status(200).entity(dtoRestaurants).build();
 	}
 	
-//	//metoda koja trazi restoran po njegovom menadzeru
-//	@GET
-//	@Path("/{managerUsername}")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Response getRestaurant(@PathParam("managerUsername") String managerUsername) {
-//
-//		RestaurantDAO restaurantDAO = (RestaurantDAO) ctx.getAttribute("restaurants");
-//		Restaurant restaurant = restaurantDAO.findRestaurantByManager(managerUsername);
-//
-//		if (restaurant == null) {
-//			return Response.status(400).build();
-//		}
-//
-//		return Response.status(200).entity(convertToDTO(restaurant)).build();
-//	}
+
 
 }

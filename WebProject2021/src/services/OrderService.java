@@ -107,15 +107,24 @@ public class OrderService {
 		// Dodaj mu bodove
 		Double points = order.getPrice() / 1000 * 133;
 		loggedInUser.setPoints(loggedInUser.getPoints() + points);
+		
+		
+		// Azururaj restoran (posto sam dodao listu restaurantsOrders da bi mogao da izlistam sve ordere vezane za njega)
+		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getAttribute("restaurants");
+		Restaurant restaurant = restaurantDAO.findRestaurant(restaurantId);
+		restaurant.getRestaurantOrders().add(order.getOrderId());
+		
 		// Sacuvaj promene
 		userDAO.updateUser(loggedInUser);
 		userDAO.saveUsers(contextPath);
+		restaurantDAO.updateRestaurant(restaurant);
+		restaurantDAO.saveRestaurants(contextPath);
 		
 		return Response.status(201).build();
 	
 	}
 	
-	// Za menadzera promena iz OBRADA u U PRIPREMI
+	// Za menadzera promena iz OBRADA u U PRIPREMI ?????????????????
 	@PUT
 	@Path("/in-preparation")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -160,7 +169,7 @@ public class OrderService {
 		return "OTKAZANA";
 	}
 	
-	// Za menadzera promena iz U PRIPREMI u CEKA DOSTAVLJACA
+	// Za menadzera promena iz U PRIPREMI u CEKA DOSTAVLJACA ??????????????????
 	@PUT
 	@Path("/wait")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -174,7 +183,8 @@ public class OrderService {
 		orderDAO.updateOrder(order);
 		orderDAO.saveOrders(contextPath);
 	}
-
+	
+	
 	// Pretraga porudzbina za kupca (samo njegove porudzbine)
 	@GET
 	@Path("/search")
@@ -186,6 +196,9 @@ public class OrderService {
 		
 		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
 		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getAttribute("restaurants");
+		
+		System.out.println("Query PARAMS: restaurant-" + restaurant + "/minPrice-" + minPrice + "/maxPrice-" + maxPrice + "/startDate-" + 
+				startDate + "/endDate-" + endDate );
 		
 		User loggedInUser = (User) request.getSession().getAttribute("user");
 		List<Order> myOrders = new ArrayList<Order>();
@@ -242,8 +255,97 @@ public class OrderService {
 			}
 		}
 		
+		return Response.status(200).entity(filteredOrders).build();
+	}
+	
+	
+	// Pretraga porudzbina za restoran preko njegovog Id (samo njegove porudzbine)
+	@GET
+	@Path("/search/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response searchOrdersForRestaurant (@PathParam("id") Integer id,
+			@QueryParam("minPrice") String minPrice, @QueryParam("maxPrice") String maxPrice,
+			@QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate,
+			@Context HttpServletRequest request) {
+		
+		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
+		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getAttribute("restaurants");
+		Restaurant restaurant = restaurantDAO.findRestaurant(id);
+		
+		if (restaurant == null) {
+			System.out.println("Nije nasao restoran sa id: " + id);
+			return Response.status(400).build();
+		}
+
+		List<Order> restaurantOrders = new ArrayList<Order>();
+		
+		System.out.println("Query PARAMS: " + "/minPrice-" + minPrice + "/maxPrice-" + maxPrice + "/startDate-" + 
+				startDate + "/endDate-" + endDate );
+		
+		
+		
+		for (String orderId : restaurant.getRestaurantOrders()) {
+			Order order = orderDAO.getOrder(orderId);
+			restaurantOrders.add(order);
+		}
+		
+		List<Order> filteredOrders = new ArrayList<Order>();
+		
+		
+		Double minimumPrice = 0.0;
+		Double maximumPrice = 0.0;
+		if(!minPrice.trim().isEmpty()) {
+			 minimumPrice = Double.parseDouble(minPrice);
+		}
+		if(!maxPrice.trim().isEmpty()) {
+			 maximumPrice = Double.parseDouble(maxPrice);
+		}
+		
+		Long millisStart = 0L;
+		Long millisEnd = 0L;
+		if(!startDate.trim().isEmpty()) {
+			millisStart = Long.parseLong(startDate);
+		}
+		if(!endDate.trim().isEmpty()) {	
+			millisEnd = Long.parseLong(endDate);
+		}
+		Date startingDate = new Date(millisStart);
+		Date endingDate = new Date(millisEnd);
+		
+		for (Order o : restaurantOrders) {
+			if((((o.getPrice() <= maximumPrice) && (o.getPrice() >= minimumPrice)) || ((minPrice.trim().isEmpty()) && (o.getPrice() <= maximumPrice)) || ((maxPrice.trim().isEmpty()) && (o.getPrice() >= minimumPrice)) || ((minPrice.trim().isEmpty()) && (maxPrice.trim().isEmpty())))
+					&& ((o.getDate().after(startingDate) && o.getDate().before(endingDate)) || ((startDate.trim().isEmpty()) && o.getDate().before(endingDate)) || ((endDate.trim().isEmpty()) && o.getDate().after(startingDate)) || ((startDate.trim().isEmpty()) && (endDate.trim().isEmpty())))) {
+						filteredOrders.add(o);
+			}
+		}
 		
 		return Response.status(200).entity(filteredOrders).build();
 	}
+	
+	//funkcija dobavlja sve ordere za jedan restoran
+	@GET
+	@Path("/restaurant/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRestaurantOrders(@PathParam("id") Integer id) {
+		
+		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
+		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getAttribute("restaurants");
+		Restaurant restaurant = restaurantDAO.findRestaurant(id);
+		
+		if (restaurant == null) {
+			System.out.println("Nije nasao restoran sa id: " + id);
+			return Response.status(400).build();
+		}
+
+		List<Order> restaurantOrders = new ArrayList<Order>();
+		
+		for (String orderId : restaurant.getRestaurantOrders()) {
+			Order order = orderDAO.getOrder(orderId);
+			restaurantOrders.add(order);
+			System.out.println("Restaurant order sa id: " + order.getOrderId());
+		}
+		
+		return Response.status(200).entity(restaurantOrders).build();
+	}	
 	
 }

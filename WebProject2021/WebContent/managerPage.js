@@ -5,6 +5,8 @@ function initHide(){
 	$("#divArticleDetails").hide();
 	$("#divEditArticle").hide();
 	$("#divAddArticle").hide();
+	$("#divOrders").hide();
+	$("#divSearchOrders").hide();
 }
 
 
@@ -17,6 +19,8 @@ function initShowButtons(){
 		$("#divArticleDetails").hide();
 		$("#divEditArticle").hide();
 		$("#divAddArticle").hide();
+		$("#divOrders").hide();
+		$("#divSearchOrders").hide();
 	});
 	$("#buttonMyRestaurant").click( function(){
 		getManagerUsername();
@@ -27,6 +31,8 @@ function initShowButtons(){
 		$("#divArticleDetails").hide();
 		$("#divEditArticle").hide();
 		$("#divAddArticle").hide();
+		$("#divOrders").hide();
+		$("#divSearchOrders").hide();
 	});
 	
 	$(document).on("click", "button[name = 'detaljiArticla']", function(){
@@ -37,6 +43,8 @@ function initShowButtons(){
 		$("#divArticleDetails").show();
 		$("#divEditArticle").hide();
 		$("#divAddArticle").hide();
+		$("#divOrders").hide();
+		$("#divSearchOrders").hide();
 	});
 	
 	$("#buttonEditArticle").click( function(){
@@ -46,16 +54,48 @@ function initShowButtons(){
 		$("#divArticleDetails").hide();
 		$("#divEditArticle").show();
 		$("#divAddArticle").hide();
+		$("#divOrders").hide();
+		$("#divSearchOrders").hide();
 	}); 
 	$("#buttonAddArticle").click( function(){
-		getManagerUsername();
 		getRestaurantByManager();
+		getManagerUsername();
 		$("#divEditAccount").hide();
 		$("#divRestaurantDetails").hide();
 		$("#divRestaurantArticles").hide();
 		$("#divArticleDetails").hide();
 		$("#divEditArticle").hide();
 		$("#divAddArticle").show();
+		$("#divOrders").hide();
+		$("#divSearchOrders").hide();
+	});
+	
+	$("#buttonOrders").click(function(event){
+		getRestaurantByManager();
+		getManagerUsername();
+		$("#divEditAccount").hide();
+		$("#divRestaurantDetails").hide();
+		$("#divRestaurantArticles").hide();
+		$("#divArticleDetails").hide();
+		$("#divEditArticle").hide();
+		$("#divAddArticle").hide();
+		$("#divOrders").show();
+		$("#divSearchOrders").hide();
+		getRestaurantOrders();
+	});
+	
+	$("#buttonSearch").click(function(event){
+		getRestaurantByManager();
+		getManagerUsername();
+		$("#divEditAccount").hide();
+		$("#divRestaurantDetails").hide();
+		$("#divRestaurantArticles").hide();
+		$("#divArticleDetails").hide();
+		$("#divEditArticle").hide();
+		$("#divAddArticle").hide();
+		$("#divOrders").show();
+		$("#divSearchOrders").show();
+		getRestaurantOrders();
 	});
 }
 
@@ -112,6 +152,9 @@ function getRestaurantByManager(){
 			}
 			
 			restaurantId = res.id;
+			console.log("Postavljamo globalnu promenljivu restaurantId na: " + restaurantId);
+			
+			getRestaurantOrders(res.id);
 			
 			shownArticles = res.articles;
 		}
@@ -147,7 +190,7 @@ function addArticleInTable(articleId) {
 
 function getArticleById(articleId){
 	event.preventDefault();
-	console.log("ID artikla za koji nam trebaju detalji: " + articleId);
+	//console.log("ID artikla za koji nam trebaju detalji: " + articleId);
 	
 	
 	$.get({
@@ -311,8 +354,7 @@ function editArticle() {
 				alert(message);
 			}
 		});
-	});
-	
+	});	
 }
 
 function addArticle() {
@@ -370,15 +412,100 @@ function addArticle() {
 }
 
 
+function getRestaurantOrders(id) {
+	console.log("Usao u restaurantOrders za restaurantId:" + id);
+	$("#tableOrders").empty();
+	$.get({
+		url: "rest/order/restaurant/" + id,
+		contentType: "application/json",
+		success: function (orders) {
+			for(let order of orders) {
+				addOrderInTable(order);
+			}
+			shownOrders = orders;
+		}
+	});
+}
+
+function addOrderInTable(order) {
+	let table = $("#tableOrders");
+	
+	let tr = "<tr>" +
+			"<td>" + order.price + "</td>" +
+			"<td>" + formatDate(order.date) + "</td>" +
+			"<td>" + order.customer + "</td>" +
+			"<td>" + order.orderStatus + "</td>" +
+			"<td><button id='" + order.orderId + "' name='cancel'>Otkaži</button></td>" +
+			"</tr>";
+	
+	table.append(tr);
+	
+} 
+
+
+// PRETRAGA - SEARCH
+function searchOrders() {
+	
+	$("#formSearchOrders").submit(function (event){
+		event.preventDefault();
+		let sDate = $("#searchStartDate").val();
+		let eDate = $("#searchEndDate").val();
+		var startDate;
+		var endDate;
+		console.log(sDate);
+		console.log(eDate);
+		if(sDate != "") {
+			startDate = new Date(sDate);
+			startDate = startDate.getTime();
+		} else {
+			startDate = "";
+		}
+		if(eDate != "") {
+			endDate = new Date(eDate);
+			endDate = endDate.getTime();
+		} else {
+			endDate = "";
+		}
+		
+		// getTime() vraca vreme u milisekundama
+		let queryParams = {
+			minPrice: $("#searchMinPrice").val(),
+			maxPrice: $("#searchMaxPrice").val(),
+			startDate: startDate,
+			endDate: endDate
+		};
+		
+		$.get({
+			url: "rest/order/search/" + restaurantId,
+			data: queryParams,
+			success: function(orders){
+				// Prvo brisem postojece narudzbine iz tabele pa dodajem filtrirane - pretraga
+				$("#tableOrders").empty();
+				for (let order of orders) {
+					addOrderInTable(order);
+				}
+				shownOrders = orders;
+			},
+			error: function(message){
+				alert(message);
+			}
+		})
+	});
+}
 
 
 
+
+
+//GLOBALNE PROMENLJIVE
 //globalna promenljiva koja nam cuva username ulogovanog menadzera
 var managerUsername;
 var restaurantId; 
 
 //Svi trenutno prikazani artikli 
 var shownArticles;
+
+var shownOrders;
 
 
 $(document).ready(function(){
@@ -390,6 +517,8 @@ $(document).ready(function(){
 	editAccount();
 	editArticle();
 	addArticle();
+	searchOrders();
+	
 	logout();
 	
 })
