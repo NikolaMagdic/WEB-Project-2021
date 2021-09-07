@@ -494,6 +494,26 @@ function searchOrders() {
 }
 
 
+function filterOrdersByStatus() {
+	$("#filterStatus").change(function(){
+		$.get({
+			url: "rest/order/restaurant/" + restaurantId,
+			contentType: "application/json",
+			success: function(orders) {
+				$("#tableOrders").empty();
+				shownOrders = [];
+				let status = $("#filterStatus option:selected").val();
+				for (let order of orders) {					
+					if((order.orderStatus === status) || status === "SVE") {
+						addOrderInTable(order);
+						shownOrders.push(order);
+					}
+				}
+			}
+		});
+	});
+}
+
 
 
 
@@ -518,6 +538,8 @@ $(document).ready(function(){
 	editArticle();
 	addArticle();
 	searchOrders();
+	
+	filterOrdersByStatus();
 	
 	logout();
 	
