@@ -516,6 +516,71 @@ function filterOrdersByStatus() {
 
 
 
+// SORTIRANJE
+function sortOrdersByPrice() {
+	$("#sortPrice").click(function(){
+		event.preventDefault();
+		$("#tableOrders").empty();
+
+		for (var i = 0; i < shownOrders.length - 1; i++) {
+			var min_idx = i;
+			for (var j = i + 1; j < shownOrders.length; j++) {
+				if(shownOrders[j].price < shownOrders[i].price)
+					min_idx = j;
+			}
+			let temp = shownOrders[i];
+			shownOrders[i] = shownOrders[min_idx];
+			shownOrders[min_idx] = temp;
+		}
+		if(sortPriceDesc) {
+			sortPriceDesc = false;
+			console.log("Menjam sortPriceDesc na " + sortPriceDesc);
+			$("#imageSortPrice").attr("src", "./images/sort-up.png");
+		} else {
+			shownOrders.reverse();
+			sortPriceDesc = true;
+			console.log("Menjam sortPriceDesc na " + sortPriceDesc);
+			$("#imageSortPrice").attr("src", "./images/sort-down.png");
+		}
+		for(let order of shownOrders) {
+			addOrderInTable(order);
+		}
+
+	});
+}
+
+function sortOrdersByDate() {
+	$("#sortDate").click(function(){
+		event.preventDefault();
+		$("#tableOrders").empty();
+
+		for (var i = 0; i < shownOrders.length - 1; i++) {
+			var min_idx = i;
+			for (var j = i + 1; j < shownOrders.length; j++) {
+				if(shownOrders[j].date < shownOrders[i].date)
+					min_idx = j;
+			}
+			let temp = shownOrders[i];
+			shownOrders[i] = shownOrders[min_idx];
+			shownOrders[min_idx] = temp;
+		}
+		if(sortDateDesc) {
+			sortDateDesc = false;
+			$("#imageSortDate").attr("src", "images/sort-up.png");
+		} else {
+			shownOrders.reverse();
+			sortDateDesc = true;
+			$("#imageSortDate").attr("src", "images/sort-down.png");
+		}
+		for(let order of shownOrders) {
+			addOrderInTable(order);
+		}
+
+	});
+}
+
+
+
 
 //GLOBALNE PROMENLJIVE
 //globalna promenljiva koja nam cuva username ulogovanog menadzera
@@ -526,6 +591,9 @@ var restaurantId;
 var shownArticles;
 
 var shownOrders;
+
+var sortPriceDesc;
+var sortDateDesc;
 
 
 $(document).ready(function(){
@@ -540,6 +608,9 @@ $(document).ready(function(){
 	searchOrders();
 	
 	filterOrdersByStatus();
+	
+	sortOrdersByPrice();
+	sortOrdersByDate();
 	
 	logout();
 	
