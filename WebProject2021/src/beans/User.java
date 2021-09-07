@@ -24,7 +24,7 @@ public class User {
 	private UserRole role;
 	
 	//ako je kupac
-	private List<Integer> myOrders = new ArrayList<Integer>();
+	private List<String> myOrders = new ArrayList<String>();
 	
 	//ako je kupac
 	private Cart cart; //ili Integer?
@@ -36,7 +36,7 @@ public class User {
 	private List<Integer> deliveryOrders = new ArrayList<Integer>();
 	
 	//ako je kupac
-	private Integer points;
+	private Double points;
 	
 	//ako je kupac
 	private CustomerType customerType;
@@ -52,8 +52,8 @@ public class User {
 
 
 	public User(String username, String password, String firstName, String lastName, boolean gender, Date birthDate,
-			UserRole role, List<Integer> myOrders, Cart cart, Integer restaurant, List<Integer> deliveryOrders,
-			Integer points, CustomerType customerType, boolean blocked) {
+			UserRole role, List<String> myOrders, Cart cart, Integer restaurant, List<Integer> deliveryOrders,
+			Double points, CustomerType customerType, boolean blocked) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -144,12 +144,12 @@ public class User {
 	}
 
 
-	public List<Integer> getMyOrders() {
+	public List<String> getMyOrders() {
 		return myOrders;
 	}
 
 
-	public void setMyOrders(List<Integer> myOrders) {
+	public void setMyOrders(List<String> myOrders) {
 		this.myOrders = myOrders;
 	}
 
@@ -184,12 +184,12 @@ public class User {
 	}
 
 
-	public Integer getPoints() {
+	public Double getPoints() {
 		return points;
 	}
 
 
-	public void setPoints(Integer points) {
+	public void setPoints(Double points) {
 		this.points = points;
 	}
 

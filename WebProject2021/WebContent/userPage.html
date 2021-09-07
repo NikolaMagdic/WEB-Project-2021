@@ -7,14 +7,14 @@
 	<script type="text/javascript" src="userPage.js"></script>
 </head>
 <body>
-	<div class="meni">
-		<a id="buttonCart" class="dropbtn">Cart</a>
-		<a id="buttonOrders" class="dropbtn">My Orders</a>
+	<div class="menu">
+		<a id="buttonCart" class="menu-item">Cart</a>
+		<a id="buttonOrders" class="menu-item">My Orders</a>
 		<div class="dropdown">
-		  <button class="dropbtn">Dropdown</button>
+		  <button class="dropbtn">Account</button>
 		  <div class="dropdown-content">
-		    <a href="#" id="editMenu">Edit Account</a>
-		    <a href="#" id="logoutMenu">Logout</a>
+		    <a id="editMenu" class="menu-item">Edit Account</a>
+		    <a id="logoutMenu" class="menu-item">Logout</a>
 		  </div>
 		</div>
 	</div>
@@ -97,16 +97,91 @@
 				</form>
 		</div>
 	<div id="divCart">
-		<table>
+		<h1>Shopping cart</h1>
+		<table class="table-data">
 			<thead>
 				<tr>
 					<th>Naziv</th>
 					<th>Količina</th>
 					<th>Cena</th>
 					<th>Slika</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody id="tableCart"></tbody>
+			<tfoot id="totalSum"></tfoot>
+		</table>
+		<div class="divButtonsCart">
+			<button id="buttonRefreshCart" class="submit">Osveži korpu</button>
+			<button id="buttonCreateOrder" class="submit">Poruči</button>
+		</div>
+	</div>
+	<div id="divOrders">
+		<h1>All my orders<button id="buttonSearch"><img id="buttonSearch" alt="Pretraga" src="images/search-icon.png" width="15px" height="15px"></button></h1>
+		<div id="divSearchOrders" hidden="true">
+			<form id="formSearchOrders">
+				<table>
+					<tr>
+						<th>
+							<label>Pretraga:</label>
+						</th>
+						<td>
+							<input type="text" id="searchRestaurant" placeholder="Restaurant">
+						</td>
+						<td>
+							<input type="number" id="searchMinPrice" placeholder="Min Price">
+						</td>
+						<td>
+							<input type="number" id="searchMaxPrice" placeholder="Max Price">
+						</td>
+						<td>
+							<input type="date" id="searchStartDate" placeholder="Start Date">
+						</td>
+						<td>
+							<input type="date" id="searchEndDate" placeholder="End Date">
+						</td>
+						<td>
+							<input type="submit" value="Pretraži" id="submitSearch" class="submit">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<div id="divFilterOrders">
+			<label><b>Tip restorana:</b></label>
+			<select id="filterType">
+				<option value="SVI">Svi</option>
+				<option value="ITALIAN">Italijanski</option>
+				<option value="CHINESE">Kineski</option>
+				<option value="BARBEQUE">Rostilj</option>
+				<option value="MEXICAN">Meksicki</option>
+				<option value="SERBIAN">Domaci</option>
+				<option value="AMERICAN">Americki</option>
+			</select>
+			<label><b>Status porudzbine:</b></label>
+			<select id="filterStatus">
+				<option value="SVE">Sve</option>
+				<option value="OBRADA">Obrada</option>
+				<option value="U_PRIPREMI">U pripremi</option>
+				<option value="CEKA_DOSTAVLJACA">Ceka dostavljaca</option>
+				<option value="U_TRANSPORTU">U transportu</option>
+				<option value="DOSTAVLJENA">Dostavljena</option>
+				<option value="OTKAZANA">Otkazana</option>
+			</select>
+		</div>	
+		<table class="table-data">
+			<thead>
+				<tr>
+					<th id="sortRestaurant" class="sort-header">Restoran <img id="imageSortRestaurantName" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
+					<th>Tip restorana</th>
+					<th id="sortPrice" class="sort-header">Cena <img id="imageSortPrice" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortDate" class="sort-header">Datum <img id="imageSortDate" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
+					<th>Customer</th>
+					<th>Status</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody id="tableOrders"></tbody>
 		</table>
 	</div>
 </body>

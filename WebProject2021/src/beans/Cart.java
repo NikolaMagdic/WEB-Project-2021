@@ -59,6 +59,12 @@ public class Cart {
 		this.restaurant = restaurant;
 	}
 
+	@Override
+	public String toString() {
+		return "Cart [cartItems=" + cartItems + ", customer=" + customer + ", price=" + price + ", restaurant="
+				+ restaurant + "]";
+	}
+
 	
 	
 }

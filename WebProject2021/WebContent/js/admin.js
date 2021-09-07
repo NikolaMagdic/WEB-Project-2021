@@ -95,7 +95,7 @@ function addUserInTable(user) {
 			"<td>" + ((user.points === null) ? "/" : user.points) + "</td>" +
 			"<td>" + ((user.customerType === null) ? "/" : user.customerType.customerTypeName) + "</td>";
 	if (user.role === "ADMIN") {
-		tr += "<td><td><tr>";
+		tr += "<td></td><tr>";
 	} else {
 		if (!user.blocked) {
 			tr += "<td>" +  "<button id=\"" + user.username + "\" name=\"block\">Blokiraj</button>"  + "</td>" +
@@ -227,6 +227,36 @@ function editAccount() {
 	}
 	
 	$("#formEdit").submit(function (event){
+		let username = $("#usernameEdit").val();
+		let password = $("#passwordEdit").val();
+		let confirmPassword = $("#confirmPasswordEdit").val();
+		let firstName = $("#nameEdit").val();
+		let lastName = $("#lastNameEdit").val();
+		let male = $("#maleEdit:checked").val();
+		let date = $("#dateEdit").val();
+		
+		if(password != confirmPassword){
+			alert("Passwords do not match");
+			return;
+		}
+		
+		let gender;
+		if(male){
+			gender = "True";
+		}else {
+			gender = "False";
+		}
+		
+		let user = {
+			username: username,
+			password: password,
+			firstName: firstName,
+			lastName: lastName,
+			gender: gender,
+			birthDate: date,
+			
+		}
+		
 		$.ajax({
 			type: "PUT",
 			url: "../rest/user",
@@ -455,8 +485,6 @@ function blockUser() {
 			success: function(data) {
 				alert("Korisnik uspesno blokiran!");
 				$("button[id='" + username + "']").css("color", "red");
-				location.reload();
-				$("#divAllUsers").show();
 			}
 		});
 	});
@@ -473,8 +501,6 @@ function unblockUser() {
 			success: function(data) {
 				alert("Korisnik uspesno odblokiran!");
 				$("button[id='" + username + "']").css("color", "black");
-				location.reload();
-				$("#divAllUsers").show();
 			}
 		});
 	});

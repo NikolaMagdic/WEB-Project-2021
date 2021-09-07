@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,7 +89,15 @@ public class OrderDAO {
 		this.ordersMap.put(order.getOrderId(), order);
 	}
 	
+	public Order getOrder(String orderId) {
+		return  this.ordersMap.get(orderId) == null ? null : this.ordersMap.get(orderId);
+	} 
+	
 	public Order updateOrder(Order order) {
 		return ordersMap.put(order.getOrderId(), order);
+	}
+	
+	public Collection<Order> getAllOrders() {
+		return this.ordersMap.values();
 	}
 }

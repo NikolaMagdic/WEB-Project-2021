@@ -2,7 +2,7 @@ package beans;
 
 public class CartItem {
 		
-	private Integer item;
+	private Integer article;
 	
 	private int amount;
 	
@@ -12,19 +12,19 @@ public class CartItem {
 	}
 
 
-	public CartItem(Integer item, int amount) {
+	public CartItem(Integer article, int amount) {
 		super();
-		this.item = item;
+		this.article = article;
 		this.amount = amount;
 	}
 
 
-	public Integer getItem() {
-		return item;
+	public Integer getArticle() {
+		return article;
 	}
 
-	public void setItem(Integer item) {
-		this.item = item;
+	public void setArticle(Integer article) {
+		this.article = article;
 	}
 
 	public int getAmount() {
@@ -33,6 +33,12 @@ public class CartItem {
 
 	public void setAmount(int amount) {
 		this.amount = amount;
+	}
+
+
+	@Override
+	public String toString() {
+		return "CartItem [article=" + article + ", amount=" + amount + "]";
 	}
 	
 	
