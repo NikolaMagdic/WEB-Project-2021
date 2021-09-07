@@ -7,6 +7,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -54,7 +55,7 @@ public class CartService {
 		// Izmena ukupne cene cart-a
 		ArticleDAO articleDAO = (ArticleDAO) context.getAttribute("articles");
 		Article article = articleDAO.findArticle(cartItem.getArticle());
-		cart.setPrice(cart.getPrice() +  article.getPrice());
+		cart.setPrice(cart.getPrice() +  article.getPrice() * cartItem.getAmount());
 		
 		saveCart(cart, request);
 	
@@ -72,16 +73,50 @@ public class CartService {
 		return Response.status(200).entity(cart).build();
 	}
 	
-	@DELETE
+
+	// Ovo je metoda koju pozivamo kada se osvezava korpa prilikom promene kolicine artikala u korpi
+	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response removeFromCart(CartItem cartItem, @Context HttpServletRequest request) {
+	public Response refreshCart(Cart cart, @Context HttpServletRequest request) {
+		
+		ArticleDAO articleDAO = (ArticleDAO) context.getAttribute("articles");
+		
+		// Menjanje ukupne cene korpe
+		Double price = 0.0;
+		for (CartItem cartItem : cart.getCartItems()) {
+			Article article = articleDAO.findArticle(cartItem.getArticle());
+			price += article.getPrice() * cartItem.getAmount();
+		}
+		cart.setPrice(price);
+		// Cuvanje korpe
+		System.out.println(cart);
+		saveCart(cart, request);
+		
+		return Response.status(200).entity(cart).build();
+	}
+	
+	@DELETE
+	@Path("/{articleId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response removeFromCart(@PathParam("articleId") Long id, @Context HttpServletRequest request) {
 		Cart cart = getCart(request);
-		cart.getCartItems().remove(cartItem);
+		
+		ArticleDAO articleDAO = (ArticleDAO) context.getAttribute("articles");
+		
+		for (CartItem cartItem : cart.getCartItems()) {
+			Article article = articleDAO.findArticle(cartItem.getArticle());
+			if(article.getId() == id) {
+				cart.getCartItems().remove(cartItem);
+				// TODO: Proveriti jos da li ce moci da budu 2 ista artikla u 2 razlicita cartItema
+				cart.setPrice(cart.getPrice() - article.getPrice() * cartItem.getAmount());
+				break;
+			}
+		}
 	
 		saveCart(cart, request);
 		
-		return Response.status(200).build();
+		return Response.status(200).entity(cart).build();
 	}
 	
 	/** Metoda koja nalazi korpu trenutno prijavljenog korisnika u sesiji*/

@@ -75,41 +75,82 @@ function getCart() {
 		contentType: "application/json",
 		success: function (cart) {
 			for(let cartItem of cart.cartItems) {
-				getArticle(cartItem.article);
+				getArticle(cartItem.article, cartItem.amount);
 			}
 			userCart = cart;
 			let tableFooter = $("#totalSum");
-			let tr = "<tr><td colspan='4'>Ukupna cena: " + cart.price + "</td></tr>";
+			let tr = "<tr><td colspan='5'>Ukupna cena: " + cart.price + "</td></tr>";
 			tableFooter.append(tr);
 		}
 	});
 }
 
-function getArticle(cartItem) {
+function getArticle(cartItem, amount) {
 	$.get({
 		url: "rest/article/one/" + cartItem,
 		contentType: "application/json",
 		success: function (article) {
-			addArticleInTable(article);
+			addArticleInTable(article, amount);
 		}
 	});	
 }
 
 
-function addArticleInTable(article) {
+function addArticleInTable(article, amount) {
 	let table = $("#tableCart");
 	
 	let tr = "<tr>" +
 			"<td>" + article.name + "</td>" +
-			"<td>" + article.amount + "</td>" +
+			"<td><input type='number' min='0' class='input-number' id='" + article.id + "' value='" + amount + "'>" + "</td>" +
 			"<td>" + article.price + "</td>" +
 			"<td>" + "ovde ce biti slika" + "</td>" +
+			"<td><button class='remove-article' id='" + article.id  + "'>Izbaci</button></td>" +
 			"</tr>";
 	
 	table.append(tr);
 		
 }
 
+function removeArticleFromCart() {	
+	$(document).on('click', '.remove-article', function(){
+		let id = $(this).attr("id");
+		$.ajax({
+			url: "rest/cart/" + id,
+			type: "DELETE",
+			dataType: "json",
+			complete: function(){
+				alert("Uspesno izbacen artikal");
+				// Primer okidanja klika iz javascript-a
+				$("#buttonCart").trigger('click');
+			}
+		});
+	});
+}
+
+function refreshCart() {
+	
+	$("#buttonRefreshCart").click(function(){
+		console.log(userCart);
+		var tempCart;
+		for (let cartItem of userCart.cartItems) {
+			let articleAmount = $("#" + cartItem.article).val();
+			cartItem.amount = articleAmount;
+		}
+		tempCart = userCart;
+		
+		$.ajax({
+			type: "PUT",
+			url: "rest/cart",
+			contentType: "application/json",
+			dataType: "json",
+			data: JSON.stringify(tempCart),
+			success: function() {
+				alert("Uspesno izmenjena korpa");
+				$("#buttonCart").trigger('click');
+			}
+		})
+	});
+}
 
 // PORUDZBINE
 
@@ -418,6 +459,9 @@ $(document).ready(function(){
 	getLoggedInUser();
 	
 	logout();
+	
+	removeArticleFromCart();
+	refreshCart();
 	
 	makeOrder();
 	

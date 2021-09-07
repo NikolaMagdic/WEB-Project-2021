@@ -140,7 +140,7 @@ table {
   color: white;
 }
 
-.divButtonCreateOrder {
+.divButtonsCart {
 	text-align: center;
 }
 
@@ -164,4 +164,24 @@ table {
 #divFilterOrders {
 	margin-left: 25%;
 	
+}
+
+.input-number {
+	width: 50px;
+  	padding: 8px 10px;
+  	margin: 8px 0;
+  	display: inline-block;
+  	border: 1px solid #ccc;
+  	border-radius: 8px;
+  	box-sizing: border-box;
+	
+}
+
+.remove-article {
+	display: inline-table;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	color: white;
+	background-color: #04AA6D;
 }
