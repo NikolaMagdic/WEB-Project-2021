@@ -158,8 +158,9 @@ public class ArticleService {
 		ArticleType type = null;
 		if(art.getType().equals("DRINK")) {
 			type = ArticleType.DRINK;
-		} 
-		type = ArticleType.FOOD;
+		} else {
+			type = ArticleType.FOOD;
+		}
 		
 		
 		Integer length = articleDAO.findAllArticles().size() + 1;

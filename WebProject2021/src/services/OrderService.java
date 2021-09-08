@@ -28,6 +28,7 @@ import beans.User;
 import dao.OrderDAO;
 import dao.RestaurantDAO;
 import dao.UserDAO;
+import dto.OrderDTO;
 import enumerations.OrderStatus;
 
 @Path("order")
@@ -74,6 +75,23 @@ public class OrderService {
 		}
 		
 		return Response.status(200).entity(myOrders).build();
+	}
+	
+	@GET
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getOneOrder(@PathParam("id") String id) {
+		
+		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
+		
+		Order order = orderDAO.getOrder(id);
+		
+		if (order == null) {
+			System.out.println("Nije nasao order sa id: " + id);
+			return Response.status(400).build();
+		}
+		
+		return Response.status(200).entity(order).build();
 	}	
 	
 	
@@ -124,18 +142,33 @@ public class OrderService {
 	
 	}
 	
-	// Za menadzera promena iz OBRADA u U PRIPREMI ?????????????????
+	// Za menadzera promena iz OBRADA u U PRIPREMI 
 	@PUT
-	@Path("/in-preparation")
+	@Path("/edit")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void changeOrderStatus(Order order) {
+	@Produces(MediaType.APPLICATION_JSON)
+	public void changeOrderStatus(OrderDTO order) {
 		
-		if (order.getOrderStatus().equals(OrderStatus.OBRADA))
-			order.setOrderStatus(OrderStatus.U_PRIREMI);
+		System.out.println(order.getOrderId());
+		System.out.println(order.getDate());
+		System.out.println(order.getOrderStatus());
+		System.out.println(order.getPrice());
+		System.out.println(order.getCustomer());
 		
 		String contextPath = context.getRealPath("");
 		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
-		orderDAO.updateOrder(order);
+		Order oldOrder = orderDAO.getOrder(order.getOrderId());
+		
+		OrderStatus status = null;
+		if(order.getOrderStatus().equals("U_PRIREMI")) {
+			status = OrderStatus.U_PRIREMI;
+		} else {
+			status = OrderStatus.OBRADA;
+		}
+		
+		oldOrder.setOrderStatus(status);
+		
+		orderDAO.updateOrder(oldOrder);
 		orderDAO.saveOrders(contextPath);
 	}
 
@@ -342,7 +375,7 @@ public class OrderService {
 		for (String orderId : restaurant.getRestaurantOrders()) {
 			Order order = orderDAO.getOrder(orderId);
 			restaurantOrders.add(order);
-			System.out.println("Restaurant order sa id: " + order.getOrderId());
+			System.out.println("Restaurant order sa id: " + orderId);
 		}
 		
 		return Response.status(200).entity(restaurantOrders).build();

@@ -7,6 +7,7 @@ function initHide(){
 	$("#divAddArticle").hide();
 	$("#divOrders").hide();
 	$("#divSearchOrders").hide();
+	$("#divEditOrder").hide();
 }
 
 
@@ -21,6 +22,7 @@ function initShowButtons(){
 		$("#divAddArticle").hide();
 		$("#divOrders").hide();
 		$("#divSearchOrders").hide();
+		$("#divEditOrder").hide();
 	});
 	$("#buttonMyRestaurant").click( function(){
 		getManagerUsername();
@@ -33,6 +35,7 @@ function initShowButtons(){
 		$("#divAddArticle").hide();
 		$("#divOrders").hide();
 		$("#divSearchOrders").hide();
+		$("#divEditOrder").hide();
 	});
 	
 	$(document).on("click", "button[name = 'detaljiArticla']", function(){
@@ -45,6 +48,7 @@ function initShowButtons(){
 		$("#divAddArticle").hide();
 		$("#divOrders").hide();
 		$("#divSearchOrders").hide();
+		$("#divEditOrder").hide();
 	});
 	
 	$("#buttonEditArticle").click( function(){
@@ -56,6 +60,7 @@ function initShowButtons(){
 		$("#divAddArticle").hide();
 		$("#divOrders").hide();
 		$("#divSearchOrders").hide();
+		$("#divEditOrder").hide();
 	}); 
 	$("#buttonAddArticle").click( function(){
 		getRestaurantByManager();
@@ -68,6 +73,7 @@ function initShowButtons(){
 		$("#divAddArticle").show();
 		$("#divOrders").hide();
 		$("#divSearchOrders").hide();
+		$("#divEditOrder").hide();
 	});
 	
 	$("#buttonOrders").click(function(event){
@@ -80,6 +86,7 @@ function initShowButtons(){
 		$("#divAddArticle").hide();
 		$("#divOrders").show();
 		$("#divSearchOrders").hide();
+		$("#divEditOrder").hide();
 	});
 	
 	$("#buttonSearch").click(function(event){
@@ -93,6 +100,20 @@ function initShowButtons(){
 		$("#divAddArticle").hide();
 		$("#divOrders").show();
 		$("#divSearchOrders").show();
+		$("#divEditOrder").hide();
+	});
+	
+	$(document).on("click", "button[name = 'detaljiOrdera']", function(){
+		//getRestaurantByManager();
+		$("#divEditAccount").hide();
+		$("#divRestaurantDetails").hide();
+		$("#divRestaurantArticles").hide();
+		$("#divArticleDetails").hide();
+		$("#divEditArticle").hide();
+		$("#divAddArticle").hide();
+		$("#divOrders").hide();
+		$("#divSearchOrders").hide();
+		$("#divEditOrder").show();
 	});
 }
 
@@ -408,7 +429,7 @@ function addArticle() {
 	
 }
 
-
+//ORDERI###################################################################################
 function getRestaurantOrders(id) {
 	console.log("Usao u restaurantOrders za restaurantId:" + id);
 	$("#tableOrders").empty();
@@ -418,6 +439,10 @@ function getRestaurantOrders(id) {
 		success: function (orders) {
 			for(let order of orders) {
 				addOrderInTable(order);
+				//console.log("ORDER ID: " + order.orderId);
+					$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
+							getOrderById(order.orderId);
+					});
 			}
 			shownOrders = orders;
 		}
@@ -432,15 +457,71 @@ function addOrderInTable(order) {
 			"<td>" + formatDate(order.date) + "</td>" +
 			"<td>" + order.customer + "</td>" +
 			"<td>" + order.orderStatus + "</td>" +
-			"<td><button id='" + order.orderId + "' name='cancel'>Otkaži</button></td>" +
+			"<td><button id='detaljiOrdera" + order.orderId + "' name='detaljiOrdera'>Edit</button></td>" +
 			"</tr>";
 	
 	table.append(tr);
 	
 } 
 
+function getOrderById(orderId){
+	event.preventDefault();
+	//console.log("ID ordera za koji nam trebaju detalji: " + orderId);
+	
+	
+	$.get({
+		type: "GET",
+		url: "./rest/order/" + orderId,
+		dataType: "json",
+		success: function(order) {
+			setSelectedOrderData(order);
+		}
+	})
+}
 
-// PRETRAGA - SEARCH
+function setSelectedOrderData(order) {
+	$('#txtIdOrderaEdit').val(order.orderId);
+	$('#txtDateOrderaEdit').val(formatDatePicker(order.date));
+	$('#txtPriceOrderaEdit').val(order.price);
+	$('#txtCustomerOrderaEdit').val(order.customer);
+	$('#txtStatusOrderaEdit').val(order.orderStatus);
+}
+
+function editOrder() {
+	$("#formEditOrder").submit(function (event){
+		event.preventDefault();
+		let orderId = $("#txtIdOrderaEdit").val();
+		let date = $("#txtDateOrderaEdit").val();
+		let price = $("#txtPriceOrderaEdit").val();
+		let customer = $("#txtCustomerOrderaEdit").val(); 
+		let orderStatus = $("#txtStatusOrderaEdit  option:selected").val(); 
+
+
+		let newOrder = {
+			orderId: orderId,
+			date: date,
+			price: price,
+			customer: customer,
+			orderStatus: orderStatus
+		}
+		
+		$.ajax({
+			type: "PUT",
+			url: "rest/order/edit",
+			data: JSON.stringify(newOrder),
+			contentType: "application/json",
+			success: function(){
+				alert("Uspesno izmenjeni podaci narudzbine");
+			},
+			error: function(message) {
+				alert(message);
+			}
+		});
+	});	
+}
+
+
+// PRETRAGA - SEARCH ######################################################################
 function searchOrders() {
 	
 	$("#formSearchOrders").submit(function (event){
@@ -480,6 +561,9 @@ function searchOrders() {
 				$("#tableOrders").empty();
 				for (let order of orders) {
 					addOrderInTable(order);
+					$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
+							getOrderById(order.orderId);
+					});
 				}
 				shownOrders = orders;
 			},
@@ -503,6 +587,9 @@ function filterOrdersByStatus() {
 				for (let order of orders) {					
 					if((order.orderStatus === status) || status === "SVE") {
 						addOrderInTable(order);
+							$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
+								getOrderById(order.orderId);
+							});
 						shownOrders.push(order);
 					}
 				}
@@ -513,7 +600,7 @@ function filterOrdersByStatus() {
 
 
 
-// SORTIRANJE
+// SORTIRANJE #############################################################################
 function sortOrdersByPrice() {
 	$("#sortPrice").click(function(){
 		event.preventDefault();
@@ -603,6 +690,8 @@ $(document).ready(function(){
 	editAccount();
 	editArticle();
 	addArticle();
+	
+	editOrder(); 
 	searchOrders();
 	
 	filterOrdersByStatus();

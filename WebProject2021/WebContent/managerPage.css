@@ -217,3 +217,10 @@ footer {
   font-size: 20px;	
   text-decoration: none;
 }
+
+.divFilterOrders {
+	align-items: center;
+	text-align: center;
+	padding: 7px 10px;
+}
+
