@@ -80,8 +80,9 @@ public class RestaurantService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		restaurant.setImage(imagePath);
+		restaurant.setImage("images/" + restaurant.getName() + ".jpg");
+		System.out.println(restaurant.getImage());
+		// restaurant.setImage(imagePath);
 		
 		Integer maxId = 1;
 		Collection<Restaurant> restaurants = restaurantDAO.findAllRestaurants();
@@ -192,6 +193,7 @@ public class RestaurantService {
 		dto.setCountry(res.getLocation().getAddress().getCountry());
 		dto.setRating(res.getRating());
 		dto.setAddress(res.getLocation().getAddress().getStreetAndNumber());
+		dto.setImage(res.getImage());
 		
 		if(res.isOpen()) {
 			dto.setOpen("Open");

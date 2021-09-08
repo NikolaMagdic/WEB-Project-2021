@@ -1,11 +1,15 @@
 function changeView() {
 	$("#divCart").hide();
 	$("#divOrders").hide();
+	$("#divRestaurants").hide();
+	$("#divRestaurantDetails").hide();
 	
 	$("#buttonCart").click(function(event){
 		$("#divCart").show();
 		$("#divMyAccount").hide();
 		$("#divOrders").hide();
+		$("#divRestaurants").hide();
+		$("#divRestaurantDetails").hide();
 		getCart();
 	});
 
@@ -13,6 +17,8 @@ function changeView() {
 		$("#divCart").hide();
 		$("#divMyAccount").hide();
 		$("#divOrders").show();
+		$("#divRestaurants").hide();
+		$("#divRestaurantDetails").hide();
 		getMyOrders();
 	});
 
@@ -20,7 +26,29 @@ function changeView() {
 		$("#divCart").hide();
 		$("#divMyAccount").show();
 		$("#divOrders").hide();
+		$("#divRestaurants").hide();
+		$("#divRestaurantDetails").hide();
 	});
+	
+	$("#buttonRestaurants").click(function(event){
+		$("#divCart").hide();
+		$("#divMyAccount").hide();
+		$("#divOrders").hide();
+		$("#divRestaurants").show();
+		$("#divRestaurantDetails").hide();
+		getAllRestaurants();
+	});
+	
+	$(document).on("click", ".button-details", function(){
+		$("#divCart").hide();
+		$("#divMyAccount").hide();
+		$("#divOrders").hide();
+		$("#divRestaurants").hide();
+		$("#divRestaurantDetails").show();
+		let id = $(this).attr("id");
+		getRestaurantDetails(id);
+
+	})
 }
 
 //Formatiranje datuma
@@ -66,7 +94,113 @@ function logout(){
 	});
 }
 
+// RESTORANI
+
+function getAllRestaurants(){
+	$("#tableRestaurants").empty();
+	$.get({
+		url: "rest/restaurant/all",
+		contentType: "application/json",
+		success: function(restaurants) {
+			for(let restaurant of restaurants) {
+				addRestaurantInTable(restaurant);
+			}
+			shownRestaurants = restaurants;
+		}
+	});
+}
+
+function addRestaurantInTable(restaurant) {
+	let table = $("#tableRestaurants");
+
+	let tr = "<tr id=\"trRestaurant\">" +
+			"<td>" + restaurant.name + "</td>" +
+			"<td>" + restaurant.type + "</td>" +
+			"<td>" + restaurant.open + "</td>" +
+			"<td>" + restaurant.city + "</td>" +
+			"<td>" + restaurant.country + "</td>" +
+			"<td>" + restaurant.rating + "</td>" +
+			" <td> <button id='" + restaurant.id + "' class='button-details'> Details </button></td>" +
+			"</tr>";
+	table.append(tr);
+
+}
+
+function getRestaurantDetails(restaurantId) {
+	getRestaurantArticles(restaurantId);
+	$.ajax({
+		type: "GET",
+		url: 'rest/restaurant/' + restaurantId,
+		contentType: 'application/json',
+		success: function(restaurant) {
+			console.log(restaurant.image);
+			$('#h1Restaurant').text("Restaurant " + restaurant.name);
+			$('#tdRestaurantId').text(restaurant.id);
+			$('#tdRestaurantName').text(restaurant.name);
+			$('#tdRestaurantCity').text(restaurant.city);
+			$('#tdRestaurantStreet').text(restaurant.address);
+			$('#tdRestaurantCountry').text(restaurant.country);
+			$('#tdRestaurantType').text(restaurant.type);
+			$('#tdRestaurantStatus').text(restaurant.open);
+			$('#tdRestaurantRating').text(restaurant.rating);
+			$('#imgRestaurantLogo').attr("src", restaurant.image);
+			
+		}
+	});
+}
+
+// Artikli u izabranom restoranu	
+function getRestaurantArticles(restaurantId) {
+	$.ajax({
+		
+		type: "GET",
+		url: './rest/article/' + restaurantId,
+		contentType: 'application/json',
+		success: function(articles) {
+	    	for(let article of articles) {
+				addRestaurantArticles(article);
+			}
+		}
+	});
+	addToCart(restaurantId)
+}
+
+function addRestaurantArticles(article){
+	let c = "<tr>" +
+	" <td>" + article.name + "</td> " +
+	" <td><img src='" + article.image + "'alt='" + article.image + "'></td> " +
+	" <td>" + article.description + "</td> " +
+	" <td>" + article.price + "</td> " +
+	" <td><input type='number' required value='1' min='1' class='input-amount' id='" + article.id + "'>" + "</td> " +
+	" <td><button class='add-to-cart' id='" + article.id  + "'>Dodaj u korpu</button></td> " +
+	"</tr>"
+	
+	$("#tableArticles").append(c);
+}
+
 // Shopping cart
+
+function addToCart(restaurantId) {
+	$(document).on('click', '.add-to-cart', function(){
+		var article = $(this).attr('id');
+		var amount = $("#" + article + ".input-amount").val();
+		console.log(article);
+		console.log(amount)
+		var cartItem = {
+			"article": article,
+			"amount": amount
+		}
+		$.post({
+			url: "rest/cart/add-to-cart/" + restaurantId,
+			contentType: "application/json",
+			data: JSON.stringify(cartItem),
+			success: function(){
+				alert("Artikal dodat u korpu");
+			}
+		});
+	});
+}
+
 function getCart() {
 	$("#tableCart").empty();
 	$("#totalSum").empty();
@@ -101,7 +235,7 @@ function addArticleInTable(article, amount) {
 	
 	let tr = "<tr>" +
 			"<td>" + article.name + "</td>" +
-			"<td><input type='number' min='0' class='input-number' id='" + article.id + "' value='" + amount + "'>" + "</td>" +
+			"<td><input type='number' min='1' class='input-number' id='" + article.id + "' value='" + amount + "'>" + "</td>" +
 			"<td>" + article.price + "</td>" +
 			"<td>" + "ovde ce biti slika" + "</td>" +
 			"<td><button class='remove-article' id='" + article.id  + "'>Izbaci</button></td>" +
@@ -133,7 +267,7 @@ function refreshCart() {
 		console.log(userCart);
 		var tempCart;
 		for (let cartItem of userCart.cartItems) {
-			let articleAmount = $("#" + cartItem.article).val();
+			let articleAmount = $("#" + cartItem.article + ".input-number").val();
 			cartItem.amount = articleAmount;
 		}
 		tempCart = userCart;
@@ -445,6 +579,7 @@ function filterOrdersByStatus() {
 var userCart;
 
 var allRestaurants;
+var shownRestaurants;
 
 var shownOrders;
 
@@ -481,27 +616,6 @@ $(document).ready(function(){
 	filterOrdersByRestaurantType();
 	filterOrdersByStatus();
 	
-	// OVO JE SAMO POMOC
-	var artikal1 = {
-	    "article": 1,
-	    "amount": 2
-	}
-	$.post({
-		url: "rest/cart/add-to-cart/1",
-		contentType: "application/json",
-		data: JSON.stringify(artikal1),
-		
-	});
-	var artikal2 = {
-		    "article": 2,
-		    "amount": 1
-		}
-	$.post({
-		url: "rest/cart/add-to-cart/1",
-		contentType: "application/json",
-		data: JSON.stringify(artikal2),
-	});
-	// OBRISATI KADA SE URADI DODAVANJE ARTIKALA U KORPU
 	
 	$("#buttonSearch").click(function(){
 		$("#divSearchOrders").slideToggle();

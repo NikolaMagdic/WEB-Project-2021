@@ -23,6 +23,7 @@ public class RestaurantDTO {
 	
 	private List<Integer> articles = new ArrayList<Integer>();
 
+	private String image;
 	
 	
 	public RestaurantDTO() {
@@ -32,7 +33,7 @@ public class RestaurantDTO {
 
 
 	public RestaurantDTO(Integer id, String name, String type, String open, String city, String country, String address,
-			Double rating, List<Integer> articles) {
+			Double rating, List<Integer> articles, String image) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -43,6 +44,7 @@ public class RestaurantDTO {
 		this.address = address;
 		this.rating = rating;
 		this.articles = articles;
+		this.image = image;
 	}
 
 
@@ -141,6 +143,18 @@ public class RestaurantDTO {
 
 	public void setArticles(List<Integer> articles) {
 		this.articles = articles;
+	}
+
+
+
+	public String getImage() {
+		return image;
+	}
+
+
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 	
 	

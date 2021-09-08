@@ -13,7 +13,6 @@
 		"restaurant": 0,
 		"deliveryOrders": [],
 		"points": 0,
-		"customerType": null,
 		"blocked": false,
 		"customerType": null
 		
