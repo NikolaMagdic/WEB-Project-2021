@@ -666,8 +666,8 @@ $(document).ready(function(){
 			url: "../rest/user/add",
 			data: JSON.stringify(data),
 			contentType: "application/json",
-			success : function(message){
-				alert(message);
+			success : function(user){
+				alert("Uspešno dodat " + user.role + " " + user.firstName + " " + user.lastName);
 			},
 			error: function(message){
 				

@@ -2,7 +2,7 @@ package beans;
 
 public class Comment {
 	
-	private Long id;
+	private Integer id;
 
 	private Integer customer;
 	
@@ -19,7 +19,7 @@ public class Comment {
 	}
 	
 
-	public Comment(Long id, Integer customer, Integer restaurant, String text, Integer grade) {
+	public Comment(Integer id, Integer customer, Integer restaurant, String text, Integer grade) {
 		super();
 		this.id = id;
 		this.customer = customer;
@@ -62,11 +62,21 @@ public class Comment {
 		this.grade = grade;
 	}
 
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+
 	@Override
 	public String toString() {
-		return "Comment [customer=" + customer + ", restaurant=" + restaurant + ", text=" + text + ", grade=" + grade
-				+ "]";
+		return "Comment [id=" + id + ", customer=" + customer + ", restaurant=" + restaurant + ", text=" + text
+				+ ", grade=" + grade + "]";
 	}
-	
+
 	
 }

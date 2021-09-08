@@ -10,6 +10,7 @@
 	<div class="menu">
 		<a id="buttonCart" class="menu-item">Cart</a>
 		<a id="buttonOrders" class="menu-item">My Orders</a>
+		<a id="buttonRestaurants" class="menu-item">Restaurants</a>
 		<div class="dropdown">
 		  <button class="dropbtn">Account</button>
 		  <div class="dropdown-content">
@@ -96,6 +97,79 @@
 					</table>
 				</form>
 		</div>
+	<div id="divRestaurants">
+		<h1>Pregled restorana</h1>
+		<table class="table-data">
+			<thead>
+				<tr>
+					<th id='sortRestaurantsByName' class="sort-header">Name <img id="imageSortName" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
+					<th> <input id="typeZaFiltraciju" placeholder="Type" ></th>
+					<th id='sortRestaurantsByStatus'>Status</th>
+					<th id='sortRestaurantsByCity' class="sort-header">City<img id="imageSortCity" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id='sortRestaurantsByCountry' class="sort-header">Country<img id="imageSortCountry" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id='sortRestaurantsByRating' class="sort-header">Rating<img id="imageSortRating" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
+					<th >Detalji</th>
+				</tr>
+			</thead>
+			<tbody id="tableRestaurants"></tbody>
+		</table>
+	</div>
+	<div id="divRestaurantDetails">
+		<h1 id="h1Restaurant"></h1>
+			<table class="table-data">
+				<tr style="display: hidden">
+					<td>Restaurant id:</td>
+					<td id="tdRestaurantId"></td>
+				</tr>
+				<tr>
+					<td>Name:</td>
+					<td id="tdRestaurantName"></td>
+				</tr>
+				<tr>
+					<td>City:</td>
+					<td id="tdRestaurantCity"></td>
+				</tr>				
+				<tr>
+					<td>Street:</td>
+					<td id="tdRestaurantStreet"></td>
+				</tr>
+				<tr>
+					<td>Country:</td>
+					<td id="tdRestaurantCountry"></td>
+				</tr>
+				<tr>
+					<td>Type:</td>
+					<td id="tdRestaurantType"></td>
+				</tr>
+				<tr>
+					<td>Status:</td>
+					<td id="tdRestaurantStatus"></td>
+				</tr>
+				<tr>
+					<td>Rating:</td>
+					<td id="tdRestaurantRating"></td>
+				</tr>	
+				<tr>
+					<td>Logo:</td>
+					<td><img id="imgRestaurantLogo"></td>
+				</tr>			
+			</table>
+			<h2>Artikli</h2>
+			<table class="table-data">
+				<thead>
+					<tr>
+						<th>Naziv<th>
+						<th>Slika</th>
+						<th>Opis</th>
+						<th>Cena</th>
+						<th>Količina</th>
+						<th>Korpa</th>
+					</tr>
+				</thead>
+				<tbody  id="tableArticles">
+				</tbody>
+			</table>	
+	</div>
 	<div id="divCart">
 		<h1>Shopping cart</h1>
 		<table class="table-data">
@@ -184,4 +258,6 @@
 			<tbody id="tableOrders"></tbody>
 		</table>
 	</div>
+
+	
 </body>
