@@ -386,4 +386,52 @@ public class OrderService {
 		return Response.status(200).entity(restaurantOrders).build();
 	}	
 	
+	
+	//funkcija dobavlja sve ordere za jedan restoran
+	@GET
+	@Path("/deliverer/{username}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDelivererOrders(@PathParam("username") String username) {
+		
+		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
+		
+		UserDAO userDAO = (UserDAO) context.getAttribute("users");
+		User user = userDAO.findUser(username);
+		
+		if (user == null) {
+			System.out.println("Nije nasao dostavljaca sa username: " + username);
+			return Response.status(400).build();
+		}
+	
+		List<Order> delivererOrders = new ArrayList<Order>();
+		
+		for (String orderId : user.getDeliveryOrders()) {
+			Order order = orderDAO.getOrder(orderId);
+			delivererOrders.add(order);
+			//System.out.println("Deliverer order sa id: " + orderId);
+		}
+		
+		return Response.status(200).entity(delivererOrders).build();
+	}
+	
+	//funkcija dobavlja sve ordere za koje treba dostaviti
+	@GET
+	@Path("/forPickup")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPickupOrders(@Context HttpServletRequest request) {
+		//System.out.println("USAO U getPickupOrders");
+		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
+	
+		List<Order> pickupOrders = new ArrayList<Order>();
+		
+		for (Order order : orderDAO.getAllOrders()) {
+			if(order.getOrderStatus().equals(OrderStatus.CEKA_DOSTAVLJACA)) {
+				pickupOrders.add(order);
+				//System.out.println("Order ceka dostavljaca sa id: " + order.getOrderId());
+			}
+		}
+		
+		return Response.status(200).entity(pickupOrders).build();
+	}	
+	
 }

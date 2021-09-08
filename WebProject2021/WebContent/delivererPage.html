@@ -7,7 +7,8 @@
 </head>
 <body>
 	<div class="meni">
-	  <button id="buttonMyOrders" class="meni-button">Orders</button>
+	  <button id="buttonMyOrders" class="meni-button">My Orders</button>
+	  <button id="buttonPickupOrders" class="meni-button">Pickup Orders</button>
 	  <div class="dropdown">
 	  	  <button id="buttonAccount" class="account-button">Nalog</button>
 	  	  <div class="dropdown-content">
@@ -80,6 +81,50 @@
 				</tr>
 			</table>				
 		</form>
+	</div>
+	
+	<div id="divOrders">
+		<h1 align="center">My orders<button id="buttonSearch"><img id="buttonSearch2" alt="Pretraga" src="images/search-icon.png" width="15px" height="15px"></button></h1>
+		<div id="divFilterOrders" class="divFilterOrders" >
+			<label><b>Status porudzbine:</b></label>
+			<select id="filterStatus">
+				<option value="SVE">Sve</option>
+				<option value="U_TRANSPORTU">U transportu</option>
+				<option value="DOSTAVLJENA">Dostavljena</option>
+			</select>
+		</div>	
+		<table class="table-data">
+			<thead>
+				<tr class="tr-top">
+					<th id="sortRestaurant" class="sort-header">Restoran <img id="imageSortRestaurantName" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
+					<th>Tip restorana</th>
+					<th id="sortPrice" class="sort-header">Cena <img id="imageSortPrice2" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortDate"" class="sort-header">Datum <img id="imageSortDate" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
+					<th>Customer</th>
+					<th>Status</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody id="tableOrders"></tbody>
+		</table>
+	</div>
+	
+	<div id="divAllOrders">
+		<h1 align="center">Pick-up orders<button id="buttonSearchAll"><img id="buttonSearch2" alt="Pretraga" src="images/search-icon.png" width="15px" height="15px"></button></h1>	
+		<table class="table-data">
+			<thead>
+				<tr class="tr-top">
+					<th id="sortRestaurantAll" class="sort-header">Restoran <img id="imageSortRestaurantNameAll" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
+					<th>Tip restorana</th>
+					<th id="sortPriceAll" class="sort-header">Cena <img id="imageSortPrice2" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortDateAll"" class="sort-header">Datum <img id="imageSortDate" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
+					<th>Customer</th>
+					<th>Status</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody id="tableAllOrders"></tbody>
+		</table>
 	</div>
 	
 	<footer>

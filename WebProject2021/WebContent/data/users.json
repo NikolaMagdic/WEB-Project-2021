@@ -61,7 +61,7 @@
 		"myOrders": [],
 		"cart": {},
 		"restaurant": 0,
-		"deliveryOrders": [],
+		"deliveryOrders": [122112233433],
 		"points": 0,
 		"customerType": null
 	}

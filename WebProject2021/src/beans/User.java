@@ -33,7 +33,7 @@ public class User {
 	private Integer restaurant;
 	
 	//ako je dostavljac
-	private List<Integer> deliveryOrders = new ArrayList<Integer>();
+	private List<String> deliveryOrders = new ArrayList<String>();
 	
 	//ako je kupac
 	private Double points;
@@ -52,7 +52,7 @@ public class User {
 
 
 	public User(String username, String password, String firstName, String lastName, boolean gender, Date birthDate,
-			UserRole role, List<String> myOrders, Cart cart, Integer restaurant, List<Integer> deliveryOrders,
+			UserRole role, List<String> myOrders, Cart cart, Integer restaurant, List<String> deliveryOrders,
 			Double points, CustomerType customerType, boolean blocked) {
 		super();
 		this.username = username;
@@ -174,14 +174,20 @@ public class User {
 	}
 
 
-	public List<Integer> getDeliveryOrders() {
+
+
+	public List<String> getDeliveryOrders() {
 		return deliveryOrders;
 	}
 
 
-	public void setDeliveryOrders(List<Integer> deliveryOrders) {
+
+
+	public void setDeliveryOrders(List<String> deliveryOrders) {
 		this.deliveryOrders = deliveryOrders;
 	}
+
+
 
 
 	public Double getPoints() {

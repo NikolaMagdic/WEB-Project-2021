@@ -6,6 +6,16 @@
 		"date": 1508762343511,
 		"price": 780.0,
 		"customer" : "Perica Peric",
-		"orderStatus" : "OBRADA"
+		"orderStatus" : "CEKA_DOSTAVLJACA"
+	},
+	
+	"122112233433": {
+		"orderId": 122112233433,
+		"products": [],
+		"restaurant": 1,
+		"date": 1508762343511,
+		"price": 990.0,
+		"customer" : "Perica Peric",
+		"orderStatus" : "U_TRANSPORTU"
 	}
 }

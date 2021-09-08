@@ -80,7 +80,7 @@ public class UserService {
 		UserDAO userDAO = (UserDAO) ctx.getAttribute("users");
 		
 		if(user.getRole().equals(UserRole.DOSTAVLJAC))
-			user.setDeliveryOrders(new ArrayList<Integer>());
+			user.setDeliveryOrders(new ArrayList<String>());
 		
 		if(userDAO.findUser(user.getUsername()) != null) {
 			return Response.status(400).build();
