@@ -162,6 +162,8 @@ public class OrderService {
 		OrderStatus status = null;
 		if(order.getOrderStatus().equals("U_PRIREMI")) {
 			status = OrderStatus.U_PRIREMI;
+		} else if(order.getOrderStatus().equals("CEKA_DOSTAVLJACA")) {
+			status = OrderStatus.CEKA_DOSTAVLJACA;
 		} else {
 			status = OrderStatus.OBRADA;
 		}
