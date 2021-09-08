@@ -160,11 +160,14 @@ public class OrderService {
 		Order oldOrder = orderDAO.getOrder(order.getOrderId());
 		
 		OrderStatus status = null;
-		if(order.getOrderStatus().equals("U_PRIREMI")) {
+		if(order.getOrderStatus().equals("U_PRIREMI") && oldOrder.getOrderStatus().equals(OrderStatus.OBRADA)) {
+			System.out.println("USAO U PRVI");
 			status = OrderStatus.U_PRIREMI;
-		} else if(order.getOrderStatus().equals("CEKA_DOSTAVLJACA")) {
+		} else if(order.getOrderStatus().equals("CEKA_DOSTAVLJACA") && oldOrder.getOrderStatus().equals(OrderStatus.U_PRIREMI)) {
 			status = OrderStatus.CEKA_DOSTAVLJACA;
+			System.out.println("USAO U DRUGI");
 		} else {
+			System.out.println("USAO U TRECI");
 			status = OrderStatus.OBRADA;
 		}
 		

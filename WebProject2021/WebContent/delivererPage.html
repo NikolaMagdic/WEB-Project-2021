@@ -1,0 +1,88 @@
+<head>
+	<meta charset="UTF-8">
+	<title>Deliverer Page</title>
+	<link rel="stylesheet" href="delivererPage.css">
+	<script src="jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="./delivererPage.js"></script>
+</head>
+<body>
+	<div class="meni">
+	  <button id="buttonMyOrders" class="meni-button">Orders</button>
+	  <div class="dropdown">
+	  	  <button id="buttonAccount" class="account-button">Nalog</button>
+	  	  <div class="dropdown-content">
+	  	  	  <button id="buttonEditAccount" class="meni-button">Izmeni podatke</button>
+	  	  	  <button id="buttonLogout" class="meni-button">Logout</button>
+	  	  </div>	  	  
+	  </div>	  
+	</div>
+	
+	<div id="divEditAccount">
+		<form id="formEdit">
+		<h1>Izmeni svoje podatke</h1>
+			<table>
+				<tr>
+					<td>
+						Username: 
+					</td>
+					<td>			
+						<input type="text" id="usernameEdit" disabled>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Password: 
+					</td>
+					<td>			
+						<input type="password" id="passwordEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Confirm Password: 
+					</td>
+					<td>			
+						<input type="password" id="confirmPasswordEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Ime: 
+					</td>
+					<td>			
+						<input type="text" id="nameEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Prezime: 
+					</td>
+					<td>			
+						<input type="text" id="lastNameEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>Pol:</td>
+					<td>
+					<label>Muški</label>
+					<input type="radio" name="genderEdit" id="maleEdit" checked>
+					<label>Ženski</label>
+					<input type="radio" name="genderEdit" id="femaleEdit">
+					</td>
+				</tr>
+				<tr>
+					<td>Datum rođenja:</td>
+					<td><input type="date" id="dateEdit"></td>
+				</tr>
+				<tr>
+					<td></td>						
+					<td><input type="submit" value="Izmeni" class="buttonEdit"></td>
+				</tr>
+			</table>				
+		</form>
+	</div>
+	
+	<footer>
+		<div>Autori: Dionizij Malacko | Nikola Magdić</div>
+	</footer>
+</body>

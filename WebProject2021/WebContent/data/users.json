@@ -48,5 +48,21 @@
 		"deliveryOrders": [],
 		"points": 0,
 		"customerType": null
+	},
+	
+	"deliverer": {
+		"username": "deliverer",
+		"password": "123",
+		"firstName": "Scuby",
+		"lastName": "Doo",
+		"gender": true,
+		"birthDate": 1508762343511,
+		"role": "DOSTAVLJAC",
+		"myOrders": [],
+		"cart": {},
+		"restaurant": 0,
+		"deliveryOrders": [],
+		"points": 0,
+		"customerType": null
 	}
 }

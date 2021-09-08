@@ -103,6 +103,7 @@ public class UserService {
 		UserDAO userDAO = (UserDAO)ctx.getAttribute("users");
 		User userForUpdate = userDAO.findUser(user.getUsername());
 		
+		System.out.println("USAO U EDIT");
 		System.out.println(user.getUsername());
 		System.out.println(user.getPassword());
 		System.out.println(user.getFirstName());
@@ -154,9 +155,9 @@ public class UserService {
 		
 		List<User> filteredUsers = new ArrayList<User>();
 		
-		System.out.println(firstName);
-		System.out.println(lastName);
-		System.out.println(username);
+//		System.out.println(firstName);
+//		System.out.println(lastName);
+//		System.out.println(username);
 		
 		for (User user : users) {
 			if((firstName.equals("") || user.getFirstName().toLowerCase().contains(firstName.toLowerCase()))
@@ -248,8 +249,8 @@ public class UserService {
 		
 		Integer restaurantId = 0;
 		
-		System.out.println("USAO U getRestaurantByManager");
-		System.out.println("Username: " + managerUsername);
+//		System.out.println("USAO U getRestaurantByManager");
+//		System.out.println("Username: " + managerUsername);
 		
 		for (User user : allUsers) {
 				if(user.getUsername().toLowerCase().equals(managerUsername.toLowerCase())) {
@@ -265,15 +266,15 @@ public class UserService {
 			restaurant = restaurantDAO.findRestaurant(restaurantId);
 		}
 		
-		System.out.println("ID restorana je: " + restaurantId);
+		//System.out.println("ID restorana je: " + restaurantId);
 		
 		if (restaurant == null) {
 			return Response.status(400).build();
 		}
 		
-		for(Integer articleId : restaurant.getArticles()) {
-			System.out.println("Id artikla u restoranu je: " + articleId);
-		}
+//		for(Integer articleId : restaurant.getArticles()) {
+//			System.out.println("Id artikla u restoranu je: " + articleId);
+//		}
 		
 		return Response.status(200).entity(convertToDTO(restaurant)).build();
 		
@@ -294,7 +295,7 @@ public class UserService {
 		List<Integer> articlesId = new ArrayList<Integer>();
 		for(Integer articleId : res.getArticles()) {
 			if(articleId != 0) {
-				System.out.println("Id artikla koji dodajemo u dto artikala: " + articleId);
+				//System.out.println("Id artikla koji dodajemo u dto artikala: " + articleId);
 				articlesId.add(articleId);
 			}
 		}

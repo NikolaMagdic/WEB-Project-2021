@@ -468,7 +468,7 @@ $(document).ready(function(){
 				} else if(message === "MENADZER"){
 					window.location = "./managerPage.html";
 				} else if(message === "DOSTAVLJAC") {
-					
+					window.location = "./delivererPage.html";
 				} else if(message === "KUPAC"){
 					window.location = "./userPage.html";
 					alert("Welcome!");

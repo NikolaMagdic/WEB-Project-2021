@@ -457,7 +457,7 @@ function addOrderInTable(order) {
 			"<td>" + formatDate(order.date) + "</td>" +
 			"<td>" + order.customer + "</td>" +
 			"<td>" + order.orderStatus + "</td>" +
-			"<td><button id='detaljiOrdera" + order.orderId + "' name='detaljiOrdera'>Edit</button></td>" +
+			"<td><button id='detaljiOrdera" + order.orderId + "' class='buttonDetails' name='detaljiOrdera'>Edit</button></td>" +
 			"</tr>";
 	
 	table.append(tr);

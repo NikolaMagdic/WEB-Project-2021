@@ -1,0 +1,226 @@
+html {
+	min-height: 100%;
+}
+
+body {
+	/*background-color: blue;*/
+	background: -webkit-gradient(linear, left top, left bottom, from(#99d6ff), to(#006bb3));
+	margin: 0%;
+}
+
+h1, h2 {
+	text-align: center;	 
+}
+
+form {
+	text-align: center;
+}
+
+input {
+	border-radius: 10px;
+}
+
+table {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div {
+	align-items: center;
+}
+
+.table-data {
+	border-collapse: collapse;
+}
+
+.table-data td, .table-data th {
+  border: 1px solid #ddd;
+  border-color: #003d66;
+  padding: 8px;
+}
+
+.table-data th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: rgb(116, 167, 252);
+  color: white;
+}
+
+.submit {
+	cursor: pointer;
+	background-color: #cc0000;
+  	border: none;
+  	color: white;
+  	padding: 8px 18px;
+  	text-align: center;
+  	text-decoration: none;
+  	display: inline-block;
+  	font-size: 12px;
+  	border-radius: 30px;
+}
+
+.meni {
+  background-color: #003d66;
+  overflow: hidden;
+  color: #f2f2f2;
+}
+
+.meni-button {
+  background-color: #0095dd;
+  color: white;
+  float: left;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  padding: 14px 16px; 
+  font-size: 17px;
+}
+
+.dropdown {
+  float: right;
+  overflow: hidden;
+}
+
+.dropdown .account-button {
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  margin: 0;
+  font-size: 17px;
+}
+
+.account-button {
+  background-color: #ff5959;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+}
+
+.meni-button:hover {
+  background-color: #16c5fe;
+  color: white;
+}
+
+
+.dropdown-content {	
+  right: 0;
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content button {
+  background-color: #f20000;
+  color: white;
+  float: none;
+  display: block;
+  text-decoration: none;
+  padding: 14px 16px; 
+  text-align: left;
+  font-size: 17px;
+  width: 100%;
+}
+
+.dropdown:hover .account-button {
+    background-color: #fc716d;
+    color: white;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+.dropdown-meni-button:hover {
+  background-color: #ff1a1a;
+  color: white;
+} 
+
+
+#divRestaurantArticles{
+	display: none;
+	align-items: center;
+}
+
+.tr-top {
+  background-color: #02b0f2;
+  font-size: 20px;	
+  text-decoration: none;
+}
+
+.buttonDetails {
+  background-color: #028dc1;
+  border: none;
+  color: white;
+  padding: 3px 7px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;	
+}
+
+.tdTable {
+  padding: 2px 5px;
+  text-align: center;
+  text-decoration: none;
+}
+
+#tableArticles {
+	background-color: #29c5f8;
+}
+
+.buttonEdit {
+  background-color: #05a018;
+  border: none;
+  color: white;
+  padding: 3px 7px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  width: 100%;	
+}
+
+footer {
+  color: white;	
+  background-color: #003d66;
+  padding: 10px;
+  text-align: center;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  height: 20px;  
+}
+
+#divOrders{
+	align-items: center;
+}
+
+
+
+#filterStatus {
+  background-color: #2b95ff;
+  border: none;
+  color: white;
+  padding: 3px 7px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  width: 20%;		
+}
+
+.table-data.tr{
+  background-color: #02b0f2;
+  font-size: 20px;	
+  text-decoration: none;
+}
+
+.divFilterOrders {
+	align-items: center;
+	text-align: center;
+	padding: 7px 10px;
+}
+
