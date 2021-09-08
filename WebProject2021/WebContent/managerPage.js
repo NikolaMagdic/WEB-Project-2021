@@ -72,7 +72,6 @@ function initShowButtons(){
 	
 	$("#buttonOrders").click(function(event){
 		getRestaurantByManager();
-		getManagerUsername();
 		$("#divEditAccount").hide();
 		$("#divRestaurantDetails").hide();
 		$("#divRestaurantArticles").hide();
@@ -81,7 +80,6 @@ function initShowButtons(){
 		$("#divAddArticle").hide();
 		$("#divOrders").show();
 		$("#divSearchOrders").hide();
-		getRestaurantOrders();
 	});
 	
 	$("#buttonSearch").click(function(event){
@@ -95,7 +93,6 @@ function initShowButtons(){
 		$("#divAddArticle").hide();
 		$("#divOrders").show();
 		$("#divSearchOrders").show();
-		getRestaurantOrders();
 	});
 }
 
@@ -601,6 +598,7 @@ $(document).ready(function(){
 	initShowButtons();
 	
 	getManagerUsername();
+	//getRestaurantByManager();
 	//getLoggedUserData();
 	editAccount();
 	editArticle();

@@ -1,3 +1,11 @@
 {
-
+	"1": {
+		"orderId": 123345566788,
+		"products": [],
+		"restaurant": 1,
+		"date": 1508762343511,
+		"price": 780.0,
+		"customer" : "Perica Peric",
+		"orderStatus" : "OBRADA"
+	}
 }
