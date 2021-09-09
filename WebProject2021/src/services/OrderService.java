@@ -230,14 +230,14 @@ public class OrderService {
 		
 		
 		
-		OrderDeliveryStatus status = null;
+		//OrderDeliveryStatus status = null;
 		//menja delivery status na TAKEN_FOR_DELIVERY, jedino ako je prethondo bio NONE
-		if(oldOrder.getOrderDeliveryStatus().equals(OrderDeliveryStatus.NONE)) {
+		//if(oldOrder.getOrderDeliveryStatus().equals(OrderDeliveryStatus.NONE)) {
 			System.out.println("Menja status delivery na TAKEN_FOR_DELIVERY");
-			status = OrderDeliveryStatus.TAKEN_FOR_DELIVERY;
-		}
+			//status = OrderDeliveryStatus.TAKEN_FOR_DELIVERY;
+			oldOrder.setOrderDeliveryStatus(OrderDeliveryStatus.TAKEN_FOR_DELIVERY);
+		//}
 		
-		oldOrder.setOrderDeliveryStatus(status);
 		loggedInUser.getDeliveryOrders().add(oldOrder.getOrderId());
 		
 		System.out.println("Sada je status za delivery ordera: " + oldOrder.getOrderDeliveryStatus());
@@ -265,11 +265,11 @@ public class OrderService {
 		OrderDeliveryStatus deliveryStatus = null;
 		OrderStatus status = null;
 		
-		if(oldOrder.getOrderDeliveryStatus().equals(OrderDeliveryStatus.TAKEN_FOR_DELIVERY)) {
-			deliveryStatus = OrderDeliveryStatus.APPROVED;
-			oldOrder.setOrderDeliveryStatus(deliveryStatus);
+		//if(oldOrder.getOrderDeliveryStatus().equals(OrderDeliveryStatus.TAKEN_FOR_DELIVERY)) {
+			//deliveryStatus = OrderDeliveryStatus.APPROVED;
+			oldOrder.setOrderDeliveryStatus(OrderDeliveryStatus.APPROVED);
 			oldOrder.setOrderStatus(OrderStatus.U_TRANSPORTU);
-		}
+		//}
 		
 		
 		System.out.println("Sada je status za delivery ordera: " + oldOrder.getOrderDeliveryStatus());
@@ -292,10 +292,11 @@ public class OrderService {
 		
 		OrderDeliveryStatus status = null;
 		
-		if(oldOrder.getOrderDeliveryStatus().equals(OrderDeliveryStatus.TAKEN_FOR_DELIVERY)) {
-			status = OrderDeliveryStatus.REJECTED;
-			oldOrder.setOrderDeliveryStatus(status);
-		}
+		//if(oldOrder.getOrderDeliveryStatus().equals(OrderDeliveryStatus.TAKEN_FOR_DELIVERY)) {
+			//status = OrderDeliveryStatus.REJECTED;
+			oldOrder.setOrderDeliveryStatus(OrderDeliveryStatus.REJECTED);
+			oldOrder.setOrderStatus(OrderStatus.OTKAZANA);
+		//}
 		
 		
 		System.out.println("Sada je status za delivery ordera: " + oldOrder.getOrderDeliveryStatus());
@@ -304,6 +305,8 @@ public class OrderService {
 		orderDAO.saveOrders(contextPath);
 	}
 	
+	//PRETRAGE
+	//#################################################################################################################
 	
 	// Pretraga porudzbina za kupca ili dostavljaca (samo njegove porudzbine)
 	@GET
@@ -526,6 +529,10 @@ public class OrderService {
 		return Response.status(200).entity(filteredOrders).build();
 	}
 	
+	
+	
+	
+	//#################################################################################################################
 	//funkcija dobavlja sve ordere za jedan restoran
 	@GET
 	@Path("/restaurant/{id}")

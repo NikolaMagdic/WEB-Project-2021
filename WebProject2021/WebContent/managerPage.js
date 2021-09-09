@@ -151,7 +151,7 @@ function initShowButtons(){
 		$("#divSearchRequestOrders").hide();
 	});
 	
-	$(document).on("click", "button[name = 'detaljiOrdera']", function(){
+	$(document).on("click", "button[name = 'approveOrder']", function(){
 		getRestaurantByManager();
 		//getRestaurantRequestOrders();
 		$("#divEditAccount").hide();
@@ -167,7 +167,7 @@ function initShowButtons(){
 		$("#divSearchRequestOrders").hide();
 	});
 		 
-	$(document).on("click", "button[name = 'detaljiOrdera']", function(){
+	$(document).on("click", "button[name = 'rejectOrder']", function(){
 		getRestaurantByManager();
 		//getRestaurantRequestOrders();
 		$("#divEditAccount").hide();
@@ -264,7 +264,6 @@ function getRestaurantByManager(){
 }
 
 function addArticleInTable(articleId) {
-	event.preventDefault();
 	let table = $("#tableArticles");
 	
 	
@@ -291,7 +290,6 @@ function addArticleInTable(articleId) {
 }
 
 function getArticleById(articleId){
-	event.preventDefault();
 	//console.log("ID artikla za koji nam trebaju detalji: " + articleId);
 	
 	
@@ -364,6 +362,7 @@ function getLoggedUserData() {
 
 function editAccount() {
 	$("#formEdit").submit(function (event){
+		event.preventDefault();
 		let username = $("#usernameEdit").val();
 		let password = $("#passwordEdit").val();
 		let confirmPassword = $("#confirmPasswordEdit").val();
@@ -549,7 +548,7 @@ function addOrderInTable(order) {
 } 
 
 function getOrderById(orderId){
-	event.preventDefault();
+	//event.preventDefault();
 	//console.log("ID ordera za koji nam trebaju detalji: " + orderId);
 	
 	
@@ -644,7 +643,7 @@ function addRequestOrderInTable(order) {
 } 
 
 function approveOrderById(orderId){
-	event.preventDefault();
+	//event.preventDefault();
 	console.log("ID ordera koji odobravamo: " + orderId);
 
 	
@@ -664,7 +663,7 @@ function approveOrderById(orderId){
 }
 
 function rejectOrderById(orderId){
-	event.preventDefault();
+	//event.preventDefault();
 	console.log("ID ordera koji odbijamo: " + orderId);
 
 	
@@ -766,7 +765,7 @@ function filterOrdersByStatus() {
 // SORTIRANJE #############################################################################
 function sortOrdersByPrice() {
 	$("#sortPrice").click(function(){
-		event.preventDefault();
+		//event.preventDefault();
 		$("#tableOrders").empty();
 
 		for (var i = 0; i < shownOrders.length - 1; i++) {
@@ -798,7 +797,7 @@ function sortOrdersByPrice() {
 
 function sortOrdersByDate() {
 	$("#sortDate").click(function(){
-		event.preventDefault();
+		//event.preventDefault();
 		$("#tableOrders").empty();
 
 		for (var i = 0; i < shownOrders.length - 1; i++) {
