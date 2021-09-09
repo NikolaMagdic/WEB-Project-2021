@@ -2,6 +2,8 @@ function initHide(){
 	$("#divEditAccount").hide();
 	$("#divOrders").hide();
 	$("#divAllOrders").hide();
+	$("#divSearchOrders").hide();
+	$("#divSearchAllOrders").hide();
 }
 
 function initShowButtons(){
@@ -10,6 +12,8 @@ function initShowButtons(){
 		$("#divEditAccount").show();
 		$("#divOrders").hide();
 		$("#divAllOrders").hide();
+		$("#divSearchOrders").hide();
+		$("#divSearchAllOrders").hide();
 	});
 	
 	$("#buttonMyOrders").click(function(){
@@ -18,6 +22,8 @@ function initShowButtons(){
 		$("#divEditAccount").hide();
 		$("#divOrders").show();
 		$("#divAllOrders").hide();
+		$("#divSearchOrders").hide();
+		$("#divSearchAllOrders").hide();
 	}); 
 	
 	$("#buttonPickupOrders").click(function(){
@@ -25,6 +31,24 @@ function initShowButtons(){
 		$("#divEditAccount").hide();
 		$("#divOrders").hide();
 		$("#divAllOrders").show();
+		$("#divSearchOrders").hide();
+		$("#divSearchAllOrders").hide();
+	});
+	
+	$("#buttonSearch").click(function(event){
+		$("#divEditAccount").hide();
+		$("#divOrders").show();
+		$("#divAllOrders").hide();
+		$("#divSearchOrders").show();
+		$("#divSearchAllOrders").hide();
+	});
+	
+	$("#buttonSearchAll").click(function(event){
+		$("#divEditAccount").hide();
+		$("#divOrders").hide();
+		$("#divAllOrders").show();
+		$("#divSearchOrders").hide();
+		$("#divSearchAllOrders").show();
 	});
 }
 
@@ -178,9 +202,10 @@ function getPickupOrders() {
 		url: "rest/order/forPickup",
 		contentType: "application/json",
 		success: function (orders) {
+			console.log(orders);
 			for(let order of orders) {
 				addPickupOrderInTable(order);
-				//console.log("ORDER ID: " + order.orderId);
+				console.log("ORDER ID: " + order.orderId);
 					$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
 							getOrderById(order.orderId);
 					});
@@ -279,9 +304,140 @@ function getRestaurants() {
 
 //SORTIRANJE 
 
-//FILTRIRANJE
+//FILTRIRANJE ##############################################################
+function filterOrdersByStatus() {
+	$("#filterStatus").change(function(){
+		$.get({
+			url: "rest/order/deliverer/" + delivererUsername,
+			contentType: "application/json",
+			success: function(orders) {
+				$("#tableOrders").empty();
+				shownOrders = [];
+				let status = $("#filterStatus option:selected").val();
+				for (let order of orders) {					
+					if((order.orderStatus === status) || status === "SVE") {
+						addOrderInTable(order);
+							$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
+								getOrderById(order.orderId);
+							});
+						shownOrders.push(order);
+					}
+				}
+			}
+		});
+	});
+}
 
-//SEARCH
+
+//SEARCH #################################################################
+function searchOrders() {
+	
+	$("#formSearchOrders").submit(function (event){
+		event.preventDefault();
+		let sDate = $("#searchStartDate").val();
+		let eDate = $("#searchEndDate").val();
+		var startDate;
+		var endDate;
+		console.log(sDate);
+		console.log(eDate);
+		if(sDate != "") {
+			startDate = new Date(sDate);
+			startDate = startDate.getTime();
+		} else {
+			startDate = "";
+		}
+		if(eDate != "") {
+			endDate = new Date(eDate);
+			endDate = endDate.getTime();
+		} else {
+			endDate = "";
+		}
+		
+		// getTime() vraca vreme u milisekundama
+		let queryParams = {
+			restaurant: $("#searchRestaurant").val(),
+			minPrice: $("#searchMinPrice").val(),
+			maxPrice: $("#searchMaxPrice").val(),
+			startDate: startDate,
+			endDate: endDate
+		};
+		
+		$.get({
+			url: "rest/order/search",
+			data: queryParams,
+			success: function(orders){
+				// Prvo brisem postojece narudzbine iz tabele pa dodajem filtrirane - pretraga
+				$("#tableOrders").empty();
+				for (let order of orders) {
+					addOrderInTable(order);
+					$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
+							getOrderById(order.orderId);
+					});
+				}
+				shownOrders = orders;
+			},
+			error: function(message){
+				alert(message);
+			}
+		})
+	});
+}
+
+function searchAllOrders() {
+	
+	$("#formSearchAllOrders").submit(function (event){
+		event.preventDefault();
+		let sDate = $("#searchStartDateAll").val();
+		let eDate = $("#searchEndDateAll").val();
+		var startDate;
+		var endDate;
+		console.log(sDate);
+		console.log(eDate);
+		if(sDate != "") {
+			startDate = new Date(sDate);
+			startDate = startDate.getTime();
+		} else {
+			startDate = "";
+		}
+		if(eDate != "") {
+			endDate = new Date(eDate);
+			endDate = endDate.getTime();
+		} else {
+			endDate = "";
+		}
+		
+		// getTime() vraca vreme u milisekundama
+		let queryParams = {
+			restaurant: $("#searchRestaurantAll").val(),
+			minPrice: $("#searchMinPriceAll").val(),
+			maxPrice: $("#searchMaxPriceAll").val(),
+			startDate: startDate,
+			endDate: endDate
+		};
+		
+		$.get({
+			url: "rest/order/search/pickup",
+			data: queryParams,
+			success: function(orders){
+				// Prvo brisem postojece narudzbine iz tabele pa dodajem filtrirane - pretraga
+				$("#tableAllOrders").empty();
+				for (let order of orders) { 
+					addPickupOrderInTable(order);
+					//console.log("ORDER ID: " + order.orderId);
+					$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
+							getOrderById(order.orderId);
+					});
+				}
+				shownOrders = orders;
+			},
+			error: function(message){
+				alert(message);
+			}
+		})
+	});
+}
+
+
 
 
 //GLOBALNE PROMENLJIVE
@@ -296,6 +452,11 @@ $(document).ready(function(){
 	
 	editAccount();
 	getRestaurants();
+	
+	searchOrders();
+	searchAllOrders();
+	
+	filterOrdersByStatus();
 	
 	logout();
 })

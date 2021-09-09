@@ -30,6 +30,7 @@ import dao.RestaurantDAO;
 import dao.UserDAO;
 import dto.OrderDTO;
 import enumerations.OrderStatus;
+import enumerations.UserRole;
 
 @Path("order")
 public class OrderService {
@@ -223,7 +224,7 @@ public class OrderService {
 	}
 	
 	
-	// Pretraga porudzbina za kupca (samo njegove porudzbine)
+	// Pretraga porudzbina za kupca ili dostavljaca (samo njegove porudzbine)
 	@GET
 	@Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -241,10 +242,19 @@ public class OrderService {
 		User loggedInUser = (User) request.getSession().getAttribute("user");
 		List<Order> myOrders = new ArrayList<Order>();
 		
-		for (String orderId : loggedInUser.getMyOrders()) {
-			Order order = orderDAO.getOrder(orderId);
-			myOrders.add(order);
-		}
+		//ako je kupac pretrazuj getMyOrders() 
+		if(loggedInUser.getRole().equals(UserRole.KUPAC)) {
+			for (String orderId : loggedInUser.getMyOrders()) {
+				Order order = orderDAO.getOrder(orderId);
+				myOrders.add(order);
+			}
+			//ako je dostavljac pretrazuj getDeliveryOrders()
+		} else if(loggedInUser.getRole().equals(UserRole.DOSTAVLJAC)) {
+			for (String orderId : loggedInUser.getDeliveryOrders()) {
+				Order order = orderDAO.getOrder(orderId);
+				myOrders.add(order);
+			}
+		} 
 		
 		List<Order> filteredOrders = new ArrayList<Order>();
 		List<Restaurant> filteredRestaurants = new ArrayList<Restaurant>();
@@ -279,6 +289,81 @@ public class OrderService {
 		Date endingDate = new Date(millisEnd);
 		
 		for (Order o : myOrders) {
+			boolean flag = false;
+			for (Restaurant r : filteredRestaurants) {
+				if (o.getRestaurant() == r.getId()) {
+					flag = true;
+				}
+			}
+			if((((o.getPrice() <= maximumPrice) && (o.getPrice() >= minimumPrice)) || ((minPrice.trim().isEmpty()) && (o.getPrice() <= maximumPrice)) || ((maxPrice.trim().isEmpty()) && (o.getPrice() >= minimumPrice)) || ((minPrice.trim().isEmpty()) && (maxPrice.trim().isEmpty())))
+					&& ((o.getDate().after(startingDate) && o.getDate().before(endingDate)) || ((startDate.trim().isEmpty()) && o.getDate().before(endingDate)) || ((endDate.trim().isEmpty()) && o.getDate().after(startingDate)) || ((startDate.trim().isEmpty()) && (endDate.trim().isEmpty())))) {
+					if(flag == true) {	
+						filteredOrders.add(o);
+					}
+			}
+		}
+		
+		return Response.status(200).entity(filteredOrders).build();
+	}
+	
+	
+	// Pretraga svih porudzbina koje imaju status CEKA_DOSTAVLJACA
+	@GET
+	@Path("/search/pickup")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response searchOrdersForPickup (@QueryParam("restaurant") String restaurant,
+			@QueryParam("minPrice") String minPrice, @QueryParam("maxPrice") String maxPrice,
+			@QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate,
+			@Context HttpServletRequest request) {
+		
+		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
+		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getAttribute("restaurants");
+		
+		System.out.println("Query PARAMS: restaurant-" + restaurant + "/minPrice-" + minPrice + "/maxPrice-" + maxPrice + "/startDate-" + 
+				startDate + "/endDate-" + endDate );
+		
+		
+		List<Order> pickupOrders = new ArrayList<Order>();
+		
+		for (Order order : orderDAO.getAllOrders()) {
+			if(order.getOrderStatus().equals(OrderStatus.CEKA_DOSTAVLJACA)) {
+				pickupOrders.add(order);
+			}
+		}
+		
+		List<Order> filteredOrders = new ArrayList<Order>();
+		List<Restaurant> filteredRestaurants = new ArrayList<Restaurant>();
+		
+		Collection<Restaurant> restaurants = restaurantDAO.findAllRestaurants();
+		if(!restaurant.trim().isEmpty()) {
+			for (Restaurant res : restaurants) {
+				if(res.getName().toLowerCase().contains(restaurant.toLowerCase())) {
+					filteredRestaurants.add(res);
+				}
+			}
+		} else {
+			List<Restaurant> list = new ArrayList<Restaurant>(restaurants);
+			filteredRestaurants = list;
+		}
+		
+		Double minimumPrice = 0.0;
+		Double maximumPrice = 0.0;
+		if(!minPrice.trim().isEmpty())
+			 minimumPrice = Double.parseDouble(minPrice);
+		if(!maxPrice.trim().isEmpty())
+			 maximumPrice = Double.parseDouble(maxPrice);
+		Long millisStart = 0L;
+		Long millisEnd = 0L;
+		if(!startDate.trim().isEmpty()) {
+			millisStart = Long.parseLong(startDate);
+		}
+		if(!endDate.trim().isEmpty()) {	
+			millisEnd = Long.parseLong(endDate);
+		}
+		Date startingDate = new Date(millisStart);
+		Date endingDate = new Date(millisEnd);
+		
+		for (Order o : pickupOrders) {
 			boolean flag = false;
 			for (Restaurant r : filteredRestaurants) {
 				if (o.getRestaurant() == r.getId()) {
@@ -419,7 +504,7 @@ public class OrderService {
 	@Path("/forPickup")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPickupOrders(@Context HttpServletRequest request) {
-		//System.out.println("USAO U getPickupOrders");
+		System.out.println("USAO U getPickupOrders");
 		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
 	
 		List<Order> pickupOrders = new ArrayList<Order>();
@@ -427,7 +512,7 @@ public class OrderService {
 		for (Order order : orderDAO.getAllOrders()) {
 			if(order.getOrderStatus().equals(OrderStatus.CEKA_DOSTAVLJACA)) {
 				pickupOrders.add(order);
-				//System.out.println("Order ceka dostavljaca sa id: " + order.getOrderId());
+				System.out.println("Order ceka dostavljaca sa id: " + order.getOrderId());
 			}
 		}
 		

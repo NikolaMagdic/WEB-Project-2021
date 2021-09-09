@@ -17,5 +17,25 @@
 		"price": 990.0,
 		"customer" : "Perica Peric",
 		"orderStatus" : "U_TRANSPORTU"
+	},
+	
+	"122221111111": {
+		"orderId": 122221111111,
+		"products": [],
+		"restaurant": 2,
+		"date": 1508762343511,
+		"price": 520.0,
+		"customer" : "Miki Maus",
+		"orderStatus" : "DOSTAVLJENA"
+	},
+	
+	"124444444444": {
+		"orderId": 124444444444,
+		"products": [],
+		"restaurant": 1,
+		"date": 1508762343511,
+		"price": 430.0,
+		"customer" : "Perica Peric",
+		"orderStatus" : "CEKA_DOSTAVLJACA"
 	}
 }
