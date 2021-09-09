@@ -8,6 +8,8 @@ function initHide(){
 	$("#divOrders").hide();
 	$("#divSearchOrders").hide();
 	$("#divEditOrder").hide();
+	$("#divRequestOrders").hide();
+	$("#divSearchRequestOrders").hide();
 }
 
 
@@ -23,6 +25,8 @@ function initShowButtons(){
 		$("#divOrders").hide();
 		$("#divSearchOrders").hide();
 		$("#divEditOrder").hide();
+		$("#divRequestOrders").hide();
+		$("#divSearchRequestOrders").hide();
 	});
 	$("#buttonMyRestaurant").click( function(){
 		getManagerUsername();
@@ -36,6 +40,8 @@ function initShowButtons(){
 		$("#divOrders").hide();
 		$("#divSearchOrders").hide();
 		$("#divEditOrder").hide();
+		$("#divRequestOrders").hide();
+		$("#divSearchRequestOrders").hide();
 	});
 	
 	$(document).on("click", "button[name = 'detaljiArticla']", function(){
@@ -49,6 +55,8 @@ function initShowButtons(){
 		$("#divOrders").hide();
 		$("#divSearchOrders").hide();
 		$("#divEditOrder").hide();
+		$("#divRequestOrders").hide();
+		$("#divSearchRequestOrders").hide();
 	});
 	
 	$("#buttonEditArticle").click( function(){
@@ -61,6 +69,8 @@ function initShowButtons(){
 		$("#divOrders").hide();
 		$("#divSearchOrders").hide();
 		$("#divEditOrder").hide();
+		$("#divRequestOrders").hide();
+		$("#divSearchRequestOrders").hide();
 	}); 
 	$("#buttonAddArticle").click( function(){
 		getRestaurantByManager();
@@ -74,6 +84,8 @@ function initShowButtons(){
 		$("#divOrders").hide();
 		$("#divSearchOrders").hide();
 		$("#divEditOrder").hide();
+		$("#divRequestOrders").hide();
+		$("#divSearchRequestOrders").hide();
 	});
 	
 	$("#buttonOrders").click(function(event){
@@ -87,6 +99,8 @@ function initShowButtons(){
 		$("#divOrders").show();
 		$("#divSearchOrders").hide();
 		$("#divEditOrder").hide();
+		$("#divRequestOrders").hide();
+		$("#divSearchRequestOrders").hide();
 	});
 	
 	$("#buttonSearch").click(function(event){
@@ -101,6 +115,8 @@ function initShowButtons(){
 		$("#divOrders").show();
 		$("#divSearchOrders").show();
 		$("#divEditOrder").hide();
+		$("#divRequestOrders").hide();
+		$("#divSearchRequestOrders").hide();
 	});
 	
 	$(document).on("click", "button[name = 'detaljiOrdera']", function(){
@@ -114,7 +130,74 @@ function initShowButtons(){
 		$("#divOrders").hide();
 		$("#divSearchOrders").hide();
 		$("#divEditOrder").show();
+		$("#divRequestOrders").hide();
+		$("#divSearchRequestOrders").hide();
+	});  
+	
+	$("#buttonRequests").click(function(event){
+		getRestaurantByManager();
+		getManagerUsername();
+		//getRestaurantRequestOrders();
+		$("#divEditAccount").hide();
+		$("#divRestaurantDetails").hide();
+		$("#divRestaurantArticles").hide();
+		$("#divArticleDetails").hide();
+		$("#divEditArticle").hide();
+		$("#divAddArticle").hide();
+		$("#divOrders").hide();
+		$("#divSearchOrders").hide();
+		$("#divEditOrder").hide(); divRequestOrders
+		$("#divRequestOrders").show();
+		$("#divSearchRequestOrders").hide();
 	});
+	
+	$(document).on("click", "button[name = 'detaljiOrdera']", function(){
+		getRestaurantByManager();
+		//getRestaurantRequestOrders();
+		$("#divEditAccount").hide();
+		$("#divRestaurantDetails").hide();
+		$("#divRestaurantArticles").hide();
+		$("#divArticleDetails").hide();
+		$("#divEditArticle").hide();
+		$("#divAddArticle").hide();
+		$("#divOrders").hide();
+		$("#divSearchOrders").hide();
+		$("#divEditOrder").hide();
+		$("#divRequestOrders").show();
+		$("#divSearchRequestOrders").hide();
+	});
+		 
+	$(document).on("click", "button[name = 'detaljiOrdera']", function(){
+		getRestaurantByManager();
+		//getRestaurantRequestOrders();
+		$("#divEditAccount").hide();
+		$("#divRestaurantDetails").hide();
+		$("#divRestaurantArticles").hide();
+		$("#divArticleDetails").hide();
+		$("#divEditArticle").hide();
+		$("#divAddArticle").hide();
+		$("#divOrders").hide();
+		$("#divSearchOrders").hide();
+		$("#divEditOrder").hide();
+		$("#divRequestOrders").show();
+		$("#divSearchRequestOrders").hide();
+	}); 
+	
+	$("#buttonSearchRequest").click(function(event){
+		getRestaurantByManager();
+		//getRestaurantRequestOrders();
+		$("#divEditAccount").hide();
+		$("#divRestaurantDetails").hide();
+		$("#divRestaurantArticles").hide();
+		$("#divArticleDetails").hide();
+		$("#divEditArticle").hide();
+		$("#divAddArticle").hide();
+		$("#divOrders").show();
+		$("#divSearchOrders").hide();
+		$("#divEditOrder").hide();
+		$("#divRequestOrders").show();
+		$("#divSearchRequestOrders").show();
+	}); 
 }
 
 function logout(){
@@ -173,6 +256,7 @@ function getRestaurantByManager(){
 			console.log("Postavljamo globalnu promenljivu restaurantId na: " + restaurantId);
 			
 			getRestaurantOrders(res.id);
+			getRestaurantRequestOrders(res.id);
 			
 			shownArticles = res.articles;
 		}
@@ -438,8 +522,8 @@ function getRestaurantOrders(id) {
 		contentType: "application/json",
 		success: function (orders) {
 			for(let order of orders) {
+				console.log("ORDER: " + order);
 				addOrderInTable(order);
-				//console.log("ORDER ID: " + order.orderId);
 					$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
 							getOrderById(order.orderId);
 					});
@@ -518,6 +602,85 @@ function editOrder() {
 			}
 		});
 	});	
+}
+
+//Request Orders - APROVE/REJECT #######################################
+function getRestaurantRequestOrders(id) {
+	console.log("Usao u getRestaurantRequestOrders za restaurantId:" + id);
+	$("#tableRequestOrders").empty();
+	$.get({
+		url: "rest/order/forPickup/restaurant/" + id,
+		contentType: "application/json",
+		success: function (orders) {
+			for(let order of orders) {
+				addRequestOrderInTable(order);
+				//console.log("ORDER ID: " + order.orderId);
+					$(document).on("click", "#approveOrder" + order.orderId, function() {
+							approveOrderById(order.orderId);
+					});
+					$(document).on("click", "#rejectOrder" + order.orderId, function() {
+							rejectOrderById(order.orderId);
+					});
+			}
+			shownOrders = orders;
+		}
+	});
+}
+
+function addRequestOrderInTable(order) {
+	let table = $("#tableRequestOrders");
+	
+	let tr = "<tr>" +
+			"<td>" + order.price + "</td>" +
+			"<td>" + formatDate(order.date) + "</td>" +
+			"<td>" + order.customer + "</td>" +
+			"<td>" + order.orderDeliveryStatus + "</td>" +
+			"<td><button id='approveOrder" + order.orderId + "' class='buttonDetails' name='approveOrder'>Approve</button></td>" +
+			"<td><button id='rejectOrder" + order.orderId + "' class='buttonReject' name='detaljiOrdera'>Reject</button></td>" +
+			"</tr>";
+	
+	table.append(tr);
+	
+} 
+
+function approveOrderById(orderId){
+	event.preventDefault();
+	console.log("ID ordera koji odobravamo: " + orderId);
+
+	
+	$.ajax({
+		type: "PUT",
+		url: "./rest/order/approveOrder/" + orderId,
+		data: "",
+		contentType: "application/json",
+		success: function(){
+			//getRestaurantRequestOrders();
+			alert("Uspesno odobrena dostava narudzbine");
+		},
+		error: function(message) {
+			alert(message);
+		}
+	});
+}
+
+function rejectOrderById(orderId){
+	event.preventDefault();
+	console.log("ID ordera koji odbijamo: " + orderId);
+
+	
+	$.ajax({
+		type: "PUT",
+		url: "./rest/order/reject/" + orderId,
+		data: "",
+		contentType: "application/json",
+		success: function(){
+			//getRestaurantRequestOrders();
+			alert("Uspesno odbijena dostava narudzbine");
+		},
+		error: function(message) {
+			alert(message);
+		}
+	});
 }
 
 

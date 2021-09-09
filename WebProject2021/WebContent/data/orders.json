@@ -37,9 +37,31 @@
 		"products": [],
 		"restaurant": 1,
 		"date": 1508762343511,
-		"price": 430.0,
+		"price": 440.0,
 		"customer" : "Perica Peric",
 		"orderStatus" : "CEKA_DOSTAVLJACA",
 		"orderDeliveryStatus" : "NONE"
+	},
+	
+	"222110101010": {
+		"orderId": 222110101010,
+		"products": [],
+		"restaurant": 2,
+		"date": 1508762343511,
+		"price": 480.0,
+		"customer" : "Miki Maus",
+		"orderStatus" : "CEKA_DOSTAVLJACA",
+		"orderDeliveryStatus" : "TAKEN_FOR_DELIVERY"
+	},
+	
+	"21121221212": {
+		"orderId": 21121221212,
+		"products": [],
+		"restaurant": 1,
+		"date": 1508762343511,
+		"price": 640.0,
+		"customer" : "Perica Peric",
+		"orderStatus" : "CEKA_DOSTAVLJACA",
+		"orderDeliveryStatus" : "TAKEN_FOR_DELIVERY"
 	}
 }

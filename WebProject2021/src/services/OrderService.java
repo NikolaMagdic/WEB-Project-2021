@@ -211,17 +211,24 @@ public class OrderService {
 	}
 	
 	
-	// Za menadzera promena iz OBRADA u U PRIPREMI 
+	// Za dostavljaca promena iz NONE u TAKEN_FOR_DELIVERY
 	@PUT
 	@Path("/deliverOrder/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void changeOrderDeliveryStatus(@PathParam("id") String id) {
+	public void changeOrderDeliveryStatus(@PathParam("id") String id, @Context HttpServletRequest request) {
 		
+		User loggedInUser = (User) request.getSession().getAttribute("user");
+		
+		if (loggedInUser == null) {
+			System.out.println("Nije nasao usera sa id: " + id);
+		}
 		
 		String contextPath = context.getRealPath("");
 		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
 		Order oldOrder = orderDAO.getOrder(id);
+		
+		
 		
 		OrderDeliveryStatus status = null;
 		//menja delivery status na TAKEN_FOR_DELIVERY, jedino ako je prethondo bio NONE
@@ -231,6 +238,65 @@ public class OrderService {
 		}
 		
 		oldOrder.setOrderDeliveryStatus(status);
+		loggedInUser.getDeliveryOrders().add(oldOrder.getOrderId());
+		
+		System.out.println("Sada je status za delivery ordera: " + oldOrder.getOrderDeliveryStatus());
+		
+		UserDAO userDAO = (UserDAO) context.getAttribute("users");
+		userDAO.updateUser(loggedInUser);
+		userDAO.saveUsers(contextPath);
+		
+		orderDAO.updateOrder(oldOrder);
+		orderDAO.saveOrders(contextPath);
+	}
+	
+	
+	// Za menadzera promena iz TAKEN_FOR_DELIVERY u APPROVED
+	@PUT
+	@Path("/approveOrder/{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void approveOrderDeliveryStatus(@PathParam("id") String id) {
+		
+		String contextPath = context.getRealPath("");
+		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
+		Order oldOrder = orderDAO.getOrder(id);
+		
+		OrderDeliveryStatus deliveryStatus = null;
+		OrderStatus status = null;
+		
+		if(oldOrder.getOrderDeliveryStatus().equals(OrderDeliveryStatus.TAKEN_FOR_DELIVERY)) {
+			deliveryStatus = OrderDeliveryStatus.APPROVED;
+			oldOrder.setOrderDeliveryStatus(deliveryStatus);
+			oldOrder.setOrderStatus(OrderStatus.U_TRANSPORTU);
+		}
+		
+		
+		System.out.println("Sada je status za delivery ordera: " + oldOrder.getOrderDeliveryStatus());
+		
+		orderDAO.updateOrder(oldOrder);
+		orderDAO.saveOrders(contextPath);
+	}
+	
+	// Za menadzera promena iz TAKEN_FOR_DELIVERY u REJECTED
+	@PUT
+	@Path("/reject/{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void rejectOrderDeliveryStatus(@PathParam("id") String id) {
+		
+		
+		String contextPath = context.getRealPath("");
+		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
+		Order oldOrder = orderDAO.getOrder(id);
+		
+		OrderDeliveryStatus status = null;
+		
+		if(oldOrder.getOrderDeliveryStatus().equals(OrderDeliveryStatus.TAKEN_FOR_DELIVERY)) {
+			status = OrderDeliveryStatus.REJECTED;
+			oldOrder.setOrderDeliveryStatus(status);
+		}
+		
 		
 		System.out.println("Sada je status za delivery ordera: " + oldOrder.getOrderDeliveryStatus());
 		
@@ -487,7 +553,7 @@ public class OrderService {
 	}	
 	
 	
-	//funkcija dobavlja sve ordere za jedan restoran
+	//funkcija dobavlja sve ordere za jedan dostavljaca
 	@GET
 	@Path("/deliverer/{username}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -515,7 +581,7 @@ public class OrderService {
 		return Response.status(200).entity(delivererOrders).build();
 	}
 	
-	//funkcija dobavlja sve ordere za koje treba dostaviti
+	//za dostavljaca funkcija dobavlja sve ordere koje treba dostaviti
 	@GET
 	@Path("/forPickup")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -529,6 +595,36 @@ public class OrderService {
 			if(order.getOrderStatus().equals(OrderStatus.CEKA_DOSTAVLJACA)) {
 				pickupOrders.add(order);
 				//System.out.println("Order ceka dostavljaca sa id: " + order.getOrderId());
+			}
+		}
+		
+		return Response.status(200).entity(pickupOrders).build();
+	}	
+	
+	
+	//za menadzera funkcija dobavlja sve ordere koje treba dostaviti za restoran koji vodi menadzer
+	@GET
+	@Path("/forPickup/restaurant/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPickupOrdersForRestaurant(@Context HttpServletRequest request, @PathParam("id") Integer id) {
+		System.out.println("USAO U getPickupOrdersForRestaurant");
+		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
+		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getAttribute("restaurants");
+		Restaurant restaurant = restaurantDAO.findRestaurant(id);
+		
+		List<Order> pickupOrders = new ArrayList<Order>();
+		
+		for (Order order : orderDAO.getAllOrders()) {
+			if(order.getRestaurant() == restaurant.getId()) {
+				System.out.println("DeliveryStatus ordera je: " + order.getOrderDeliveryStatus() + ", za restoran sa ID: " + restaurant.getId());;
+				if(order.getOrderDeliveryStatus() == null) {
+					System.out.println("DELIVERY STATUS JE NULL");
+					continue;
+				}
+				if(order.getOrderDeliveryStatus().equals(OrderDeliveryStatus.TAKEN_FOR_DELIVERY)) {
+					System.out.println("DeliveryOrder koji dodajem u pickup-orders je: " + order.getOrderId());
+					pickupOrders.add(order);
+				}
 			}
 		}
 		
