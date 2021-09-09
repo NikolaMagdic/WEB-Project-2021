@@ -145,6 +145,7 @@ public class OrderService {
 	
 	}
 	
+	//EDIT ############################################################################
 	// Za menadzera promena iz OBRADA u U PRIPREMI 
 	@PUT
 	@Path("/edit")
@@ -304,6 +305,33 @@ public class OrderService {
 		orderDAO.updateOrder(oldOrder);
 		orderDAO.saveOrders(contextPath);
 	}
+	
+	
+	// Za dostavljaca promena iz U_TRANSPORTU u DOSTAVLJENA
+	@PUT
+	@Path("/deliverOrder/setDelivered/{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void setOrderDeliveryStatusDelivered(@PathParam("id") String id, @Context HttpServletRequest request) {
+		
+		String contextPath = context.getRealPath("");
+		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
+		Order oldOrder = orderDAO.getOrder(id);
+		
+		System.out.println("Menja status ordera na DELIVERED");
+
+		oldOrder.setOrderStatus(OrderStatus.DOSTAVLJENA);
+		
+		System.out.println("Sada je status za delivery ordera: " + oldOrder.getOrderDeliveryStatus());
+	
+		orderDAO.updateOrder(oldOrder);
+		orderDAO.saveOrders(contextPath);
+	}
+	
+	
+	
+	
+	
 	
 	//PRETRAGE
 	//#################################################################################################################
@@ -528,6 +556,8 @@ public class OrderService {
 		
 		return Response.status(200).entity(filteredOrders).build();
 	}
+	
+	
 	
 	
 	

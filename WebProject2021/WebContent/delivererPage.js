@@ -57,6 +57,14 @@ function initShowButtons(){
 		$("#divAllOrders").show();
 		$("#divSearchOrders").hide();
 		$("#divSearchAllOrders").hide();
+	}); 
+	
+	$(document).on("click", "button[name = 'setDeliveryStatusOrdera']", function(){
+		$("#divEditAccount").hide();
+		$("#divOrders").show();
+		$("#divAllOrders").hide();
+		$("#divSearchOrders").hide();
+		$("#divSearchAllOrders").hide();
 	});
 }
 
@@ -195,8 +203,8 @@ function getDelivererOrders(username) {
 			for(let order of orders) {
 				addOrderInTable(order);
 				//console.log("ORDER ID: " + order.orderId);
-					$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
-							getOrderById(order.orderId);
+					$(document).on("click", "#setDeliveryStatusOrdera" + order.orderId, function() {
+							setDeliveryStatusOrderById(order.orderId);
 					});
 			}
 			shownOrders = orders;
@@ -244,7 +252,7 @@ function addOrderInTable(order) {
 			"<td>" + order.customer + "</td>" +
 			"<td>" + order.orderStatus + "</td>" +
 			"<td>" + order.orderDeliveryStatus + "</td>" +
-			"<td><button id='detaljiOrdera" + order.orderId + "' class='buttonDetails' name='detaljiOrdera'>Edit</button></td>" +
+			"<td><button id='setDeliveryStatusOrdera" + order.orderId + "' class='buttonDetails' name='setDeliveryStatusOrdera'>Delivered</button></td>" +
 			"</tr>";
 	
 	table.append(tr);
@@ -277,7 +285,6 @@ function addPickupOrderInTable(order) {
 } 
 
 function getOrderById(orderId){
-	event.preventDefault();
 	//console.log("ID ordera za koji nam trebaju detalji: " + orderId);
 	
 	
@@ -310,10 +317,8 @@ function getRestaurants() {
 	});
 }
 
-
 function deliverOrderById(orderId){
-	event.preventDefault();
-	console.log("ID ordera za koji zelimo dostaviti: " + orderId);
+	console.log("ID ordera koji zelimo dostaviti: " + orderId);
 
 	
 	$.ajax({
@@ -330,10 +335,27 @@ function deliverOrderById(orderId){
 	});
 }
 
+function setDeliveryStatusOrderById(orderId) {
+	console.log("ID ordera koji smo dostavili: " + orderId);
+
+	$.ajax({
+		type: "PUT",
+		url: "./rest/order/deliverOrder/setDelivered/" + orderId,
+		data: "",
+		contentType: "application/json",
+		success: function(){
+			alert("Uspesno dostavljena narudzbina");
+		},
+		error: function(message) {
+			alert(message);
+		}
+	});
+}
+
+
 //SORTIRANJE ###############################################################
 function sortOrdersByPrice() {
 	$("#sortPrice").click(function(){
-		event.preventDefault();
 		$("#tableOrders").empty();
 
 		for (var i = 0; i < shownOrders.length - 1; i++) {
@@ -356,15 +378,14 @@ function sortOrdersByPrice() {
 		}
 		for(let order of shownOrders) {
 			addOrderInTable(order);
-				$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
-						getOrderById(order.orderId);
+				$(document).on("click", "#setDeliveryStatusOrdera" + order.orderId, function() {
+						setDeliveryStatusOrderById(order.orderId);
 				});
 		}
 
 	});
 	
 	$("#sortPriceAll").click(function(){
-		event.preventDefault();
 		$("#tableAllOrders").empty();
 
 		for (var i = 0; i < shownOrders.length - 1; i++) {
@@ -397,7 +418,6 @@ function sortOrdersByPrice() {
 
 function sortOrdersByDate() {
 	$("#sortDate").click(function(){
-		event.preventDefault();
 		$("#tableOrders").empty();
 
 		for (var i = 0; i < shownOrders.length - 1; i++) {
@@ -420,15 +440,14 @@ function sortOrdersByDate() {
 		}
 		for(let order of shownOrders) {
 			addOrderInTable(order);
-				$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
-						getOrderById(order.orderId);
+				$(document).on("click", "#setDeliveryStatusOrdera" + order.orderId, function() {
+						setDeliveryStatusOrderById(order.orderId);
 				});
 		}
 
 	});
 	
 	$("#sortDateAll").click(function(){
-		event.preventDefault();
 		$("#tableAllOrders").empty();
 
 		for (var i = 0; i < shownOrders.length - 1; i++) {
@@ -463,7 +482,6 @@ function sortOrdersByCustomer(){
 
  	$( "#sortCustomer").click(function() {
  		
- 		event.preventDefault();
 		$("#tableOrders").empty();
 
 		console.log("Usao u sortCustomer");
@@ -490,8 +508,8 @@ function sortOrdersByCustomer(){
  		for(let order of shownOrders) {
 			addOrderInTable(order);
 			console.log("ORDER ID: " + order.orderId);
-				$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
-						getOrderById(order.orderId);
+				$(document).on("click", "#setDeliveryStatusOrdera" + order.orderId, function() {
+						setDeliveryStatusOrderById(order.orderId);
 				});
 		}
  		
@@ -499,7 +517,6 @@ function sortOrdersByCustomer(){
 	
 	$( "#sortCustomerAll").click(function() {
  		
- 		event.preventDefault();
 		$("#tableAllOrders").empty();
 
 		console.log("Usao u sortCustomerAll");
@@ -547,8 +564,8 @@ function filterOrdersByStatus() {
 				for (let order of orders) {					
 					if((order.orderStatus === status) || status === "SVE") {
 						addOrderInTable(order);
-							$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
-								getOrderById(order.orderId);
+							$(document).on("click", "#setDeliveryStatusOrdera" + order.orderId, function() {
+								setDeliveryStatusOrderById(order.orderId);
 							});
 						shownOrders.push(order);
 					}
@@ -596,12 +613,11 @@ function searchOrders() {
 			url: "rest/order/search",
 			data: queryParams,
 			success: function(orders){
-				// Prvo brisem postojece narudzbine iz tabele pa dodajem filtrirane - pretraga
 				$("#tableOrders").empty();
 				for (let order of orders) {
 					addOrderInTable(order);
-					$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
-							getOrderById(order.orderId);
+					$(document).on("click", "#setDeliveryStatusOrdera" + order.orderId, function() {
+							setDeliveryStatusOrderById(order.orderId);
 					});
 				}
 				shownOrders = orders;
