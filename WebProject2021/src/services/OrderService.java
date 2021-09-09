@@ -29,6 +29,7 @@ import dao.OrderDAO;
 import dao.RestaurantDAO;
 import dao.UserDAO;
 import dto.OrderDTO;
+import enumerations.OrderDeliveryStatus;
 import enumerations.OrderStatus;
 import enumerations.UserRole;
 
@@ -94,6 +95,7 @@ public class OrderService {
 		
 		return Response.status(200).entity(order).build();
 	}	
+	
 	
 	
 	@POST
@@ -208,18 +210,31 @@ public class OrderService {
 		return "OTKAZANA";
 	}
 	
-	// Za menadzera promena iz U PRIPREMI u CEKA DOSTAVLJACA ??????????????????
+	
+	// Za menadzera promena iz OBRADA u U PRIPREMI 
 	@PUT
-	@Path("/wait")
+	@Path("/deliverOrder/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void changeOrderStatusToWaiting(Order order) {
+	@Produces(MediaType.APPLICATION_JSON)
+	public void changeOrderDeliveryStatus(@PathParam("id") String id) {
 		
-		if (order.getOrderStatus().equals(OrderStatus.U_PRIREMI))
-			order.setOrderStatus(OrderStatus.CEKA_DOSTAVLJACA);
 		
 		String contextPath = context.getRealPath("");
 		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
-		orderDAO.updateOrder(order);
+		Order oldOrder = orderDAO.getOrder(id);
+		
+		OrderDeliveryStatus status = null;
+		//menja delivery status na TAKEN_FOR_DELIVERY, jedino ako je prethondo bio NONE
+		if(oldOrder.getOrderDeliveryStatus().equals(OrderDeliveryStatus.NONE)) {
+			System.out.println("Menja status delivery na TAKEN_FOR_DELIVERY");
+			status = OrderDeliveryStatus.TAKEN_FOR_DELIVERY;
+		}
+		
+		oldOrder.setOrderDeliveryStatus(status);
+		
+		System.out.println("Sada je status za delivery ordera: " + oldOrder.getOrderDeliveryStatus());
+		
+		orderDAO.updateOrder(oldOrder);
 		orderDAO.saveOrders(contextPath);
 	}
 	
@@ -490,6 +505,7 @@ public class OrderService {
 	
 		List<Order> delivererOrders = new ArrayList<Order>();
 		
+		//if orderDeliveryStatus == APPROVED???
 		for (String orderId : user.getDeliveryOrders()) {
 			Order order = orderDAO.getOrder(orderId);
 			delivererOrders.add(order);
@@ -512,7 +528,7 @@ public class OrderService {
 		for (Order order : orderDAO.getAllOrders()) {
 			if(order.getOrderStatus().equals(OrderStatus.CEKA_DOSTAVLJACA)) {
 				pickupOrders.add(order);
-				System.out.println("Order ceka dostavljaca sa id: " + order.getOrderId());
+				//System.out.println("Order ceka dostavljaca sa id: " + order.getOrderId());
 			}
 		}
 		

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import enumerations.OrderDeliveryStatus;
 import enumerations.OrderStatus;
 
 public class Order {
@@ -23,6 +24,8 @@ public class Order {
 	private String customer;
 	
 	private OrderStatus orderStatus;
+	
+	private OrderDeliveryStatus orderDeliveryStatus;
 
 	
 	
@@ -42,6 +45,7 @@ public class Order {
 		this.price = price;
 		this.customer = customer;
 		this.orderStatus = orderStatus;
+		this.orderDeliveryStatus = OrderDeliveryStatus.NONE;
 	}
 
 	
@@ -101,12 +105,19 @@ public class Order {
 		this.orderStatus = orderStatus;
 	}
 
-	@Override
-	public String toString() {
-		return "Order [orderId=" + orderId + ", products=" + products + ", restaurant=" + restaurant + ", date=" + date
-				+ ", price=" + price + ", customer=" + customer + ", orderStatus=" + orderStatus + "]";
+
+
+	public OrderDeliveryStatus getOrderDeliveryStatus() {
+		return orderDeliveryStatus;
 	}
-	
+
+
+
+	public void setOrderDeliveryStatus(OrderDeliveryStatus orderDeliveryStatus) {
+		this.orderDeliveryStatus = orderDeliveryStatus;
+	}
+
+
 	
 	
 }

@@ -50,6 +50,14 @@ function initShowButtons(){
 		$("#divSearchOrders").hide();
 		$("#divSearchAllOrders").show();
 	});
+	
+	$(document).on("click", "button[name = 'deliverOrder']", function(){
+		$("#divEditAccount").hide();
+		$("#divOrders").hide();
+		$("#divAllOrders").show();
+		$("#divSearchOrders").hide();
+		$("#divSearchAllOrders").hide();
+	});
 }
 
 
@@ -206,8 +214,8 @@ function getPickupOrders() {
 			for(let order of orders) {
 				addPickupOrderInTable(order);
 				console.log("ORDER ID: " + order.orderId);
-					$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
-							getOrderById(order.orderId);
+					$(document).on("click", "#deliverOrder" + order.orderId, function() {
+						deliverOrderById(order.orderId);
 					});
 			}
 			shownOrders = orders;
@@ -235,6 +243,7 @@ function addOrderInTable(order) {
 			"<td>" + formatDate(order.date) + "</td>" +
 			"<td>" + order.customer + "</td>" +
 			"<td>" + order.orderStatus + "</td>" +
+			"<td>" + order.orderDeliveryStatus + "</td>" +
 			"<td><button id='detaljiOrdera" + order.orderId + "' class='buttonDetails' name='detaljiOrdera'>Edit</button></td>" +
 			"</tr>";
 	
@@ -261,7 +270,7 @@ function addPickupOrderInTable(order) {
 			"<td>" + formatDate(order.date) + "</td>" +
 			"<td>" + order.customer + "</td>" +
 			"<td>" + order.orderStatus + "</td>" +
-			"<td><button id='detaljiOrdera" + order.orderId + "' class='buttonDetails' name='detaljiOrdera'>Edit</button></td>" +
+			"<td><button id='deliverOrder" + order.orderId + "' class='buttonDetails' name='deliverOrder'>Deliver Order</button></td>" +
 			"</tr>";
 	
 	table.append(tr);
@@ -302,7 +311,228 @@ function getRestaurants() {
 }
 
 
-//SORTIRANJE 
+function deliverOrderById(orderId){
+	event.preventDefault();
+	console.log("ID ordera za koji zelimo dostaviti: " + orderId);
+
+	
+	$.ajax({
+		type: "PUT",
+		url: "./rest/order/deliverOrder/" + orderId,
+		data: "",
+		contentType: "application/json",
+		success: function(){
+			alert("Uspesno zatrazena dostava narudzbine");
+		},
+		error: function(message) {
+			alert(message);
+		}
+	});
+}
+
+//SORTIRANJE ###############################################################
+function sortOrdersByPrice() {
+	$("#sortPrice").click(function(){
+		event.preventDefault();
+		$("#tableOrders").empty();
+
+		for (var i = 0; i < shownOrders.length - 1; i++) {
+			var min_idx = i;
+			for (var j = i + 1; j < shownOrders.length; j++) {
+				if(shownOrders[j].price < shownOrders[i].price)
+					min_idx = j;
+			}
+			let temp = shownOrders[i];
+			shownOrders[i] = shownOrders[min_idx];
+			shownOrders[min_idx] = temp;
+		}
+		if(sortPriceDesc) {
+			sortPriceDesc = false;
+			$("#imageSortPrice").attr("src", "./images/sort-up.png");
+		} else {
+			shownOrders.reverse();
+			sortPriceDesc = true;
+			$("#imageSortPrice").attr("src", "./images/sort-down.png");
+		}
+		for(let order of shownOrders) {
+			addOrderInTable(order);
+				$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
+						getOrderById(order.orderId);
+				});
+		}
+
+	});
+	
+	$("#sortPriceAll").click(function(){
+		event.preventDefault();
+		$("#tableAllOrders").empty();
+
+		for (var i = 0; i < shownOrders.length - 1; i++) {
+			var min_idx = i;
+			for (var j = i + 1; j < shownOrders.length; j++) {
+				if(shownOrders[j].price < shownOrders[i].price)
+					min_idx = j;
+			}
+			let temp = shownOrders[i];
+			shownOrders[i] = shownOrders[min_idx];
+			shownOrders[min_idx] = temp;
+		}
+		if(sortPriceDesc2) {
+			sortPriceDesc2 = false;
+			$("#imageSortPrice2").attr("src", "./images/sort-up.png");
+		} else {
+			shownOrders.reverse();
+			sortPriceDesc2 = true;
+			$("#imageSortPrice2").attr("src", "./images/sort-down.png");
+		}
+		for(let order of shownOrders) {
+			addPickupOrderInTable(order);
+				$(document).on("click", "#deliverOrder" + order.orderId, function() {
+						deliverOrderById(order.orderId);
+				});
+		}
+
+	});
+}
+
+function sortOrdersByDate() {
+	$("#sortDate").click(function(){
+		event.preventDefault();
+		$("#tableOrders").empty();
+
+		for (var i = 0; i < shownOrders.length - 1; i++) {
+			var min_idx = i;
+			for (var j = i + 1; j < shownOrders.length; j++) {
+				if(shownOrders[j].date < shownOrders[i].date)
+					min_idx = j;
+			}
+			let temp = shownOrders[i];
+			shownOrders[i] = shownOrders[min_idx];
+			shownOrders[min_idx] = temp;
+		}
+		if(sortDateDesc) {
+			sortDateDesc = false;
+			$("#imageSortDate").attr("src", "images/sort-up.png");
+		} else {
+			shownOrders.reverse();
+			sortDateDesc = true;
+			$("#imageSortDate").attr("src", "images/sort-down.png");
+		}
+		for(let order of shownOrders) {
+			addOrderInTable(order);
+				$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
+						getOrderById(order.orderId);
+				});
+		}
+
+	});
+	
+	$("#sortDateAll").click(function(){
+		event.preventDefault();
+		$("#tableAllOrders").empty();
+
+		for (var i = 0; i < shownOrders.length - 1; i++) {
+			var min_idx = i;
+			for (var j = i + 1; j < shownOrders.length; j++) {
+				if(shownOrders[j].date < shownOrders[i].date)
+					min_idx = j;
+			}
+			let temp = shownOrders[i];
+			shownOrders[i] = shownOrders[min_idx];
+			shownOrders[min_idx] = temp;
+		}
+		if(sortDateDesc2) {
+			sortDateDesc2 = false;
+			$("#imageSortDate2").attr("src", "images/sort-up.png");
+		} else {
+			shownOrders.reverse();
+			sortDateDesc2 = true;
+			$("#imageSortDate2").attr("src", "images/sort-down.png");
+		}
+		for(let order of shownOrders) {
+			addPickupOrderInTable(order);
+				$(document).on("click", "#deliverOrder" + order.orderId, function() {
+						deliverOrderById(order.orderId);
+				});
+		}
+
+	});
+}
+
+function sortOrdersByCustomer(){
+
+ 	$( "#sortCustomer").click(function() {
+ 		
+ 		event.preventDefault();
+		$("#tableOrders").empty();
+
+		console.log("Usao u sortCustomer");
+
+		if(sortCustomerDesc) {
+			shownOrders.sort(function(a, b){
+			    if(a.customer < b.customer) { return -1; }
+			    if(a.customer > b.customer) { return 1; }
+			    return 0;
+			});
+			sortCustomerDesc = false;
+			$("#imageSortCustomer").attr("src", "./images/sort-down.png");
+		} else {
+			shownOrders.sort(function(a, b){
+			    if(a.customer > b.customer) { return -1; }
+			    if(a.customer < b.customer) { return 1; }
+			    return 0;
+			});
+			sortCustomerDesc = true;
+			$("#imageSortCustomer").attr("src", "./images/sort-up.png");
+		}
+ 		
+ 		
+ 		for(let order of shownOrders) {
+			addOrderInTable(order);
+			console.log("ORDER ID: " + order.orderId);
+				$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
+						getOrderById(order.orderId);
+				});
+		}
+ 		
+	});
+	
+	$( "#sortCustomerAll").click(function() {
+ 		
+ 		event.preventDefault();
+		$("#tableAllOrders").empty();
+
+		console.log("Usao u sortCustomerAll");
+
+		if(sortCustomerDesc2) {
+			shownOrders.sort(function(a, b){
+			    if(a.customer < b.customer) { return -1; }
+			    if(a.customer > b.customer) { return 1; }
+			    return 0;
+			});
+			sortCustomerDesc2 = false;
+			$("#imageSortCustomer2").attr("src", "./images/sort-down.png");
+		} else {
+			shownOrders.sort(function(a, b){
+			    if(a.customer > b.customer) { return -1; }
+			    if(a.customer < b.customer) { return 1; }
+			    return 0;
+			});
+			sortCustomerDesc2 = true;
+			$("#imageSortCustomer2").attr("src", "./images/sort-up.png");
+		}
+ 		
+ 		
+ 		for(let order of shownOrders) {
+			addPickupOrderInTable(order);
+			console.log("ORDER ID: " + order.orderId);
+				$(document).on("click", "#deliverOrder" + order.orderId, function() {
+						deliverOrderById(order.orderId);
+				});
+		}
+ 		
+	});
+}
 
 //FILTRIRANJE ##############################################################
 function filterOrdersByStatus() {
@@ -424,8 +654,8 @@ function searchAllOrders() {
 				for (let order of orders) { 
 					addPickupOrderInTable(order);
 					//console.log("ORDER ID: " + order.orderId);
-					$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
-							getOrderById(order.orderId);
+					$(document).on("click", "#deliverOrder" + order.orderId, function() {
+							deliverOrderById(order.orderId);
 					});
 				}
 				shownOrders = orders;
@@ -445,6 +675,14 @@ var delivererUsername;
 var shownOrders;
 var allRestaurants;
 
+var sortPriceDesc;
+var sortDateDesc;
+var sortPriceDesc2;
+var sortDateDesc2;
+var sortCustomerDesc;
+var sortCustomerDesc2;
+
+
 
 $(document).ready(function(){
 	initHide();	
@@ -457,6 +695,10 @@ $(document).ready(function(){
 	searchAllOrders();
 	
 	filterOrdersByStatus();
+	
+	sortOrdersByPrice();
+	sortOrdersByDate();
+	sortOrdersByCustomer();
 	
 	logout();
 })

@@ -6,7 +6,8 @@
 		"date": 1508762343511,
 		"price": 780.0,
 		"customer" : "Perica Peric",
-		"orderStatus" : "CEKA_DOSTAVLJACA"
+		"orderStatus" : "CEKA_DOSTAVLJACA",
+		"orderDeliveryStatus" : "NONE"
 	},
 	
 	"122112233433": {
@@ -16,7 +17,8 @@
 		"date": 1508762343511,
 		"price": 990.0,
 		"customer" : "Perica Peric",
-		"orderStatus" : "U_TRANSPORTU"
+		"orderStatus" : "U_TRANSPORTU",
+		"orderDeliveryStatus" : "APPROVED"
 	},
 	
 	"122221111111": {
@@ -26,7 +28,8 @@
 		"date": 1508762343511,
 		"price": 520.0,
 		"customer" : "Miki Maus",
-		"orderStatus" : "DOSTAVLJENA"
+		"orderStatus" : "DOSTAVLJENA",
+		"orderDeliveryStatus" : "APPROVED"
 	},
 	
 	"124444444444": {
@@ -36,6 +39,7 @@
 		"date": 1508762343511,
 		"price": 430.0,
 		"customer" : "Perica Peric",
-		"orderStatus" : "CEKA_DOSTAVLJACA"
+		"orderStatus" : "CEKA_DOSTAVLJACA",
+		"orderDeliveryStatus" : "NONE"
 	}
 }
