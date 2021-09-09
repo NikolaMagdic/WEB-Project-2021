@@ -4,6 +4,8 @@ function changeView() {
 	$("#divAddUser").hide();
 	$("#divAllUsers").hide();
 	$("#divAddRestaurant").hide();
+	$("#divRestaurants").hide();
+	$("#divRestaurantDetails").hide();
 	$("#divAddManager").hide();
 	$("#divEditAccount").hide();
 	
@@ -11,6 +13,8 @@ function changeView() {
 		$("#divAddUser").show();
 		$("#divAllUsers").hide();
 		$("#divAddRestaurant").hide();
+		$("#divRestaurants").hide();
+		$("#divRestaurantDetails").hide();
 		$("#divAddManager").hide();
 		$("#divEditAccount").hide();
 	});
@@ -18,6 +22,8 @@ function changeView() {
 	$("#buttonAllUsers").click(function(event){
 		$("#divAllUsers").show();
 		$("#divAddUser").hide();
+		$("#divRestaurants").hide();
+		$("#divRestaurantDetails").hide();
 		$("#divAddRestaurant").hide();
 		$("#divAddManager").hide();
 		$("#divEditAccount").hide();
@@ -27,8 +33,32 @@ function changeView() {
 		$("#divAllUsers").hide();
 		$("#divAddUser").hide();
 		$("#divAddRestaurant").show();
+		$("#divRestaurants").hide();
+		$("#divRestaurantDetails").hide();
 		$("#divAddManager").hide();
 		$("#divEditAccount").hide();
+		
+		// Mape
+		var map = new ol.Map({
+		    target: 'map',
+		    layers: [
+		      new ol.layer.Tile({
+		        source: new ol.source.OSM()
+		      })
+		    ],
+		    view: new ol.View({
+		      center: ol.proj.fromLonLat([19.81, 45.25 ]),
+		      zoom: 12
+		    })
+		 });
+		
+		map.on('singleclick', function(event){
+			console.log(event.coordinate);
+			coords = ol.proj.transform(event.coordinate, 'EPSG:3857', 'EPSG:4326');
+			$("#latitude").val(coords[1]);
+			$("#longitude").val(coords[0]);
+		
+		});
 	});
 
 	$("#buttonEditAccount").click(function(event){
@@ -36,8 +66,34 @@ function changeView() {
 		$("#divAllUsers").hide();
 		$("#divAddUser").hide();
 		$("#divAddRestaurant").hide();
+		$("#divRestaurants").hide();
+		$("#divRestaurantDetails").hide();
 		$("#divAddManager").hide();
 		$("#divEditAccount").show();
+	});
+	
+	$("#buttonRestaurants").click(function(event){
+		$("#divAllUsers").hide();
+		$("#divAddUser").hide();
+		$("#divAddRestaurant").hide();
+		$("#divRestaurants").show();
+		$("#divRestaurantDetails").hide();
+		$("#divAddManager").hide();
+		$("#divEditAccount").hide();
+		getAllRestaurants();
+	});
+	
+	$(document).on("click", ".button-details", function(){
+		$("#divAllUsers").hide();
+		$("#divAddUser").hide();
+		$("#divAddRestaurant").hide();
+		$("#divRestaurants").hide();
+		$("#divRestaurantDetails").show();
+		$("#divAddManager").hide();
+		$("#divEditAccount").hide();
+		let id = $(this).attr("id");
+		getRestaurantDetails(id);
+
 	});
 }
 
@@ -194,15 +250,6 @@ function editAccount() {
 	let lastName = $("#lastNameEdit").val();
 	let male = $("#maleEdit:checked").val();
 	let date = $("#dateEdit").val();
-	
-	console.log("EditAccount:");
-	console.log(username);
-	console.log(password);
-	console.log(confirmPassword);
-	console.log(firstName);
-	console.log(lastName);
-	console.log(male);
-	console.log(date);
 	
 	if(password != confirmPassword){
 		alert("Passwords do not match");
@@ -506,6 +553,115 @@ function unblockUser() {
 	});
 }
 
+// RESTORANI
+function getAllRestaurants(){
+	$("#tableRestaurants").empty();
+	$.get({
+		url: "../rest/restaurant/all",
+		contentType: "application/json",
+		success: function(restaurants) {
+			for(let restaurant of restaurants) {
+				addRestaurantInTable(restaurant);
+			}
+			shownRestaurants = restaurants;
+		}
+	});
+}
+
+function addRestaurantInTable(restaurant) {
+	let table = $("#tableRestaurants");
+
+	let tr = "<tr id=\"trRestaurant\">" +
+			"<td>" + restaurant.name + "</td>" +
+			"<td>" + restaurant.type + "</td>" +
+			"<td>" + restaurant.open + "</td>" +
+			"<td>" + restaurant.city + "</td>" +
+			"<td>" + restaurant.country + "</td>" +
+			"<td>" + restaurant.rating + "</td>" +
+			" <td> <button id='" + restaurant.id + "' class='button-details'> Details </button></td>" +
+			"</tr>";
+	table.append(tr);
+
+}
+
+function getRestaurantDetails(restaurantId) {
+	getRestaurantArticles(restaurantId);
+	getRestaurantComments(restaurantId);
+	$.ajax({
+		type: "GET",
+		url: '../rest/restaurant/' + restaurantId,
+		contentType: 'application/json',
+		success: function(restaurant) {
+			console.log(restaurant.image);
+			$('#h1Restaurant').text("Restaurant " + restaurant.name);
+			$('#tdRestaurantId').text(restaurant.id);
+			$('#tdRestaurantName').text(restaurant.name);
+			$('#tdRestaurantCity').text(restaurant.city);
+			$('#tdRestaurantStreet').text(restaurant.address);
+			$('#tdRestaurantCountry').text(restaurant.country);
+			$('#tdRestaurantType').text(restaurant.type);
+			$('#tdRestaurantStatus').text(restaurant.open);
+			$('#tdRestaurantRating').text(restaurant.rating);
+			$('#imgRestaurantLogo').attr("src", restaurant.image);
+			
+		}
+	});
+}
+
+// Artikli u izabranom restoranu	
+function getRestaurantArticles(restaurantId) {
+	$("#tableArticles").empty();
+	$.ajax({
+		
+		type: "GET",
+		url: '../rest/article/' + restaurantId,
+		contentType: 'application/json',
+		success: function(articles) {
+	    	for(let article of articles) {
+				addRestaurantArticles(article);
+			}
+		}
+	});
+}
+
+function addRestaurantArticles(article){
+	let c = "<tr>" +
+	" <td>" + article.name + "</td> " +
+	" <td><img src='" + article.image + "'alt='" + article.image + "'></td> " +
+	" <td>" + article.description + "</td> " +
+	" <td>" + article.price + "</td> " +
+	" <td><button class='add-to-cart' id='" + article.id  + "'>Dodaj u korpu</button></td> " +
+	"</tr>"
+	
+	$("#tableArticles").append(c);
+}
+
+// Komentari za izabrani arikal
+function getRestaurantComments(restaurantId) {
+	$("#tableComments").empty();
+	$.ajax({
+		type: "GET",
+		url: '../rest/comment/' + restaurantId,
+		contentType: 'application/json',
+		success: function(comments) {
+	    	for(let comment of comments) {
+				addRestaurantComments(comment);
+			}
+		}
+	});	
+}
+
+function addRestaurantComments(comment){
+	let tr = "<tr>" +
+	" <td>" + comment.customer + "</td> " +
+	" <td>" + comment.text + "</td> " +
+	" <td>" + comment.grade + "</td> " +
+	"</tr>"
+	
+	$("#tableComments").append(tr);
+}
+
+
 // GLOBALNE PROMENLJIVE
 
 // Globalna promenljiva koja nam treba da znamo koji je restoran prethodno dodat
@@ -519,6 +675,9 @@ var sortPointsDesc;
 
 // Svi trenutno prikazani korisnici  (na pregledu korisnika)
 var shownUsers;
+
+var allRestaurants;
+var shownRestaurants;
 
 $(document).ready(function(){
 
@@ -545,6 +704,7 @@ $(document).ready(function(){
 	sortNameDesc = true;
 	sortLastNameDesc = true;
 	sortPointsDesc = true;
+	
 	
 	// Slide up/down za search
 	$("#buttonSearch").click(function(){
@@ -687,6 +847,8 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+
 
 	
 	

@@ -185,3 +185,10 @@ table {
 	color: white;
 	background-color: #04AA6D;
 }
+
+.map {
+	margin-left: auto;
+	margin-right: auto;
+    height: 300px;
+    width: 400px;
+ }

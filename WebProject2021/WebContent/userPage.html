@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="userPage.css">
 	<script src="jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="userPage.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.6.1/build/ol.js"></script>
 </head>
 <body>
 	<div class="menu">
@@ -154,11 +155,12 @@
 					<td><img id="imgRestaurantLogo"></td>
 				</tr>			
 			</table>
+			<div id="map" class="map"></div>
 			<h2>Artikli</h2>
 			<table class="table-data">
 				<thead>
 					<tr>
-						<th>Naziv<th>
+						<th>Naziv</th>
 						<th>Slika</th>
 						<th>Opis</th>
 						<th>Cena</th>
@@ -168,7 +170,19 @@
 				</thead>
 				<tbody  id="tableArticles">
 				</tbody>
-			</table>	
+			</table>
+			<h2>Komentari</h2>	
+			<table class="table-data">
+				<thead>
+					<tr>
+						<th>Username kupca</th>
+						<th>Komentar</th>
+						<th>Ocena</th>
+					</tr>
+				</thead>
+				<tbody  id="tableComments">
+				</tbody>
+			</table>
 	</div>
 	<div id="divCart">
 		<h1>Shopping cart</h1>
@@ -257,7 +271,25 @@
 			</thead>
 			<tbody id="tableOrders"></tbody>
 		</table>
+		<div id="divLeaveComment">
+			<form id="formLeaveComment">
+			<h2>Ostavi komentar</h2>
+			<table>
+				<tr>
+					<td>Komentar</td>
+					<td><input type="text" id="comment"></td>
+				</tr>
+				<tr>
+					<td>Ocena</td>
+					<td><input type="number" id="grade" min="1" max="10"></td>
+				</tr>
+				<tr>
+					<td></td>						
+					<td><input type="submit" value="Posalji komentar" class="submit"></td>
+				</tr>
+			</table>
+			</form>
+		</div>
 	</div>
-
 	
 </body>

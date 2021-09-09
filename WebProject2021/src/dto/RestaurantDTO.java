@@ -25,6 +25,10 @@ public class RestaurantDTO {
 
 	private String image;
 	
+	private double latitude;
+	
+	private double longitude; 
+	
 	
 	public RestaurantDTO() {
 		super();
@@ -33,7 +37,7 @@ public class RestaurantDTO {
 
 
 	public RestaurantDTO(Integer id, String name, String type, String open, String city, String country, String address,
-			Double rating, List<Integer> articles, String image) {
+			Double rating, List<Integer> articles, String image, double latitude, double longitude) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -45,6 +49,8 @@ public class RestaurantDTO {
 		this.rating = rating;
 		this.articles = articles;
 		this.image = image;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 
 
@@ -155,6 +161,30 @@ public class RestaurantDTO {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
 	}
 	
 	

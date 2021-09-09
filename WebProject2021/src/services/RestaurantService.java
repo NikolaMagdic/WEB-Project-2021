@@ -66,22 +66,26 @@ public class RestaurantService {
 
 		String contextPath = ctx.getRealPath("");
 		
-		//System.out.println(restaurant.getImage());
-		String base64Image = (restaurant.getImage()).split(",")[1];
-		byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
+		// System.out.println(restaurant.getImage());
+		if(!restaurant.getImage().equals("")) {
+			System.out.println("Ima slika");
+			String base64Image = (restaurant.getImage()).split(",")[1];
+			byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
 
-		String imagePath = contextPath + "images\\" + restaurant.getName() + ".jpg";
-		//System.out.println(imagePath);
-		BufferedImage img;
-		try {
-			img = ImageIO.read(new ByteArrayInputStream(imageBytes));
-			File outputfile = new File(imagePath);
-			ImageIO.write(img, "jpg", outputfile);
-		} catch (IOException e) {
-			e.printStackTrace();
+			String imagePath = contextPath + "images\\" + restaurant.getName() + ".jpg";
+			//System.out.println(imagePath);
+			BufferedImage img;
+			try {
+				img = ImageIO.read(new ByteArrayInputStream(imageBytes));
+				File outputfile = new File(imagePath);
+				ImageIO.write(img, "jpg", outputfile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			restaurant.setImage("images/" + restaurant.getName() + ".jpg");
+			System.out.println(restaurant.getImage());
 		}
-		restaurant.setImage("images/" + restaurant.getName() + ".jpg");
-		System.out.println(restaurant.getImage());
+
 		// restaurant.setImage(imagePath);
 		
 		Integer maxId = 1;
@@ -194,6 +198,8 @@ public class RestaurantService {
 		dto.setRating(res.getRating());
 		dto.setAddress(res.getLocation().getAddress().getStreetAndNumber());
 		dto.setImage(res.getImage());
+		dto.setLatitude(res.getLocation().getLatitude());
+		dto.setLongitude(res.getLocation().getLongitude());
 		
 		if(res.isOpen()) {
 			dto.setOpen("Open");

@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,5 +72,19 @@ public class CommentDAO {
 				}
 			}
 		}
+	}
+	
+	public Collection<Comment> getAllComments() {
+		return this.commentsMap.values();
+	}
+	
+	public Comment getComment(Integer commentId) {
+		return this.commentsMap.get(commentId);
+	}
+	
+	public Comment addComment(Comment comment) {
+		this.commentsMap.put(comment.getId(), comment);
+		
+		return comment;
 	}
 }

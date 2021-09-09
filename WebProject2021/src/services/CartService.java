@@ -18,8 +18,10 @@ import javax.ws.rs.core.Response;
 import beans.Article;
 import beans.Cart;
 import beans.CartItem;
+import beans.Restaurant;
 import beans.User;
 import dao.ArticleDAO;
+import dao.RestaurantDAO;
 
 @Path("cart")
 public class CartService {
@@ -45,9 +47,16 @@ public class CartService {
 	@POST
 	@Path("/add-to-cart/{restaurantId}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void addToCart(CartItem cartItem, @PathParam("restaurantId") Integer restaurantId, @Context HttpServletRequest request) {
+	public Response addToCart(CartItem cartItem, @PathParam("restaurantId") Integer restaurantId, @Context HttpServletRequest request) {
 		
 		Cart cart = getCart(request);
+		
+		// Provera da li je restoran otvoren
+		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getAttribute("restaurants");
+		Restaurant restaurant = restaurantDAO.findRestaurant(restaurantId);
+		if(!restaurant.isOpen()) {
+			return Response.status(400).entity("Restoran je zatvoren. Kupovina nije moguca.").build();
+		}
 		
 		cart.getCartItems().add(cartItem);
 		cart.setRestaurant(restaurantId);
@@ -59,6 +68,7 @@ public class CartService {
 		
 		saveCart(cart, request);
 	
+		return Response.status(200).build();
 	}
 	
 	@GET

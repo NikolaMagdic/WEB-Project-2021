@@ -3,6 +3,7 @@ function changeView() {
 	$("#divOrders").hide();
 	$("#divRestaurants").hide();
 	$("#divRestaurantDetails").hide();
+	$("#divLeaveComment").hide();
 	
 	$("#buttonCart").click(function(event){
 		$("#divCart").show();
@@ -48,7 +49,7 @@ function changeView() {
 		let id = $(this).attr("id");
 		getRestaurantDetails(id);
 
-	})
+	});
 }
 
 //Formatiranje datuma
@@ -128,6 +129,7 @@ function addRestaurantInTable(restaurant) {
 
 function getRestaurantDetails(restaurantId) {
 	getRestaurantArticles(restaurantId);
+	getRestaurantComments(restaurantId);
 	$.ajax({
 		type: "GET",
 		url: 'rest/restaurant/' + restaurantId,
@@ -145,12 +147,27 @@ function getRestaurantDetails(restaurantId) {
 			$('#tdRestaurantRating').text(restaurant.rating);
 			$('#imgRestaurantLogo').attr("src", restaurant.image);
 			
+			// Mapa
+			var map = new ol.Map({
+			    target: 'map',
+			    layers: [
+			      new ol.layer.Tile({
+			        source: new ol.source.OSM()
+			      })
+			    ],
+			    view: new ol.View({
+			      center: ol.proj.fromLonLat([restaurant.longitude, restaurant.latitude ]),
+			      zoom: 18
+			    })
+			 });
+			
 		}
 	});
 }
 
 // Artikli u izabranom restoranu	
 function getRestaurantArticles(restaurantId) {
+	$("#tableArticles").empty();
 	$.ajax({
 		
 		type: "GET",
@@ -162,7 +179,7 @@ function getRestaurantArticles(restaurantId) {
 			}
 		}
 	});
-	addToCart(restaurantId)
+	addToCart(restaurantId);
 }
 
 function addRestaurantArticles(article){
@@ -176,6 +193,31 @@ function addRestaurantArticles(article){
 	"</tr>"
 	
 	$("#tableArticles").append(c);
+}
+
+// Komentari za izabrani arikal
+function getRestaurantComments(restaurantId) {
+	$("#tableComments").empty();
+	$.ajax({
+		type: "GET",
+		url: 'rest/comment/' + restaurantId,
+		contentType: 'application/json',
+		success: function(comments) {
+	    	for(let comment of comments) {
+				addRestaurantComments(comment);
+			}
+		}
+	});	
+}
+
+function addRestaurantComments(comment){
+	let tr = "<tr>" +
+	" <td>" + comment.customer + "</td> " +
+	" <td>" + comment.text + "</td> " +
+	" <td>" + comment.grade + "</td> " +
+	"</tr>"
+	
+	$("#tableComments").append(tr);
 }
 
 // Shopping cart
@@ -196,6 +238,9 @@ function addToCart(restaurantId) {
 			data: JSON.stringify(cartItem),
 			success: function(){
 				alert("Artikal dodat u korpu");
+			}, 
+			error: function(message) {
+				alert(message);
 			}
 		});
 	});
@@ -336,10 +381,18 @@ function addOrderInTable(order) {
 			"<td>" + order.price + "</td>" +
 			"<td>" + formatDate(order.date) + "</td>" +
 			"<td>" + order.customer + "</td>" +
-			"<td>" + order.orderStatus + "</td>" +
+			"<td>" + order.orderStatus + "</td>";
+	
+	if (order.orderStatus === "OBRADA") {
+		tr = tr + 
 			"<td><button id='" + order.orderId + "' name='cancel'>Otkaži</button></td>" +
 			"</tr>";
-	
+	} else {
+		tr = tr + 
+		"<td><button id='" + order.restaurant + "' name='leaveComment'>Dodaj komentar</button></td>" +
+		"</tr>";
+	}
+		
 	table.append(tr);
 	
 } 
@@ -366,6 +419,39 @@ function getRestaurants() {
 			allRestaurants = restaurants;
 		}
 	});
+}
+
+// KOMENTARI
+function addComment() {
+		$(document).on('click', 'button[name="leaveComment"]', function(){
+			$("#divLeaveComment").show();
+			var restaurantId = $(this).attr("id");
+			
+			$("#formLeaveComment").submit(function(event){
+				event.preventDefault();
+				let text = $("#comment").val();
+				let grade = $("#grade").val();
+				
+				let data = {
+					text: text,
+					grade: grade,
+					restaurant: restaurantId
+				}
+				
+				
+				$.post({
+					url: "rest/comment",
+					contentType: "application/json",
+					data: JSON.stringify(data),
+					success: function(message){
+						alert("Komentar dodat");
+						$("#buttonOrder").trigger('click');
+					}
+				});
+			});
+			
+		});
+	
 }
 
 // PRETRAGA - SEARCH
@@ -614,6 +700,7 @@ $(document).ready(function(){
 	filterOrdersByRestaurantType();
 	filterOrdersByStatus();
 	
+	addComment();
 	
 	$("#buttonSearch").click(function(){
 		$("#divSearchOrders").slideToggle();
