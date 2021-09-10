@@ -116,6 +116,7 @@ function addRestaurantInTable(restaurant) {
 
 	let tr = "<tr id=\"trRestaurant\">" +
 			"<td>" + restaurant.name + "</td>" +
+			"<td><image alt='' src='" + restaurant.image + "' width='150px' height='150px'></td>" +
 			"<td>" + restaurant.type + "</td>" +
 			"<td>" + restaurant.open + "</td>" +
 			"<td>" + restaurant.city + "</td>" +
@@ -146,6 +147,8 @@ function getRestaurantDetails(restaurantId) {
 			$('#tdRestaurantStatus').text(restaurant.open);
 			$('#tdRestaurantRating').text(restaurant.rating);
 			$('#imgRestaurantLogo').attr("src", restaurant.image);
+			$('#imgRestaurantLogo').attr("width", "350px");
+			$('#imgRestaurantLogo').attr("height", "200px");
 			
 			// Mapa
 			$("#map").empty();

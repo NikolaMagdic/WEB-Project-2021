@@ -22,6 +22,7 @@ import beans.Restaurant;
 import beans.User;
 import dao.ArticleDAO;
 import dao.RestaurantDAO;
+import dao.UserDAO;
 
 @Path("cart")
 public class CartService {
@@ -58,8 +59,25 @@ public class CartService {
 			return Response.status(400).entity("Restoran je zatvoren. Kupovina nije moguca.").build();
 		}
 		
-		cart.getCartItems().add(cartItem);
-		cart.setRestaurant(restaurantId);
+		System.out.println(cart);
+		// Resenje problema dodavanja u cart iz razlicitih restorana
+		if(cart.getRestaurant() == null) {
+			cart.getCartItems().add(cartItem);
+			cart.setRestaurant(restaurantId);
+			System.out.println("PRVO DODAVANJE");
+		} else {
+			// ako pokusamo izbrisacemo sve CartIteme u cartu iz prethodnog restorana
+			if(cart.getRestaurant() != restaurantId) {
+				cart.getCartItems().clear();
+				cart.getCartItems().add(cartItem);
+				cart.setRestaurant(restaurantId);
+				cart.setPrice(0.0);
+				System.out.println("DODAVANJE U RAZLICIT RESTORAN");
+			} else {
+				cart.getCartItems().add(cartItem);
+				System.out.println("DODAVANJE U ISTI RESTORAN");
+			}
+		}
 		
 		// Izmena ukupne cene cart-a
 		ArticleDAO articleDAO = (ArticleDAO) context.getAttribute("articles");
@@ -133,13 +151,11 @@ public class CartService {
 	public Cart getCart(HttpServletRequest request) {
 		Cart cart = (Cart) request.getSession().getAttribute("cart");
 		if (cart == null) {
-			// Pravimo novu korpu
-			cart = new Cart();
-			cart.setPrice(0.0);
 			User loggedUser = (User) getLoggedInUser(request);
-			cart.setCustomer(loggedUser.getUsername());
-			//cart.setRestaurant();
+			cart = loggedUser.getCart();
 			request.getSession().setAttribute("cart", cart);
+			
+			//cart.setRestaurant();
 		} 
 
 		return cart;
@@ -148,6 +164,11 @@ public class CartService {
 	/** Metoda koja cuva trenutni sadrzaj korpe u sesiji*/
 	public void saveCart(Cart cart, HttpServletRequest request) {
 		request.getSession().setAttribute("cart",  cart);
+		User loggedUser = (User) request.getSession().getAttribute("user"); 
+	
+		loggedUser.setCart(cart);
+		UserDAO userDAO = (UserDAO) context.getAttribute("users");
+		userDAO.updateUser(loggedUser);
 	}
 
 	// Trenutno ulogovani korisnik

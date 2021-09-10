@@ -142,7 +142,7 @@ function addUserInTable(user) {
 		gender = "Ženski";
 	}
 
-	let tr = "<tr id=\"trUser\">" +
+	let tr = "<tr class='tr-user' id='" + user.username + "'>" +
 			"<td>" + user.username + "</td>" +
 			"<td>" + user.firstName + "</td>" +
 			"<td>" + user.lastName + "</td>" +
@@ -165,8 +165,8 @@ function addUserInTable(user) {
 	
 	table.append(tr);
 
-	if(user.role === "ADMIN") {
-		$("#trUser").css("background-color", "aqua");
+	if(user.numberOfCancellations > 5) {
+		$("#" + user.username + ".tr-user").css("background-color", "red");
 	}
 
 }

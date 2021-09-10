@@ -214,6 +214,9 @@ public class OrderService {
 		// Smanjivanje bodova korisniku
 		Double points = order.getPrice() / 1000 * 133 * 4;
 		loggedInUser.setPoints(loggedInUser.getPoints() - points);
+		// Povecavanje broja otkazivanja
+		loggedInUser.setNumberOfCancellations(loggedInUser.getNumberOfCancellations() + 1);
+		
 		// Cuvanje promena
 		UserDAO userDAO = (UserDAO) context.getAttribute("users");
 		userDAO.updateUser(loggedInUser);

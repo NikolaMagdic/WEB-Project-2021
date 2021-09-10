@@ -14,7 +14,8 @@
 		"deliveryOrders": [],
 		"points": 0,
 		"customerType": null,
-		"blocked": false
+		"blocked": false,
+		"numberOfCancellations": 0
 		
 	},
 	
@@ -31,7 +32,8 @@
 		"restaurant": 1,
 		"deliveryOrders": [],
 		"points": 0,
-		"customerType": null
+		"customerType": null,
+		"numberOfCancellations": 0
 	},
 	
 	"user": {
@@ -47,6 +49,7 @@
 		"restaurant": 0,
 		"deliveryOrders": [],
 		"points": 0,
-		"customerType": null
+		"customerType": null,
+		"numberOfCancellations": 0
 	}
 }
