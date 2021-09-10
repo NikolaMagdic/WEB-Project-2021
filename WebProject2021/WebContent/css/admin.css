@@ -13,7 +13,7 @@ body {
 	display: none;
 }
 
-h1 {
+h1, h2 {
 	text-align: center;	 
 }
 
@@ -157,3 +157,10 @@ table {
 	margin-left: 25%;
 	
 }
+
+.map {
+	margin-left: auto;
+	margin-right: auto;
+    height: 300px;
+    width: 400px;
+ }

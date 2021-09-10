@@ -74,12 +74,18 @@ public class LoginService {
 		// Dodavanje svih atributa da ne bi bili null
 		user.setRole(UserRole.KUPAC);
 		user.setMyOrders(new ArrayList<String>()); //sta cemo za cart, treba Int da se doda
+		
+		// inicijalizacija korpe
 		Cart newCart = new Cart();
+		newCart.setPrice(0.0);
+		newCart.setCustomer(user.getUsername());
 		user.setCart(newCart);
+		
 		user.setPoints(0.0);
 		CustomerType type = new CustomerType(CustomerTypeName.NONE, 0, 0);
 		user.setCustomerType(type); //?????
 		user.setBlocked(false);
+		user.setNumberOfCancellations(0);
 		System.out.println(user);
 		
 		UserDAO userDAO = (UserDAO) context.getAttribute("users");

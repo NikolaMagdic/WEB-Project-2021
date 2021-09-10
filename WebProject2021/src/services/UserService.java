@@ -94,6 +94,7 @@ public class UserService {
 		}
 		
 		user.setBlocked(false);
+		user.setNumberOfCancellations(0);
 		
 		userDAO.addUser(user);
 		String contextPath = ctx.getRealPath("");

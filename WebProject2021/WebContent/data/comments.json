@@ -1,0 +1,9 @@
+{
+	"1": {
+		"id": 1,
+		"customer": "kupac",
+		"restaurant": 1,
+		"text": "Dobar, odlican",
+		"grade": 4
+	}
+}

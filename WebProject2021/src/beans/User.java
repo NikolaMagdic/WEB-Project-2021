@@ -42,6 +42,9 @@ public class User {
 	private CustomerType customerType;
 	
 	private boolean blocked;
+	
+	// samo za kupca
+	private int numberOfCancellations;
 
 	
 	public User() {
@@ -50,10 +53,9 @@ public class User {
 
 	
 
-
 	public User(String username, String password, String firstName, String lastName, boolean gender, Date birthDate,
 			UserRole role, List<String> myOrders, Cart cart, Integer restaurant, List<String> deliveryOrders,
-			Double points, CustomerType customerType, boolean blocked) {
+			Double points, CustomerType customerType, boolean blocked, int numberOfCancellations) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -69,8 +71,8 @@ public class User {
 		this.points = points;
 		this.customerType = customerType;
 		this.blocked = blocked;
+		this.numberOfCancellations = numberOfCancellations;
 	}
-
 
 
 
@@ -218,14 +220,26 @@ public class User {
 		this.blocked = blocked;
 	}
 
+	
+	public int getNumberOfCancellations() {
+		return numberOfCancellations;
+	}
+
+	public void setNumberOfCancellations(int numberOfCancellations) {
+		this.numberOfCancellations = numberOfCancellations;
+	}
+
+
 
 	@Override
 	public String toString() {
 		return "User [username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName="
 				+ lastName + ", gender=" + gender + ", birthDate=" + birthDate + ", role=" + role + ", myOrders="
 				+ myOrders + ", cart=" + cart + ", restaurant=" + restaurant + ", deliveryOrders=" + deliveryOrders
-				+ ", points=" + points + ", customerType=" + customerType + ", blocked=" + blocked + "]";
+				+ ", points=" + points + ", customerType=" + customerType + ", blocked=" + blocked
+				+ ", numberOfCancellation=" + numberOfCancellations + "]";
 	}
+
 	
 	
 }

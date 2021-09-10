@@ -6,12 +6,15 @@
 <link rel="stylesheet" href="../css/admin.css"/>
 <script src="../jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="../js/admin.js"></script>
+<!-- ZA MAPE -->
+<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.6.1/build/ol.js"></script>
 </head>
 <body>
 	<div class="menu">
 	  <a id="buttonAddUser" class="menu-button">Dodaj korisnika</a>
 	  <a id="buttonAllUsers" class="menu-button">Korisnici</a>
 	  <a id="buttonAddRestaurant" class="menu-button">Dodaj restoran</a>
+	  <a id="buttonRestaurants" class="menu-button">Restorani</a>
 	  <div class="dropdown">
 	  	  <button id="buttonAccount" class="account-button">Nalog</button>
 	  	  <div class="dropdown-content">
@@ -118,7 +121,7 @@
 			<thead>
 				<tr>
 					<th id="sortUsername" class="sort-header">Username  <img id="imageSortUsername" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
-					<th id="sortName" class="sort-header">Ime  <img id="imageSortName" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortName" class="sort-header">Ime  <img id="imageSortFirstName" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
 					<th id="sortLastName" class="sort-header">Prezime  <img id="imageSortLastName" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
 					<th>Uloga</th>
 					<th>Pol</th>
@@ -137,7 +140,7 @@
 		<table>
 			<tr>
 				<td>Naziv</td>
-				<td><input type="text" id="restaurantName"></td>
+				<td><input type="text" id="restaurantName" required></td>
 				<!--Polje za prikaz dodate slike restorana -->
 				<td rowspan="9">
 					<img id="image" alt="" src="">
@@ -156,11 +159,11 @@
 			</tr>
 			<tr>
 				<td>Latitude</td>
-				<td><input type="number" id="latitude"></td>
+				<td><input type="number" id="latitude" required disabled></td>
 			</tr>
 			<tr>
 				<td>Longitude</td>
-				<td><input type="number" id="longitude"></td>
+				<td><input type="number" id="longitude" required disabled></td>
 			</tr>
 			<tr>
 				<td>Grad</td>
@@ -180,7 +183,7 @@
 			</tr>
 			<tr>
 				<td>Logo</td>
-				<td><input type="file" id="restaurantImage" accept="image/*"></td>
+				<td><input type="file" id="restaurantImage" required accept="image/*"></td>
 			</tr>
 			<tr>
 				<td>Menadžer</td>
@@ -195,6 +198,7 @@
 			</tr>
 		</table>
 		</form>
+		<div id="map" class="map"></div>
 	</div>	
 	<div id="divAddManager">
 		<form id="formAddManager">
@@ -299,6 +303,118 @@
 				</tr>
 			</table>				
 		</form>
+	</div>
+	<div id="divRestaurants">
+		<h1>Pregled restorana <button id="buttonSearchRestaurants"><img id="buttonSearch" alt="Pretraga" src="../images/search-icon.png" width="15px" height="15px"></button></h1>
+		<div id="divSearchRestaurants" hidden="true">
+			<form id="formSearchRestaurants">
+				<table>
+					<tr>
+						<th>
+							<label>Pretraga:</label>
+						</th>
+						<td>
+							<input type="text" id="searchRestaurantsName" placeholder="Name">
+						</td>
+						<td>
+							<input type="text" id="searchRestaurantsType" placeholder="Type">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="text" id="searchRestaurantsCity" placeholder="City">
+						</td>
+						<td>
+							<input type="text" id="searchRestaurantsRating" placeholder="Rating">
+						</td>
+						<td>
+							<input type="submit" value="Search" id="submitRestaurantsSearch" class="submit">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<table class="table-data">
+			<thead>
+				<tr>
+					<th id='sortRestaurantsByName' class="sort-header">Name <img id="imageSortName" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th> <input id="typeZaFiltraciju" placeholder="Type" ></th>
+					<th id='sortRestaurantsByStatus'>Status</th>
+					<th id='sortRestaurantsByCity' class="sort-header">City<img id="imageSortCity" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id='sortRestaurantsByCountry' class="sort-header">Country<img id="imageSortCountry" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id='sortRestaurantsByRating' class="sort-header">Rating<img id="imageSortRating" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th>Detalji</th>
+				</tr>
+			</thead>
+			<tbody id="tableRestaurants"></tbody>
+		</table>
+	</div>
+	<div id="divRestaurantDetails">
+		<h1 id="h1Restaurant"></h1>
+			<table class="table-data">
+				<tr style="display: hidden">
+					<td>Restaurant id:</td>
+					<td id="tdRestaurantId"></td>
+				</tr>
+				<tr>
+					<td>Name:</td>
+					<td id="tdRestaurantName"></td>
+				</tr>
+				<tr>
+					<td>City:</td>
+					<td id="tdRestaurantCity"></td>
+				</tr>				
+				<tr>
+					<td>Street:</td>
+					<td id="tdRestaurantStreet"></td>
+				</tr>
+				<tr>
+					<td>Country:</td>
+					<td id="tdRestaurantCountry"></td>
+				</tr>
+				<tr>
+					<td>Type:</td>
+					<td id="tdRestaurantType"></td>
+				</tr>
+				<tr>
+					<td>Status:</td>
+					<td id="tdRestaurantStatus"></td>
+				</tr>
+				<tr>
+					<td>Rating:</td>
+					<td id="tdRestaurantRating"></td>
+				</tr>	
+				<tr>
+					<td>Logo:</td>
+					<td><img id="imgRestaurantLogo"></td>
+				</tr>			
+			</table>
+			<h2>Artikli</h2>
+			<table class="table-data">
+				<thead>
+					<tr>
+						<th>Naziv</th>
+						<th>Slika</th>
+						<th>Opis</th>
+						<th>Cena</th>
+						<th>Korpa</th>
+					</tr>
+				</thead>
+				<tbody  id="tableArticles">
+				</tbody>
+			</table>
+			<h2>Komentari</h2>	
+			<table class="table-data">
+				<thead>
+					<tr>
+						<th>Username kupca</th>
+						<th>Komentar</th>
+						<th>Ocena</th>
+					</tr>
+				</thead>
+				<tbody  id="tableComments">
+				</tbody>
+			</table>
 	</div>
 </body>
 </html>

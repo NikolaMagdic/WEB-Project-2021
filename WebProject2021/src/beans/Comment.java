@@ -4,37 +4,39 @@ public class Comment {
 	
 	private Integer id;
 
-	private Integer customer;
+	private String customer;
 	
 	private Integer restaurant;
 	
 	private String text;
 	
-	// od 1 do 10
+	// od 1 do 5
 	private Integer grade;
 
+	private boolean accepted;
 	
 	public Comment() {
 		
 	}
 	
 
-	public Comment(Integer id, Integer customer, Integer restaurant, String text, Integer grade) {
+	public Comment(Integer id, String customer, Integer restaurant, String text, Integer grade, boolean accepted) {
 		super();
 		this.id = id;
 		this.customer = customer;
 		this.restaurant = restaurant;
 		this.text = text;
 		this.grade = grade;
+		this.accepted = accepted;
 	}
 
 
 
-	public Integer getCustomer() {
+	public String getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(Integer customer) {
+	public void setCustomer(String customer) {
 		this.customer = customer;
 	}
 
@@ -70,12 +72,20 @@ public class Comment {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
+	public boolean isAccepted() {
+		return accepted;
+	}
+
+	public void setAccepted(boolean accepted) {
+		this.accepted = accepted;
+	}
 
 
 	@Override
 	public String toString() {
 		return "Comment [id=" + id + ", customer=" + customer + ", restaurant=" + restaurant + ", text=" + text
-				+ ", grade=" + grade + "]";
+				+ ", grade=" + grade + ", accepted=" + accepted + "]";
 	}
 
 	

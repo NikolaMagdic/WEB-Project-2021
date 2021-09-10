@@ -1,8 +1,6 @@
 package beans;
 
 public class Location {
-	
-	private Long id;
 
 	private double latitude;
 	
@@ -16,9 +14,8 @@ public class Location {
 	}
 	
 
-	public Location(Long id, double latitude, double longitude, Address address) {
+	public Location(double latitude, double longitude, Address address) {
 		super();
-		this.id = id;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.address = address;

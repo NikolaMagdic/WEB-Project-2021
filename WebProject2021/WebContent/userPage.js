@@ -3,6 +3,7 @@ function changeView() {
 	$("#divOrders").hide();
 	$("#divRestaurants").hide();
 	$("#divRestaurantDetails").hide();
+	$("#divLeaveComment").hide();
 	
 	$("#buttonCart").click(function(event){
 		$("#divCart").show();
@@ -48,7 +49,7 @@ function changeView() {
 		let id = $(this).attr("id");
 		getRestaurantDetails(id);
 
-	})
+	});
 }
 
 //Formatiranje datuma
@@ -115,6 +116,7 @@ function addRestaurantInTable(restaurant) {
 
 	let tr = "<tr id=\"trRestaurant\">" +
 			"<td>" + restaurant.name + "</td>" +
+			"<td><image alt='' src='" + restaurant.image + "' width='150px' height='150px'></td>" +
 			"<td>" + restaurant.type + "</td>" +
 			"<td>" + restaurant.open + "</td>" +
 			"<td>" + restaurant.city + "</td>" +
@@ -128,6 +130,7 @@ function addRestaurantInTable(restaurant) {
 
 function getRestaurantDetails(restaurantId) {
 	getRestaurantArticles(restaurantId);
+	getRestaurantComments(restaurantId);
 	$.ajax({
 		type: "GET",
 		url: 'rest/restaurant/' + restaurantId,
@@ -144,6 +147,23 @@ function getRestaurantDetails(restaurantId) {
 			$('#tdRestaurantStatus').text(restaurant.open);
 			$('#tdRestaurantRating').text(restaurant.rating);
 			$('#imgRestaurantLogo').attr("src", restaurant.image);
+			$('#imgRestaurantLogo').attr("width", "350px");
+			$('#imgRestaurantLogo').attr("height", "200px");
+			
+			// Mapa
+			$("#map").empty();
+			var map = new ol.Map({
+			    target: 'map',
+			    layers: [
+			      new ol.layer.Tile({
+			        source: new ol.source.OSM()
+			      })
+			    ],
+			    view: new ol.View({
+			      center: ol.proj.fromLonLat([restaurant.longitude, restaurant.latitude ]),
+			      zoom: 18
+			    })
+			 });
 			
 		}
 	});
@@ -151,6 +171,7 @@ function getRestaurantDetails(restaurantId) {
 
 // Artikli u izabranom restoranu	
 function getRestaurantArticles(restaurantId) {
+	$("#tableArticles").empty();
 	$.ajax({
 		
 		type: "GET",
@@ -162,7 +183,7 @@ function getRestaurantArticles(restaurantId) {
 			}
 		}
 	});
-	addToCart(restaurantId)
+	addToCart(restaurantId);
 }
 
 function addRestaurantArticles(article){
@@ -176,6 +197,31 @@ function addRestaurantArticles(article){
 	"</tr>"
 	
 	$("#tableArticles").append(c);
+}
+
+// Komentari za izabrani arikal
+function getRestaurantComments(restaurantId) {
+	$("#tableComments").empty();
+	$.ajax({
+		type: "GET",
+		url: 'rest/comment/approved/' + restaurantId,
+		contentType: 'application/json',
+		success: function(comments) {
+	    	for(let comment of comments) {
+				addRestaurantComments(comment);
+			}
+		}
+	});	
+}
+
+function addRestaurantComments(comment){
+	let tr = "<tr>" +
+	" <td>" + comment.customer + "</td> " +
+	" <td>" + comment.text + "</td> " +
+	" <td>" + comment.grade + "</td> " +
+	"</tr>"
+	
+	$("#tableComments").append(tr);
 }
 
 // Shopping cart
@@ -196,6 +242,9 @@ function addToCart(restaurantId) {
 			data: JSON.stringify(cartItem),
 			success: function(){
 				alert("Artikal dodat u korpu");
+			}, 
+			error: function(message) {
+				alert(message.responseText);
 			}
 		});
 	});
@@ -336,10 +385,18 @@ function addOrderInTable(order) {
 			"<td>" + order.price + "</td>" +
 			"<td>" + formatDate(order.date) + "</td>" +
 			"<td>" + order.customer + "</td>" +
-			"<td>" + order.orderStatus + "</td>" +
+			"<td>" + order.orderStatus + "</td>";
+	
+	if (order.orderStatus === "OBRADA") {
+		tr = tr + 
 			"<td><button id='" + order.orderId + "' name='cancel'>Otkaži</button></td>" +
 			"</tr>";
-	
+	} else if (roder.orderStatus === "DOSTAVLJENA"){
+		tr = tr + 
+		"<td><button id='" + order.restaurant + "' name='leaveComment'>Dodaj komentar</button></td>" +
+		"</tr>";
+	}
+		
 	table.append(tr);
 	
 } 
@@ -366,6 +423,39 @@ function getRestaurants() {
 			allRestaurants = restaurants;
 		}
 	});
+}
+
+// KOMENTARI
+function addComment() {
+		$(document).on('click', 'button[name="leaveComment"]', function(){
+			$("#divLeaveComment").show();
+			var restaurantId = $(this).attr("id");
+			
+			$("#formLeaveComment").submit(function(event){
+				event.preventDefault();
+				let text = $("#comment").val();
+				let grade = $("#grade").val();
+				
+				let data = {
+					text: text,
+					grade: grade,
+					restaurant: restaurantId
+				}
+				
+				
+				$.post({
+					url: "rest/comment",
+					contentType: "application/json",
+					data: JSON.stringify(data),
+					success: function(message){
+						alert("Komentar dodat");
+						$("#buttonOrder").trigger('click');
+					}
+				});
+			});
+			
+		});
+	
 }
 
 // PRETRAGA - SEARCH
@@ -570,6 +660,280 @@ function filterOrdersByStatus() {
 	});
 }
 
+// RESTORANI PRETRAGA SORTIRANJE I FILTRIRANJE
+function search(){	
+ 	$("#formSearchRestaurants").submit(function() {
+ 		
+ 		event.preventDefault();
+ 		$("#tableRestaurants").empty();
+
+ 		var name = $("#searchRestaurantsName");
+ 		var type = $("#searchRestaurantsType");
+ 		var city = $("#searchRestaurantsCity");
+ 		var rating = $("#searchRestaurantsRating");
+
+ 		//console.log(checkInTime.val());
+ 		var filter = new Object();
+ 		
+ 		if(name.val() == ""){
+ 			filter.name = null;
+ 		} else filter.name = name.val();
+ 		
+ 		if(type.val() == ""){
+ 			filter.type = null;
+ 		} else filter.type = type.val();
+ 		
+ 		if(city.val() == ""){
+ 			filter.city = null;
+ 		} else filter.city = city.val();
+ 		
+ 		if(rating.val() == ""){
+ 			filter.rating = null;
+ 		} else filter.rating = rating.val();
+ 		
+ 		
+ 		
+ 		console.log(filter);
+ 		$.ajax({
+ 			type: "POST",
+ 			url: 'rest/restaurant/search',
+			data : JSON.stringify(filter),
+ 			contentType: 'application/json',
+ 			success: function(restaurants) {
+ 				console.log(restaurants);
+				shownRestaurants = [];
+ 		    	for(let res of restaurants) {
+ 					addRestaurantInTable(res);
+	 					$( "#detaljiRestorana" + res.id).click(function() {
+							getRestaurantById(res.id);
+						});
+					shownRestaurants.push(res);
+ 				}
+ 			}
+ 		});
+ 		
+	});
+}
+
+//prikazuje samo restorane koji su otvoreni
+function filterByType(){
+ 	$("#typeZaFiltraciju").change(function() {
+ 		event.preventDefault();
+ 		
+ 		$("#tableRestaurants").empty();
+ 		$.ajax({
+ 			
+ 			type: "GET",
+ 			url: 'rest/restaurant/open',
+ 			contentType: 'application/json',
+ 			success: function(restaurants) {
+				shownRestaurants = [];
+ 		    	for(let res of restaurants) {
+ 		    		if($("#typeZaFiltraciju").val() == '' || res.type.toLowerCase().includes($("#typeZaFiltraciju").val().toLowerCase())){
+ 	 					addRestaurantInTable(res);
+ 	 					$( "#detaljiRestorana" + res.id).click(function() {
+							getRestaurantById(res.id);
+						});
+						shownRestaurants.push(res);
+ 		    		}
+
+ 				}
+ 			}
+ 		});	
+ 		
+	});
+}
+
+
+function sortRestaurantsByStatus() {
+	$("#sortRestaurantsByStatus").click(function() {
+		event.preventDefault();
+ 		
+ 		$("#tableRestaurants").empty();
+		
+		for(let res of shownRestaurants) {
+			if(res.open === "Open") {
+	 	 		addRestaurantInTable(res);
+	 	 		$( "#detaljiRestorana" + res.id).click(function() {
+					getRestaurantById(res.id);
+				});
+			}
+ 		}
+	})
+}
+
+
+function sortRestaurantsByRating(){
+
+ 	$( "#sortRestaurantsByRating").click(function() {
+ 		
+ 		event.preventDefault();
+ 		
+ 		$("#tableRestaurants").empty();
+
+		console.log("Usao u sortByRating");
+ 		
+ 		if(sortRatingDesc) {
+ 			for(let i=0; i<shownRestaurants.length; i++){
+ 	 			for(let j = i+1; j < shownRestaurants.length; j++){
+ 	 	 			if(shownRestaurants[i].rating < shownRestaurants[j].rating){
+ 	 	 				temp = shownRestaurants[i];
+ 	 	 				shownRestaurants[i] = shownRestaurants[j];
+ 	 	 				shownRestaurants[j] = temp;
+ 	 	 			}
+ 	 			}
+ 	 		}
+			
+ 			sortRatingDesc = false;
+ 			$("#imageSortRating").attr("src", "./images/sort-down.png");
+ 		} else {
+ 			//shownUsers.reverse();
+ 			for(let i=0; i<shownRestaurants.length; i++){
+ 	 			for(let j = i+1; j < shownRestaurants.length; j++){
+ 	 	 			if(shownRestaurants[i].rating > shownRestaurants[j].rating){
+ 	 	 				temp = shownRestaurants[i];
+ 	 	 				shownRestaurants[i] = shownRestaurants[j];
+ 	 	 				shownRestaurants[j] = temp;
+ 	 	 			}
+ 	 			}
+ 	 		}
+ 			sortRatingDesc = true;
+ 			$("#imageSortRating").attr("src", "./images/sort-up.png");
+ 		}
+ 		
+ 			for(let res of shownRestaurants) {
+ 	 		addRestaurantInTable(res);
+ 	 		$( "#detaljiRestorana" + res.id).click(function() {
+				getRestaurantById(res.id);
+			});
+ 		}
+	});
+}
+
+function strcmp(a, b)
+{   
+    return (a<b?-1:(a>b?1:0));  
+}
+
+function sortRestaurantsByName(){
+
+ 	$( "#sortRestaurantsByName").click(function() {
+ 		
+ 		event.preventDefault();
+ 		
+ 		$("#tableRestaurants").empty();
+	
+		console.log("Usao u sortByName");
+			
+			
+		if(sortNameDesc) {
+			shownRestaurants.sort(function(a, b){
+			    if(a.name < b.name) { return -1; }
+			    if(a.name > b.name) { return 1; }
+			    return 0;
+			});
+			sortNameDesc = false;
+			$("#imageSortName").attr("src", "./images/sort-down.png");
+		} else {
+			shownRestaurants.sort(function(a, b){
+			    if(a.name > b.name) { return -1; }
+			    if(a.name < b.name) { return 1; }
+			    return 0;
+			});
+			sortNameDesc = true;
+			$("#imageSortName").attr("src", "./images/sort-up.png");
+		}
+ 			
+ 			
+ 		for(let res of shownRestaurants) {
+ 			addRestaurantInTable(res);
+ 			$( "#detaljiRestorana" + res.id).click(function() {
+				getRestaurantById(res.id);
+			});
+ 		}
+ 				
+	});
+}
+
+
+function sortRestaurantsByCity(){
+
+ 	$( "#sortRestaurantsByCity").click(function() {
+ 		
+ 		event.preventDefault();
+ 		
+ 		$("#tableRestaurants").empty();
+
+		console.log("Usao u sortByCity");
+
+		if(sortCityDesc) {
+			shownRestaurants.sort(function(a, b){
+			    if(a.city < b.city) { return -1; }
+			    if(a.city > b.city) { return 1; }
+			    return 0;
+			});
+			sortCityDesc = false;
+			$("#imageSortCity").attr("src", "./images/sort-down.png");
+		} else {
+			shownRestaurants.sort(function(a, b){
+			    if(a.city > b.city) { return -1; }
+			    if(a.city < b.city) { return 1; }
+			    return 0;
+			});
+			sortCityDesc = true;
+			$("#imageSortCity").attr("src", "./images/sort-up.png");
+		}
+ 		
+ 		
+ 		for(let res of shownRestaurants) {
+ 			addRestaurantInTable(res);
+ 			$( "#detaljiRestorana" + res.id).click(function() {
+				getRestaurantById(res.id);
+			});
+ 		}
+ 		
+	});
+}
+
+function sortRestaurantsByCountry(){
+
+ 	$( "#sortRestaurantsByCountry").click(function() {
+ 		
+ 		event.preventDefault();
+ 		
+ 		$("#tableRestaurants").empty();
+
+		console.log("Usao u sortByCountry");
+		
+		
+		if(sortCountryDesc) {
+			shownRestaurants.sort(function(a, b){
+			    if(a.country < b.country) { return -1; }
+			    if(a.country > b.country) { return 1; }
+			    return 0;
+			});
+			sortCountryDesc = false;
+			$("#imageSortCountry").attr("src", "./images/sort-down.png");
+		} else {
+			shownRestaurants.sort(function(a, b){
+			    if(a.country > b.country) { return -1; }
+			    if(a.country < b.country) { return 1; }
+			    return 0;
+			});
+			sortCountryDesc = true;
+			$("#imageSortCountry").attr("src", "./images/sort-up.png");
+		}
+ 		
+ 		
+ 		for(let res of shownRestaurants) {
+ 			addRestaurantInTable(res);
+ 			$( "#detaljiRestorana" + res.id).click(function() {
+				getRestaurantById(res.id);
+			});
+ 		}
+ 		
+	});
+}
 
 
 // GLOBALNE PROMENLJIVE
@@ -584,6 +948,11 @@ var shownOrders;
 var sortRestaurantNameDesc;
 var sortPriceDesc;
 var sortDateDesc;
+
+var sortNameDesc;
+var sortRatingDesc;
+var sortCityDesc;
+var sortCountryDesc;
 
 $(document).ready(function(){
 	
@@ -613,6 +982,22 @@ $(document).ready(function(){
 	
 	filterOrdersByRestaurantType();
 	filterOrdersByStatus();
+	
+	addComment();
+	
+	// Restorani PSF
+	sortRestaurantsByStatus();
+	sortRestaurantsByName();
+	sortRestaurantsByCity();
+	sortRestaurantsByCountry();
+	sortRestaurantsByRating();
+	filterByType();
+	search();
+	
+	// Slide up/down za search
+	$("#buttonSearchRestaurants").click(function(){
+		$("#divSearchRestaurants").slideToggle();
+	});
 	
 	
 	$("#buttonSearch").click(function(){
