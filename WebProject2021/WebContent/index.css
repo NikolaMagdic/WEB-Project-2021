@@ -230,3 +230,19 @@ footer {
   font-size: 16px;
   width: 100%;	
 }
+
+#tableArticles {
+	background-color: #29c5f8;
+}
+
+#divRestaurantArticles{
+	display: none;
+	align-items: center;
+}
+
+.tr-top {
+  background-color: #009ce8;
+  font-size: 20px;	
+  text-decoration: none;
+  color: white;
+}
