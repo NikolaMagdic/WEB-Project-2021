@@ -10,7 +10,7 @@ public class Comment {
 	
 	private String text;
 	
-	// od 1 do 10
+	// od 1 do 5
 	private Integer grade;
 
 	private boolean accepted;

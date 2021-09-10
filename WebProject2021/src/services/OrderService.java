@@ -22,6 +22,7 @@ import javax.ws.rs.core.Response;
 
 import beans.Cart;
 import beans.CartItem;
+import beans.CustomerType;
 import beans.Order;
 import beans.Restaurant;
 import beans.User;
@@ -29,6 +30,7 @@ import dao.OrderDAO;
 import dao.RestaurantDAO;
 import dao.UserDAO;
 import dto.OrderDTO;
+import enumerations.CustomerTypeName;
 import enumerations.OrderStatus;
 
 @Path("order")
@@ -109,10 +111,16 @@ public class OrderService {
 		String usersNameAndSurname = loggedInUser.getFirstName() + " " + loggedInUser.getLastName();
 		
 		// TODO: Ovo izmeniti da bude id od 10 karaktera
-		String orderId = millis.toString();
+		String orderId = millis.toString().substring(0,  9);
 		
 		Order order = new Order(orderId, products, restaurantId, new Date(millis), cart.getPrice(), usersNameAndSurname, OrderStatus.OBRADA);
 	
+		// Smanji cenu ako je korisnik ZLATNI ili SREBRNI ...
+		Integer discount = loggedInUser.getCustomerType().getDiscount();
+		if(discount != null) {
+			order.setPrice(order.getPrice() - (order.getPrice() * discount / 100));
+		}
+		
 		String contextPath = context.getRealPath("");
 		// Sacuvaj porudzbinu
 		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
@@ -125,7 +133,17 @@ public class OrderService {
 		// Dodaj mu bodove
 		Double points = order.getPrice() / 1000 * 133;
 		loggedInUser.setPoints(loggedInUser.getPoints() + points);
-		
+		// Ako treba promeni mu tip
+		if(loggedInUser.getPoints() > 1000) {
+			CustomerType customerType = new CustomerType(CustomerTypeName.BRONZE, 1, 1000);
+			loggedInUser.setCustomerType(customerType);
+		} else if (loggedInUser.getPoints() > 3000) {
+			CustomerType customerType = new CustomerType(CustomerTypeName.SILVER, 3, 3000);
+			loggedInUser.setCustomerType(customerType);
+		} else if (loggedInUser.getPoints() > 5000) {
+			CustomerType customerType = new CustomerType(CustomerTypeName.GOLD, 5, 5000);
+			loggedInUser.setCustomerType(customerType);
+		}
 		
 		// Azururaj restoran (posto sam dodao listu restaurantsOrders da bi mogao da izlistam sve ordere vezane za njega)
 		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getAttribute("restaurants");

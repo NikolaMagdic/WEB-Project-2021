@@ -2,6 +2,7 @@ function initHide(){
 	$("#divRestaurantDetails").hide();
 	$("#divEditAccount").hide();
 	$("#divRestaurantArticles").hide();
+	$("#divRestaurantComments").hide();
 	$("#divArticleDetails").hide();
 	$("#divEditArticle").hide();
 	$("#divAddArticle").hide();
@@ -17,6 +18,7 @@ function initShowButtons(){
 		$("#divEditAccount").show();
 		$("#divRestaurantDetails").hide();
 		$("#divRestaurantArticles").hide();
+		$("#divRestaurantComments").hide();
 		$("#divArticleDetails").hide();
 		$("#divEditArticle").hide();
 		$("#divAddArticle").hide();
@@ -30,6 +32,7 @@ function initShowButtons(){
 		$("#divEditAccount").hide();
 		$("#divRestaurantDetails").show();
 		$("#divRestaurantArticles").show();
+		$("#divRestaurantComments").show();
 		$("#divArticleDetails").hide();
 		$("#divEditArticle").hide();
 		$("#divAddArticle").hide();
@@ -43,6 +46,7 @@ function initShowButtons(){
 		$("#divEditAccount").hide();
 		$("#divRestaurantDetails").hide();
 		$("#divRestaurantArticles").hide();
+		$("#divRestaurantComments").hide();
 		$("#divArticleDetails").show();
 		$("#divEditArticle").hide();
 		$("#divAddArticle").hide();
@@ -55,6 +59,7 @@ function initShowButtons(){
 		$("#divEditAccount").hide();
 		$("#divRestaurantDetails").hide();
 		$("#divRestaurantArticles").hide();
+		$("#divRestaurantComments").hide();
 		$("#divArticleDetails").hide();
 		$("#divEditArticle").show();
 		$("#divAddArticle").hide();
@@ -68,6 +73,7 @@ function initShowButtons(){
 		$("#divEditAccount").hide();
 		$("#divRestaurantDetails").hide();
 		$("#divRestaurantArticles").hide();
+		$("#divRestaurantComments").hide();
 		$("#divArticleDetails").hide();
 		$("#divEditArticle").hide();
 		$("#divAddArticle").show();
@@ -81,6 +87,7 @@ function initShowButtons(){
 		$("#divEditAccount").hide();
 		$("#divRestaurantDetails").hide();
 		$("#divRestaurantArticles").hide();
+		$("#divRestaurantComments").hide();
 		$("#divArticleDetails").hide();
 		$("#divEditArticle").hide();
 		$("#divAddArticle").hide();
@@ -95,6 +102,7 @@ function initShowButtons(){
 		$("#divEditAccount").hide();
 		$("#divRestaurantDetails").hide();
 		$("#divRestaurantArticles").hide();
+		$("#divRestaurantComments").hide();
 		$("#divArticleDetails").hide();
 		$("#divEditArticle").hide();
 		$("#divAddArticle").hide();
@@ -108,6 +116,7 @@ function initShowButtons(){
 		$("#divEditAccount").hide();
 		$("#divRestaurantDetails").hide();
 		$("#divRestaurantArticles").hide();
+		$("#divRestaurantComments").hide();
 		$("#divArticleDetails").hide();
 		$("#divEditArticle").hide();
 		$("#divAddArticle").hide();
@@ -173,6 +182,7 @@ function getRestaurantByManager(){
 			console.log("Postavljamo globalnu promenljivu restaurantId na: " + restaurantId);
 			
 			getRestaurantOrders(res.id);
+			getRestaurantComments(res.id);
 			
 			shownArticles = res.articles;
 		}
@@ -231,6 +241,57 @@ function getArticleById(articleId){
 	})
 }
 
+// KOMENTARI
+
+function getRestaurantComments(restaurantId) {
+	$("#tableComments").empty();
+	$.ajax({
+		type: "GET",
+		url: 'rest/comment/' + restaurantId,
+		contentType: 'application/json',
+		success: function(comments) {
+	    	for(let comment of comments) {
+				addRestaurantComments(comment);
+			}
+		}
+	});	
+}
+
+function addRestaurantComments(comment) {
+	let tr = "<tr>" +
+	"<td>" + comment.customer + "</td> " +
+	"<td>" + comment.text + "</td> " +
+	"<td>" + comment.grade + "</td> ";
+	
+	if(!comment.accepted) {
+		tr = tr + 	"<td><button class='approve-comment' id='" + comment.id + "'>Approve Comment</button></td> " +
+					"</tr>"
+	} else {
+		tr = tr + "<td></td></tr>"
+	}
+	
+	
+	$("#tableComments").append(tr);
+}
+
+// Odobravanje komentara od strane menadzera
+function approveComment() {
+	$(document).on('click', '.approve-comment', function(){
+		let commentId = $(this).attr("id");
+		
+		$.ajax({
+			url: "rest/comment/" + commentId,
+			type: "PUT",
+			contentType: "application/json",
+			success: function() {
+				alert("Comment is approved");
+				location.reload();
+				$()
+			}
+		});
+		
+	});
+}
 
 
 // Formatiranje datuma
@@ -698,6 +759,8 @@ $(document).ready(function(){
 	
 	sortOrdersByPrice();
 	sortOrdersByDate();
+	
+	approveComment();
 	
 	logout();
 	

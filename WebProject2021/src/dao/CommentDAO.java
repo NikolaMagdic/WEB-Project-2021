@@ -87,4 +87,9 @@ public class CommentDAO {
 		
 		return comment;
 	}
+	
+	public Comment updateComment(Comment comment) {
+		commentsMap.put(comment.getId(), comment);
+		return comment;
+	}
 }

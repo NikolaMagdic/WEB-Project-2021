@@ -121,7 +121,7 @@
 			<thead>
 				<tr>
 					<th id="sortUsername" class="sort-header">Username  <img id="imageSortUsername" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
-					<th id="sortName" class="sort-header">Ime  <img id="imageSortName" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortName" class="sort-header">Ime  <img id="imageSortFirstName" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
 					<th id="sortLastName" class="sort-header">Prezime  <img id="imageSortLastName" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
 					<th>Uloga</th>
 					<th>Pol</th>
@@ -140,7 +140,7 @@
 		<table>
 			<tr>
 				<td>Naziv</td>
-				<td><input type="text" id="restaurantName"></td>
+				<td><input type="text" id="restaurantName" required></td>
 				<!--Polje za prikaz dodate slike restorana -->
 				<td rowspan="9">
 					<img id="image" alt="" src="">
@@ -159,11 +159,11 @@
 			</tr>
 			<tr>
 				<td>Latitude</td>
-				<td><input type="number" id="latitude" disabled></td>
+				<td><input type="number" id="latitude" required disabled></td>
 			</tr>
 			<tr>
 				<td>Longitude</td>
-				<td><input type="number" id="longitude" disabled></td>
+				<td><input type="number" id="longitude" required disabled></td>
 			</tr>
 			<tr>
 				<td>Grad</td>
@@ -183,7 +183,7 @@
 			</tr>
 			<tr>
 				<td>Logo</td>
-				<td><input type="file" id="restaurantImage" accept="image/*"></td>
+				<td><input type="file" id="restaurantImage" required accept="image/*"></td>
 			</tr>
 			<tr>
 				<td>Menadžer</td>
@@ -305,7 +305,35 @@
 		</form>
 	</div>
 	<div id="divRestaurants">
-		<h1>Pregled restorana</h1>
+		<h1>Pregled restorana <button id="buttonSearchRestaurants"><img id="buttonSearch" alt="Pretraga" src="../images/search-icon.png" width="15px" height="15px"></button></h1>
+		<div id="divSearchRestaurants" hidden="true">
+			<form id="formSearchRestaurants">
+				<table>
+					<tr>
+						<th>
+							<label>Pretraga:</label>
+						</th>
+						<td>
+							<input type="text" id="searchRestaurantsName" placeholder="Name">
+						</td>
+						<td>
+							<input type="text" id="searchRestaurantsType" placeholder="Type">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="text" id="searchRestaurantsCity" placeholder="City">
+						</td>
+						<td>
+							<input type="text" id="searchRestaurantsRating" placeholder="Rating">
+						</td>
+						<td>
+							<input type="submit" value="Search" id="submitRestaurantsSearch" class="submit">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
 		<table class="table-data">
 			<thead>
 				<tr>

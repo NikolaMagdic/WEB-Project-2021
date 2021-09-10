@@ -99,7 +99,35 @@
 				</form>
 		</div>
 	<div id="divRestaurants">
-		<h1>Pregled restorana</h1>
+		<h1>Pregled restorana <button id="buttonSearchRestaurants"><img id="buttonSearch" alt="Pretraga" src="images/search-icon.png" width="15px" height="15px"></button></h1>
+		<div id="divSearchRestaurants" hidden="true">
+			<form id="formSearchRestaurants">
+				<table>
+					<tr>
+						<th>
+							<label>Pretraga:</label>
+						</th>
+						<td>
+							<input type="text" id="searchRestaurantsName" placeholder="Name">
+						</td>
+						<td>
+							<input type="text" id="searchRestaurantsType" placeholder="Type">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="text" id="searchRestaurantsCity" placeholder="City">
+						</td>
+						<td>
+							<input type="text" id="searchRestaurantsRating" placeholder="Rating">
+						</td>
+						<td>
+							<input type="submit" value="Search" id="submitRestaurantsSearch" class="submit">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
 		<table class="table-data">
 			<thead>
 				<tr>
@@ -281,7 +309,7 @@
 				</tr>
 				<tr>
 					<td>Ocena</td>
-					<td><input type="number" id="grade" min="1" max="10"></td>
+					<td><input type="number" id="grade" min="1" max="5"></td>
 				</tr>
 				<tr>
 					<td></td>						
