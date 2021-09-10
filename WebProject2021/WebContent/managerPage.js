@@ -197,6 +197,22 @@ function initShowButtons(){
 		$("#divEditOrder").hide();
 		$("#divRequestOrders").show();
 		$("#divSearchRequestOrders").show();
+	});  
+	
+	$(document).on("click", "button[name = 'obrisiArtical']", function(){
+		getManagerUsername();
+		getRestaurantByManager();
+		$("#divEditAccount").hide();
+		$("#divRestaurantDetails").show();
+		$("#divRestaurantArticles").show();
+		$("#divArticleDetails").hide();
+		$("#divEditArticle").hide();
+		$("#divAddArticle").hide();
+		$("#divOrders").hide();
+		$("#divSearchOrders").hide();
+		$("#divEditOrder").hide();
+		$("#divRequestOrders").hide();
+		$("#divSearchRequestOrders").hide();
 	}); 
 }
 
@@ -250,6 +266,9 @@ function getRestaurantByManager(){
 					$(document).on("click", "#detaljiArticla" + articleId, function() {
 						getArticleById(articleId);
 					});
+					$(document).on("click", "#obrisiArtical" + articleId, function() {
+						deleteArticleById(articleId);
+					});
 			}
 			
 			restaurantId = res.id;
@@ -281,6 +300,7 @@ function addArticleInTable(articleId) {
 					"<td class=\"tdTable\">" + article.description + "</td>" +
 					"<td class=\"tdTable\"'>" + article.image + "</td>" +
 					" <td> <button id='detaljiArticla" + article.id + "' class='buttonDetails' name='detaljiArticla'> Details </button></td>" +
+					" <td> <button id='obrisiArtical" + article.id + "' class='buttonDetails' name='obrisiArtical'> Delete </button></td>" +
 					"</tr>";
 			table.append(tr);
 		}
@@ -312,6 +332,46 @@ function getArticleById(articleId){
 		}
 	})
 }
+
+function deleteArticleById(orderId) {
+	console.log("ID articla koji brisemo: " + orderId);
+
+	$.ajax({
+		type: "PUT",
+		url: "./rest/article/deleteArticle/" + orderId,
+		data: "",
+		contentType: "application/json",
+		success: function(){
+			getManagerUsername();
+			getRestaurantByManager();
+			alert("Uspesno obrisan artikal");
+		},
+		error: function(message) {
+			alert(message);
+		}
+	});
+}
+
+function isArticleDeleted(orderId) {
+	console.log("ID articla za koji proveravamo da li je obrisan: " + orderId);
+	articleDeleted = false;
+	
+	$.ajax({
+		type: "GET",
+		url: "./rest/article/isDeleted/" + orderId,
+		data: "",
+		contentType: "application/json",
+		success: function(deleted){
+			//console.log("Funkcija isDeleted nam vraca vrednost" + deleted);
+			articleDeleted = deleted;
+			console.log("Funkcija isDeleted nam vraca vrednost" + deleted+", articleDeleted je sada:" + articleDeleted);
+		},
+		error: function(message) {
+			alert(message);
+		}
+	});
+}
+
 
 
 
@@ -840,6 +900,9 @@ var shownOrders;
 
 var sortPriceDesc;
 var sortDateDesc;
+
+//sluzi za proveru da li je artikal obrisan
+var articleDeleted;
 
 
 $(document).ready(function(){

@@ -19,11 +19,15 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import beans.Article;
+import beans.Order;
 import beans.Restaurant;
 import dao.ArticleDAO;
+import dao.OrderDAO;
 import dao.RestaurantDAO;
 import dto.ArticleDTO;
 import enumerations.ArticleType;
+import enumerations.OrderDeliveryStatus;
+import enumerations.OrderStatus;
 
 @Path("article")
 public class ArticleService {
@@ -56,7 +60,7 @@ public class ArticleService {
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Article> getAllAmenities() {
+	public List<Article> getAllArticles() {
 		
 		ArticleDAO articleDAO = (ArticleDAO) ctx.getAttribute("articles");
 		Collection<Article> articles = articleDAO.findAllArticles();
@@ -86,7 +90,10 @@ public class ArticleService {
 		List<Article> articles = new ArrayList<>();
 		
 		for (Integer articleId : articlesId) {
-			articles.add(articleDAO.findArticle(articleId));
+			if(!articleDAO.findArticle(articleId).isDeleted()) {
+				System.out.println("Status artikla deleted u restoranu je: " + articleDAO.findArticle(articleId).isDeleted());
+				articles.add(articleDAO.findArticle(articleId));
+			}
 		}
 		
 		return articles;
@@ -114,7 +121,7 @@ public class ArticleService {
 	@Path("/edit")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ArticleDTO updateUser(ArticleDTO art, @Context HttpServletRequest request) {
+	public ArticleDTO updateArticle(ArticleDTO art, @Context HttpServletRequest request) {
 		
 		ArticleDAO articleDAO = (ArticleDAO) ctx.getAttribute("articles");
 		System.out.println("Id artikla koji editujemo: " + art.getId());
@@ -147,11 +154,12 @@ public class ArticleService {
 	@Path("/add/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addUser(ArticleDTO art, @PathParam("id") Integer id) {
+	public Response addArticle(ArticleDTO art, @PathParam("id") Integer id) {
 		
 		ArticleDAO articleDAO = (ArticleDAO) ctx.getAttribute("articles");
 		
 		if(articleDAO.checkArticle(art.getName())) {
+			System.out.println("Null kod getName()");
 			return Response.status(400).build();
 		}
 		
@@ -188,6 +196,7 @@ public class ArticleService {
 		RestaurantDAO restaurantDAO = (RestaurantDAO) ctx.getAttribute("restaurants");
 		Restaurant restaurant = restaurantDAO.findRestaurant(id);
 		if (restaurant == null) {
+			System.out.println("Null kod restorana");
 			return Response.status(400).build();
 		}
 		restaurant.getArticles().add(length);
@@ -197,6 +206,54 @@ public class ArticleService {
 		return Response.status(200).entity(art).build();
 	}
 	
+	
+	// Za menadzera promena iz TAKEN_FOR_DELIVERY u REJECTED
+	@PUT
+	@Path("/deleteArticle/{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteArticle(@PathParam("id") Integer id) {
+		System.out.println("Usao je u brisanje articla");
+		
+		//String contextPath = ctx.getRealPath("");
+		ArticleDAO articleDAO = (ArticleDAO) ctx.getAttribute("articles");
+		Article article = articleDAO.findArticle(id);
+		
+		if(article == null) {
+			return Response.status(400).build();
+		}
+		
+		article.setDeleted(true);
+		
+		
+		System.out.println("Sada je deleted status za artical: " + article.isDeleted());
+		
+		String contextPath = ctx.getRealPath("");
+		articleDAO.updateArticle(article);
+		articleDAO.saveArticles(contextPath);
+		
+		return Response.status(200).entity(article).build();
+	}
+	
+	
+	//metoda koja trazi artikal preko njegovog ID
+	@GET
+	@Path("/isDeleted/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean isArticleDeleted(@PathParam("id") Integer id){
+		
+		ArticleDAO articleDAO = (ArticleDAO) ctx.getAttribute("articles");
+		Article article = articleDAO.findArticle(id);
+		
+		if(article.isDeleted()) {
+			System.out.println("IsDeleted articla je: " + article.isDeleted());
+			return true;
+		}
+		
+		System.out.println("IsDeleted articla je: " + article.isDeleted());
+		return false;
+		
+	}
 	
 	
 	

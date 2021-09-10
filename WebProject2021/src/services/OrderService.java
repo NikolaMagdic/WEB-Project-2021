@@ -172,7 +172,7 @@ public class OrderService {
 			System.out.println("USAO U DRUGI");
 		} else {
 			System.out.println("USAO U TRECI");
-			status = OrderStatus.OBRADA;
+			status = oldOrder.getOrderStatus();
 		}
 		
 		oldOrder.setOrderStatus(status);
@@ -653,13 +653,13 @@ public class OrderService {
 		
 		for (Order order : orderDAO.getAllOrders()) {
 			if(order.getRestaurant() == restaurant.getId()) {
-				System.out.println("DeliveryStatus ordera je: " + order.getOrderDeliveryStatus() + ", za restoran sa ID: " + restaurant.getId());;
+				//System.out.println("DeliveryStatus ordera je: " + order.getOrderDeliveryStatus() + ", za restoran sa ID: " + restaurant.getId());;
 				if(order.getOrderDeliveryStatus() == null) {
 					System.out.println("DELIVERY STATUS JE NULL");
 					continue;
 				}
 				if(order.getOrderDeliveryStatus().equals(OrderDeliveryStatus.TAKEN_FOR_DELIVERY)) {
-					System.out.println("DeliveryOrder koji dodajem u pickup-orders je: " + order.getOrderId());
+					//System.out.println("DeliveryOrder koji dodajem u pickup-orders je: " + order.getOrderId());
 					pickupOrders.add(order);
 				}
 			}

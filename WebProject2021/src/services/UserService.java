@@ -19,8 +19,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import beans.Article;
 import beans.Restaurant;
 import beans.User;
+import dao.ArticleDAO;
 import dao.RestaurantDAO;
 import dao.UserDAO;
 import dto.RestaurantDTO;
@@ -49,6 +51,11 @@ public class UserService {
 		RestaurantDAO restaurantDAO = new RestaurantDAO(contextPath);
 		if (ctx.getAttribute("restaurants") == null) {
 			ctx.setAttribute("restaurants", restaurantDAO);
+		}
+		
+		ArticleDAO articleDAO = new ArticleDAO(contextPath);
+		if (ctx.getAttribute("articles") == null) {
+			ctx.setAttribute("articles", articleDAO);
 		}
 
 		
@@ -272,9 +279,18 @@ public class UserService {
 			return Response.status(400).build();
 		}
 		
-//		for(Integer articleId : restaurant.getArticles()) {
-//			System.out.println("Id artikla u restoranu je: " + articleId);
-//		}
+		ArticleDAO articleDAO = (ArticleDAO) ctx.getAttribute("articles");
+		//Collection<Article> articles = articleDAO.findAllArticles();
+		
+		List<Integer> restaurantArticles = new ArrayList<Integer>();
+		
+		for(Integer articleId : restaurant.getArticles()) {
+			if(!articleDAO.findArticle(articleId).isDeleted()) {
+				restaurantArticles.add(articleId);
+			}
+		}
+		
+		restaurant.setArticles(restaurantArticles);
 		
 		return Response.status(200).entity(convertToDTO(restaurant)).build();
 		
