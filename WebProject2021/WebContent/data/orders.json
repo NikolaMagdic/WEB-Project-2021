@@ -61,7 +61,7 @@
 		"date": 1508762343511,
 		"price": 640.0,
 		"customer" : "Perica Peric",
-		"orderStatus" : "CEKA_DOSTAVLJACA",
+		"orderStatus" : "U_TRANSPORTU",
 		"orderDeliveryStatus" : "TAKEN_FOR_DELIVERY"
 	}
 }

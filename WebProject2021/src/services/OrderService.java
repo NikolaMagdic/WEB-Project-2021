@@ -229,17 +229,16 @@ public class OrderService {
 		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
 		Order oldOrder = orderDAO.getOrder(id);
 		
+
+		System.out.println("Menja status delivery na TAKEN_FOR_DELIVERY");
+		oldOrder.setOrderDeliveryStatus(OrderDeliveryStatus.TAKEN_FOR_DELIVERY);
+		for(String orderId : loggedInUser.getDeliveryOrders()) {
+			if(!orderId.equals(oldOrder.getOrderId())) {
+				loggedInUser.getDeliveryOrders().add(oldOrder.getOrderId());
+			}
+		}
 		
-		
-		//OrderDeliveryStatus status = null;
-		//menja delivery status na TAKEN_FOR_DELIVERY, jedino ako je prethondo bio NONE
-		//if(oldOrder.getOrderDeliveryStatus().equals(OrderDeliveryStatus.NONE)) {
-			System.out.println("Menja status delivery na TAKEN_FOR_DELIVERY");
-			//status = OrderDeliveryStatus.TAKEN_FOR_DELIVERY;
-			oldOrder.setOrderDeliveryStatus(OrderDeliveryStatus.TAKEN_FOR_DELIVERY);
-		//}
-		
-		loggedInUser.getDeliveryOrders().add(oldOrder.getOrderId());
+		//loggedInUser.getDeliveryOrders().add(oldOrder.getOrderId());
 		
 		System.out.println("Sada je status za delivery ordera: " + oldOrder.getOrderDeliveryStatus());
 		
