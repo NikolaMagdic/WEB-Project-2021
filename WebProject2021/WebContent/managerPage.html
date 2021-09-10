@@ -193,6 +193,10 @@
 				<tr>
 					<td>Name:</td>
 					<td><input type="text" required id="txtNameArticlaAdd"></td>
+					<!--Polje za prikaz dodate slike articla -->
+					<td rowspan="9">
+						<img id="txtImageArticlaAdd" alt="" src="">
+					</td>
 				</tr>
 				<tr>
 					<td>Price:</td>
@@ -219,7 +223,7 @@
 				</tr>
 				<tr>
 					<td>Image:</td>
-					<td><input type="text" disabled id="txtImageArticlaAdd" value="Dodati sliku"></td>
+					<td><input type="file" id="articleImage" required accept="image/*"></td>
 				</tr>
 				
 				<tr>

@@ -1,10 +1,15 @@
 package services;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -19,15 +24,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import beans.Article;
-import beans.Order;
 import beans.Restaurant;
 import dao.ArticleDAO;
-import dao.OrderDAO;
 import dao.RestaurantDAO;
 import dto.ArticleDTO;
 import enumerations.ArticleType;
-import enumerations.OrderDeliveryStatus;
-import enumerations.OrderStatus;
 
 @Path("article")
 public class ArticleService {
@@ -176,6 +177,24 @@ public class ArticleService {
 		Long articleId = length.longValue();
 		System.out.println("ID novog artikla je: " + articleId);
 		
+		//############ Za SLIKU
+		String base64Image = (art.getImage()).split(",")[1];
+		byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
+
+		String imagePath = contextPath + "images\\" + art.getName() + ".jpg";
+		//System.out.println(imagePath);
+		BufferedImage img;
+		try {
+			img = ImageIO.read(new ByteArrayInputStream(imageBytes));
+			File outputfile = new File(imagePath);
+			ImageIO.write(img, "jpg", outputfile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		art.setImage("images/" + art.getName() + ".jpg");
+		System.out.println(art.getImage());
+		//##########
+		
 		
 		Article newArticle = new Article();
 		newArticle.setId(articleId);
@@ -186,6 +205,7 @@ public class ArticleService {
 		newArticle.setDescription(art.getDescription());
 		newArticle.setImage(art.getImage());
 		newArticle.setDeleted(false);
+		newArticle.setRestaurant(id);
 		
 		
 		articleDAO.addArticle(newArticle);
@@ -265,7 +285,7 @@ public class ArticleService {
 		dto.setType(art.getArticleType().toString());
 		dto.setAmount(art.getAmount());
 		dto.setDescription(art.getDescription());
-		dto.setImage("IMAGE");
+		dto.setImage(art.getImage());
 		
 		return dto;
 	}

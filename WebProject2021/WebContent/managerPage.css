@@ -146,9 +146,10 @@ div {
 }
 
 .tr-top {
-  background-color: #02b0f2;
+  background-color: #009ce8;
   font-size: 20px;	
   text-decoration: none;
+  color: white;
 }
 
 .buttonDetails {
@@ -182,6 +183,18 @@ div {
   font-size: 16px;
   width: 100%;	
 }
+
+.buttonDelete {
+  background-color: #ff2222;
+  border: none;
+  color: white;
+  padding: 3px 7px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  width: 100%;	
+}
+
 
 footer {
   color: white;	

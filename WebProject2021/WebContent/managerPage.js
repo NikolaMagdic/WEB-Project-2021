@@ -291,6 +291,8 @@ function addArticleInTable(articleId) {
 		url: "./rest/article/Id/" + articleId,
 		dataType: "json",
 		success: function(article) {
+			
+			console.log("ARTICLE IMA IMAGE: " + article.image);
 
 			let tr = "<tr id=\"trArticle\">" +
 					"<td class=\"tdTable\">" + article.name + "</td>" +
@@ -298,9 +300,9 @@ function addArticleInTable(articleId) {
 					"<td class=\"tdTable\">" + article.type + "</td>" +
 					"<td class=\"tdTable\">" + article.amount + "</td>" +
 					"<td class=\"tdTable\">" + article.description + "</td>" +
-					"<td class=\"tdTable\"'>" + article.image + "</td>" +
+					"<td><image alt='' src='" + article.image + "' width='50px' height='50px'></td>" +
 					" <td> <button id='detaljiArticla" + article.id + "' class='buttonDetails' name='detaljiArticla'> Details </button></td>" +
-					" <td> <button id='obrisiArtical" + article.id + "' class='buttonDetails' name='obrisiArtical'> Delete </button></td>" +
+					" <td> <button id='obrisiArtical" + article.id + "' class='buttonDelete' name='obrisiArtical'> Delete </button></td>" +
 					"</tr>";
 			table.append(tr);
 		}
@@ -527,7 +529,7 @@ function addArticle() {
 		let type = $("#typeArticlaAdd option:selected").val();
 		let amount = $("#txtAmountArticlaAdd").val();
 		let description = $("#txtDescriptionArticlaAdd").val();
-		let image = $("#txtImageArticlaAdd").val();
+		let image = $("#txtImageArticlaAdd").attr("src");
 		
 		
 		if(name == ""){
@@ -540,10 +542,6 @@ function addArticle() {
 			return;
 		}
 		
-		if(image == ""){
-			alert("Image field is empty!");
-			return;
-		}
 		
 		
 		let newArticle = {
@@ -555,6 +553,8 @@ function addArticle() {
 			description: description,
 			image: image
 		}
+		
+		console.log(newArticle);
 		
 		$.ajax({
 			type: "POST",
@@ -581,7 +581,7 @@ function getRestaurantOrders(id) {
 		contentType: "application/json",
 		success: function (orders) {
 			for(let order of orders) {
-				console.log("ORDER: " + order);
+				//console.log("ORDER: " + order);
 				addOrderInTable(order);
 					$(document).on("click", "#detaljiOrdera" + order.orderId, function() {
 							getOrderById(order.orderId);
@@ -840,12 +840,12 @@ function sortOrdersByPrice() {
 		}
 		if(sortPriceDesc) {
 			sortPriceDesc = false;
-			console.log("Menjam sortPriceDesc na " + sortPriceDesc);
+			//console.log("Menjam sortPriceDesc na " + sortPriceDesc);
 			$("#imageSortPrice").attr("src", "./images/sort-up.png");
 		} else {
 			shownOrders.reverse();
 			sortPriceDesc = true;
-			console.log("Menjam sortPriceDesc na " + sortPriceDesc);
+			//console.log("Menjam sortPriceDesc na " + sortPriceDesc);
 			$("#imageSortPrice").attr("src", "./images/sort-down.png");
 		}
 		for(let order of shownOrders) {
@@ -925,5 +925,20 @@ $(document).ready(function(){
 	sortOrdersByDate();
 	
 	logout();
+	
+	// Prikaz dodate slike za artikal
+	$("#articleImage").change(function(e){
+		
+		let file = e.target.files[0]
+		
+		var reader = new FileReader();
+		
+		reader.readAsDataURL(file);
+		
+		reader.onload = e => {
+			$('#txtImageArticlaAdd').attr("src",  e.target.result);
+		}
+	
+	});
 	
 })
