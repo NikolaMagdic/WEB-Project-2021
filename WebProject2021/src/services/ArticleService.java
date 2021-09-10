@@ -82,6 +82,7 @@ public class ArticleService {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Article> getMyArticles(@PathParam("id") Integer id){
+		System.out.println("USAO U GET ARTICLES ZA RESTORAN SA ID: " + id);
 		
 		RestaurantDAO restaurantDAO = (RestaurantDAO) ctx.getAttribute("restaurants");
 		Restaurant restaurant = restaurantDAO.findRestaurant(id);

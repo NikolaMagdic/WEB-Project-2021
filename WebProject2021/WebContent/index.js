@@ -4,6 +4,7 @@ function initHide(){
 	$("#divAllRestaurants").hide();
 	$("#divSearchInfo").hide();
 	$("#divRestaurantDetails").hide();
+	$("#divRestaurantArticles").hide();
 
 }
 
@@ -16,6 +17,7 @@ function initShowButtons(){
 			$("#divAllRestaurants").hide();
 			$("#divSearchInfo").hide();
 			$("#divRestaurantDetails").hide();
+			$("#divRestaurantArticles").hide();
 		});	
 		$("#registerMenu").click( function(){
 			$("#divLogin").hide();
@@ -23,12 +25,14 @@ function initShowButtons(){
 			$("#divAllRestaurants").hide();
 			$("#divSearchInfo").hide();
 			$("#divRestaurantDetails").hide();
+			$("#divRestaurantArticles").hide();
 		});	
 		$("#restaurantsMenu").click( function(){
 			console.log("Clicked restaurants menu");
 			$("#divLogin").hide();
 			$("#divRegister").hide();
 			$("#divAllRestaurants").show();
+			$("#divRestaurantArticles").hide();
 			$("#divSearchInfo").hide();
 			$("#tableRestaurants tbody").empty();
 			$("#divRestaurantDetails").hide();
@@ -38,7 +42,9 @@ function initShowButtons(){
 			$("#divLogin").hide();
 			$("#divRegister").hide();
 			$("#divAllRestaurants").show();
+			$("#divRestaurantArticles").hide();
 			$("#divSearchInfo").show();
+			$("#divRestaurantDetails").hide();
 			$("#tableRestaurants tbody").empty();
 			getAllRestaurants();
 		});
@@ -49,9 +55,10 @@ function initShowButtons(){
 			$("#divAllRestaurants").hide();
 			$("#divSearchInfo").hide();
 			$("#divRestaurantDetails").show();
+			$("#divRestaurantArticles").show();
 			$("#tableRestaurants tbody").empty();
 			getAllRestaurants();
-		});
+		}); 
 		
 	}
 }
@@ -94,23 +101,9 @@ function addRestaurantInTable(restaurant) {
 			"</tr>";
 	table.append(tr);
 
-	$("#tableRestaurants").css("background-color", "aqua");
-
 }
 
 function getRestaurantById(id){
-	$('#tableSadrzaj tbody').empty();
-	$.ajax({
-		
-		type: "GET",
-		url: './rest/article/' + id,
-		contentType: 'application/json',
-		success: function(articles) {
-	    	for(let article of articles) {
-				dodajSadrzajRestorana(article);
-				}
-		}
-	});	
 	$.ajax({
 		
 		type: "GET",
@@ -127,6 +120,23 @@ function getRestaurantById(id){
 			$('#txtRatingRestorana').val(res.rating);
 	
 		}
+	});
+	
+	$.ajax({
+		
+		type: "GET",
+		url: './rest/article/' + id,
+		contentType: 'application/json',
+		success: function(articles) {
+			
+			$('#tableArticles tbody').empty();
+			console.log("USAO JE U GET ARTICLES INDEX");
+			
+			//mora ici OF umesto IN da bi zapravo uzeo vrednost u listi
+			for(let article of articles) {
+				addArticleInTable(article);
+			}
+		}
 	});	
 
 }
@@ -137,6 +147,52 @@ function dodajSadrzajRestorana(article){
 	$("#tableSadrzaj").append(c);
 }
 
+
+//ARTIKLI ##################################################################
+function addArticleInTable(article) {
+	let table = $("#tableArticles");
+	//console.log("ArticleId: " + articleId);
+	
+	console.log("ARTICLE : " + article);
+
+	let tr = "<tr id=\"trArticle\">" +
+			"<td class=\"tdTable\">" + article.name + "</td>" +
+			"<td class=\"tdTable\">" + article.price + "</td>" +
+			"<td class=\"tdTable\">" + article.type + "</td>" +
+			"<td class=\"tdTable\">" + article.amount + "</td>" +
+			"<td class=\"tdTable\">" + article.description + "</td>" +
+			"<td><image alt='' src='" + article.image + "' width='50px' height='50px'></td>" +
+			"</tr>";
+	table.append(tr);
+
+}
+
+function getArticleById(articleId){
+	//console.log("ID artikla za koji nam trebaju detalji: " + articleId);
+	
+	
+	$.get({
+		type: "GET",
+		url: "./rest/article/Id/" + articleId,
+		dataType: "json",
+		success: function(article) {
+			
+
+			$('#txtIdArticla').val(article.id);
+			$('#txtNameArticla').val(article.name);
+			$('#txtPriceArticla').val(article.price);
+			$('#txtTypeArticla').val(article.type);
+			$('#txtAmountArticla').val(article.amount);
+			$('#txtDescriptionArticla').val(article.description);
+			$('#txtImageArticla').val(article.image);
+			
+			setSelectedArticleData(article);
+		}
+	})
+}
+
+
+//SEARCH #################################################################
 function search(){	
  	$( "#search").click(function() {
  		
@@ -191,6 +247,8 @@ function search(){
 	});
 }
 
+
+//FILTER ####################################################################
 //prikazuje samo restorane koji su otvoreni
 function filterByType(){
  	$("#typeZaFiltraciju").change(function() {
@@ -220,6 +278,8 @@ function filterByType(){
 	});
 }
 
+
+//SORTIRANJE ##############################################################
 function sortRestaurantsByStatus() {
 	$("#sortRestaurantsByStatus").click(function() {
 		event.preventDefault();

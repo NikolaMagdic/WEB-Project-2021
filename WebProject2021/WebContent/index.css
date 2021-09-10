@@ -27,6 +27,28 @@ table {
 	margin-right: auto;
 }
 
+div {
+	align-items: center;
+}
+
+.table-data {
+	border-collapse: collapse;
+}
+
+.table-data td, .table-data th {
+  border: 1px solid #ddd;
+  border-color: #003d66;
+  padding: 8px;
+}
+
+.table-data th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: rgb(116, 167, 252);
+  color: white;
+}
+
 .submit {
 	cursor: pointer;
 	background-color: #cc0000;
@@ -49,6 +71,17 @@ table {
   background-color: #003d66;
   overflow: hidden;
   color: #f2f2f2;
+}
+
+.meni-button {
+  background-color: #0095dd;
+  color: white;
+  float: left;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  padding: 14px 16px; 
+  font-size: 17px;
 }
 
 #loginMenu {
@@ -184,4 +217,16 @@ footer {
 #openSearchBox:hover {
   background-color: #00c8f2;
   color: white;
+}
+
+
+.buttonEdit {
+  background-color: #05a018;
+  border: none;
+  color: white;
+  padding: 3px 7px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  width: 100%;	
 }
