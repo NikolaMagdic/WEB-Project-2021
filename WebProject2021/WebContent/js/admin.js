@@ -155,10 +155,10 @@ function addUserInTable(user) {
 		tr += "<td></td><tr>";
 	} else {
 		if (!user.blocked) {
-			tr += "<td>" +  "<button id=\"" + user.username + "\" name=\"block\">Blokiraj</button>"  + "</td>" +
+			tr += "<td>" +  "<button id=\"" + user.username + "\" name=\"block\" class='button-block'>Blokiraj</button>"  + "</td>" +
 			"</tr>";
 		} else {
-			tr += "<td>" +  "<button id=\"" + user.username + "\" name=\"unblock\">Odblokiraj</button>"  + "</td>" +
+			tr += "<td>" +  "<button id=\"" + user.username + "\" name=\"unblock\" class='button-unblock'>Odblokiraj</button>"  + "</td>" +
 			"</tr>";
 		}
 	}
@@ -531,7 +531,7 @@ function blockUser() {
 			url: "../rest/user/block/" + username,
 			type: "PUT",
 			success: function(data) {
-				alert("Korisnik uspesno blokiran!");
+				alert("User is blocked!");
 				$("button[id='" + username + "']").css("color", "red");
 			}
 		});
@@ -547,7 +547,7 @@ function unblockUser() {
 			url: "../rest/user/unblock/" + username,
 			type: "PUT",
 			success: function(data) {
-				alert("Korisnik uspesno odblokiran!");
+				alert("User is unblocked!");
 				$("button[id='" + username + "']").css("color", "black");
 			}
 		});
@@ -574,6 +574,7 @@ function addRestaurantInTable(restaurant) {
 
 	let tr = "<tr id=\"trRestaurant\">" +
 			"<td>" + restaurant.name + "</td>" +
+			"<td><img alt='' src='../" + restaurant.image + "' width='100px' height='100px'></td>" +
 			"<td>" + restaurant.type + "</td>" +
 			"<td>" + restaurant.open + "</td>" +
 			"<td>" + restaurant.city + "</td>" +
@@ -604,6 +605,8 @@ function getRestaurantDetails(restaurantId) {
 			$('#tdRestaurantStatus').text(restaurant.open);
 			$('#tdRestaurantRating').text(restaurant.rating);
 			$('#imgRestaurantLogo').attr("src", "../" + restaurant.image);
+			$('#imgRestaurantLogo').attr("height", "150px");
+			$('#imgRestaurantLogo').attr("width", "200px");
 			
 		}
 	});
@@ -628,10 +631,9 @@ function getRestaurantArticles(restaurantId) {
 function addRestaurantArticles(article){
 	let c = "<tr>" +
 	" <td>" + article.name + "</td> " +
-	" <td><img src='" + article.image + "'alt='" + article.image + "'></td> " +
+	" <td><img src='../" + article.image + "'alt='" + article.image + "'  width='100px' height='100px'></td> " +
 	" <td>" + article.description + "</td> " +
 	" <td>" + article.price + "</td> " +
-	" <td><button class='add-to-cart' id='" + article.id  + "'>Dodaj u korpu</button></td> " +
 	"</tr>"
 	
 	$("#tableArticles").append(c);
@@ -1059,7 +1061,7 @@ $(document).ready(function(){
 					restaurantId = restaurant.id;
 					console.log(restaurantId);
 				}
-				alert("Uspešno dodat restoran");
+				alert("Restaurant added successfully");
 			},
 			error: function(message){
 				
@@ -1121,7 +1123,7 @@ $(document).ready(function(){
 			data: JSON.stringify(data),
 			contentType: "application/json",
 			success : function(user){
-				alert("Uspešno dodat " + user.role + " " + user.firstName + " " + user.lastName);
+				alert("Added " + user.role + " " + user.firstName + " " + user.lastName);
 			},
 			error: function(message){
 				

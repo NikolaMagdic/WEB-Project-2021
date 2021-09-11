@@ -88,6 +88,7 @@ function logout(){
  			url: 'rest/logout',
  			contentType: 'application/json',
  			success: function() {
+ 				alert("You logged out successfully");
  				window.location = "./index.html";
  			}
  		});
@@ -116,7 +117,7 @@ function addRestaurantInTable(restaurant) {
 
 	let tr = "<tr id=\"trRestaurant\">" +
 			"<td>" + restaurant.name + "</td>" +
-			"<td><image alt='' src='" + restaurant.image + "' width='150px' height='150px'></td>" +
+			"<td><img alt='' src='" + restaurant.image + "' width='150px' height='150px'></td>" +
 			"<td>" + restaurant.type + "</td>" +
 			"<td>" + restaurant.open + "</td>" +
 			"<td>" + restaurant.city + "</td>" +
@@ -147,8 +148,8 @@ function getRestaurantDetails(restaurantId) {
 			$('#tdRestaurantStatus').text(restaurant.open);
 			$('#tdRestaurantRating').text(restaurant.rating);
 			$('#imgRestaurantLogo').attr("src", restaurant.image);
-			$('#imgRestaurantLogo').attr("width", "350px");
-			$('#imgRestaurantLogo').attr("height", "200px");
+			$('#imgRestaurantLogo').attr("width", "250px");
+			$('#imgRestaurantLogo').attr("height", "150px");
 			
 			// Mapa
 			$("#map").empty();
@@ -189,11 +190,11 @@ function getRestaurantArticles(restaurantId) {
 function addRestaurantArticles(article){
 	let c = "<tr>" +
 	" <td>" + article.name + "</td> " +
-	" <td><img src='" + article.image + "'alt='" + article.image + "'></td> " +
+	" <td><img src='" + article.image + "'alt='" + article.image + "'width='150px' height='150px'></td> " +
 	" <td>" + article.description + "</td> " +
 	" <td>" + article.price + "</td> " +
 	" <td><input type='number' required value='1' min='1' class='input-amount' id='" + article.id + "'>" + "</td> " +
-	" <td><button class='add-to-cart' id='" + article.id  + "'>Dodaj u korpu</button></td> " +
+	" <td><button class='add-to-cart' id='" + article.id  + "'>Add to cart</button></td> " +
 	"</tr>"
 	
 	$("#tableArticles").append(c);
@@ -241,7 +242,7 @@ function addToCart(restaurantId) {
 			contentType: "application/json",
 			data: JSON.stringify(cartItem),
 			success: function(){
-				alert("Artikal dodat u korpu");
+				alert("Article added to cart");
 			}, 
 			error: function(message) {
 				alert(message.responseText);
@@ -262,7 +263,7 @@ function getCart() {
 			}
 			userCart = cart;
 			let tableFooter = $("#totalSum");
-			let tr = "<tr><td colspan='5'>Ukupna cena: " + cart.price + "</td></tr>";
+			let tr = "<tr><td colspan='5'>Total price: " + cart.price + "</td></tr>";
 			tableFooter.append(tr);
 		}
 	});
@@ -286,8 +287,8 @@ function addArticleInTable(article, amount) {
 			"<td>" + article.name + "</td>" +
 			"<td><input type='number' min='1' class='input-number' id='" + article.id + "' value='" + amount + "'>" + "</td>" +
 			"<td>" + article.price + "</td>" +
-			"<td>" + "ovde ce biti slika" + "</td>" +
-			"<td><button class='remove-article' id='" + article.id  + "'>Izbaci</button></td>" +
+			"<td><img alt='' src='" + article.image + "' width='100px' height='100px'></td>" +
+			"<td><button class='remove-article' id='" + article.id  + "'>Remove</button></td>" +
 			"</tr>";
 	
 	table.append(tr);
@@ -302,7 +303,7 @@ function removeArticleFromCart() {
 			type: "DELETE",
 			dataType: "json",
 			complete: function(){
-				alert("Uspesno izbacen artikal");
+				alert("Article successfully removed");
 				// Primer okidanja klika iz javascript-a
 				$("#buttonCart").trigger('click');
 			}
@@ -328,7 +329,7 @@ function refreshCart() {
 			dataType: "json",
 			data: JSON.stringify(tempCart),
 			success: function() {
-				alert("Uspesno izmenjena korpa");
+				alert("Cart refreshed succsssfully");
 				$("#buttonCart").trigger('click');
 			}
 		})
@@ -345,7 +346,9 @@ function makeOrder() {
 			contentType: "application/json",
 			data: JSON.stringify(data),
 			success: function() {
-				alert("Uspesno kreirana porudzbina");
+				alert("Order created successfully");
+				location.reload();
+				$("buttonOrder").trigger('click');
 			}
 		});
 	});
@@ -389,12 +392,14 @@ function addOrderInTable(order) {
 	
 	if (order.orderStatus === "OBRADA") {
 		tr = tr + 
-			"<td><button id='" + order.orderId + "' name='cancel'>Otkaži</button></td>" +
+			"<td><button id='" + order.orderId + "' name='cancel' class='button-cancel'>Cancel</button></td>" +
 			"</tr>";
-	} else if (roder.orderStatus === "DOSTAVLJENA"){
+	} else if (order.orderStatus === "DOSTAVLJENA"){
 		tr = tr + 
-		"<td><button id='" + order.restaurant + "' name='leaveComment'>Dodaj komentar</button></td>" +
+		"<td><button id='" + order.restaurant + "' name='leaveComment' class='button-comment'>Add comment</button></td>" +
 		"</tr>";
+	} else {
+		tr = tr + "<td></td></tr>"
 	}
 		
 	table.append(tr);
@@ -409,6 +414,8 @@ function cancelOrder() {
 			type: "PUT", 
 			success: function(message){
 				alert(message);
+				location.reload();
+				$("buttonOrders").trigger('click');
 			}
 		});
 	});
@@ -448,7 +455,7 @@ function addComment() {
 					contentType: "application/json",
 					data: JSON.stringify(data),
 					success: function(message){
-						alert("Komentar dodat");
+						alert("Comment added");
 						$("#buttonOrder").trigger('click');
 					}
 				});

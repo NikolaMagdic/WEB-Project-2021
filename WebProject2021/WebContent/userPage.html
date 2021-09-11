@@ -99,13 +99,13 @@
 				</form>
 		</div>
 	<div id="divRestaurants">
-		<h1>Pregled restorana <button id="buttonSearchRestaurants"><img id="buttonSearch" alt="Pretraga" src="images/search-icon.png" width="15px" height="15px"></button></h1>
+		<h1>Restaurants overview <button id="buttonSearchRestaurants"><img id="buttonSearch" alt="Pretraga" src="images/search-icon.png" width="15px" height="15px"></button></h1>
 		<div id="divSearchRestaurants" hidden="true">
 			<form id="formSearchRestaurants">
 				<table>
 					<tr>
 						<th>
-							<label>Pretraga:</label>
+							<label>Search:</label>
 						</th>
 						<td>
 							<input type="text" id="searchRestaurantsName" placeholder="Name">
@@ -185,28 +185,28 @@
 				</tr>			
 			</table>
 			<div id="map" class="map"></div>
-			<h2>Artikli</h2>
+			<h2>Articles</h2>
 			<table class="table-data">
 				<thead>
 					<tr>
-						<th>Naziv</th>
-						<th>Slika</th>
-						<th>Opis</th>
-						<th>Cena</th>
-						<th>Količina</th>
-						<th>Korpa</th>
+						<th>Name</th>
+						<th>Image</th>
+						<th>Description</th>
+						<th>Price</th>
+						<th>Amount</th>
+						<th>Cart</th>
 					</tr>
 				</thead>
 				<tbody  id="tableArticles">
 				</tbody>
 			</table>
-			<h2>Komentari</h2>	
+			<h2>Comments</h2>	
 			<table class="table-data">
 				<thead>
 					<tr>
-						<th>Username kupca</th>
-						<th>Komentar</th>
-						<th>Ocena</th>
+						<th>Username of customer</th>
+						<th>Comment</th>
+						<th>Rating</th>
 					</tr>
 				</thead>
 				<tbody  id="tableComments">
@@ -218,10 +218,10 @@
 		<table class="table-data">
 			<thead>
 				<tr>
-					<th>Naziv</th>
-					<th>Količina</th>
-					<th>Cena</th>
-					<th>Slika</th>
+					<th>Name</th>
+					<th>Amount</th>
+					<th>Price</th>
+					<th>Image</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -229,8 +229,8 @@
 			<tfoot id="totalSum"></tfoot>
 		</table>
 		<div class="divButtonsCart">
-			<button id="buttonRefreshCart" class="submit">Osveži korpu</button>
-			<button id="buttonCreateOrder" class="submit">Poruči</button>
+			<button id="buttonRefreshCart" class="submit">Refresh cart</button>
+			<button id="buttonCreateOrder" class="submit">Make order</button>
 		</div>
 	</div>
 	<div id="divOrders">
@@ -240,7 +240,7 @@
 				<table>
 					<tr>
 						<th>
-							<label>Pretraga:</label>
+							<label>Search:</label>
 						</th>
 						<td>
 							<input type="text" id="searchRestaurant" placeholder="Restaurant">
@@ -265,7 +265,7 @@
 			</form>
 		</div>
 		<div id="divFilterOrders">
-			<label><b>Tip restorana:</b></label>
+			<label><b>Restaurant type:</b></label>
 			<select id="filterType">
 				<option value="SVI">Svi</option>
 				<option value="ITALIAN">Italijanski</option>
@@ -289,10 +289,10 @@
 		<table class="table-data">
 			<thead>
 				<tr>
-					<th id="sortRestaurant" class="sort-header">Restoran <img id="imageSortRestaurantName" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
-					<th>Tip restorana</th>
-					<th id="sortPrice" class="sort-header">Cena <img id="imageSortPrice" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
-					<th id="sortDate" class="sort-header">Datum <img id="imageSortDate" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortRestaurant" class="sort-header">Restaurant <img id="imageSortRestaurantName" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
+					<th>Restaurant type</th>
+					<th id="sortPrice" class="sort-header">Price <img id="imageSortPrice" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortDate" class="sort-header">Date <img id="imageSortDate" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
 					<th>Customer</th>
 					<th>Status</th>
 					<th></th>
@@ -302,19 +302,19 @@
 		</table>
 		<div id="divLeaveComment">
 			<form id="formLeaveComment">
-			<h2>Ostavi komentar</h2>
+			<h2>Leave comment</h2>
 			<table>
 				<tr>
-					<td>Komentar</td>
+					<td>Comment</td>
 					<td><input type="text" id="comment"></td>
 				</tr>
 				<tr>
-					<td>Ocena</td>
+					<td>Rating</td>
 					<td><input type="number" id="grade" min="1" max="5"></td>
 				</tr>
 				<tr>
 					<td></td>						
-					<td><input type="submit" value="Posalji komentar" class="submit"></td>
+					<td><input type="submit" value="Send comment" class="submit"></td>
 				</tr>
 			</table>
 			</form>

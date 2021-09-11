@@ -148,6 +148,10 @@ public class OrderService {
 			loggedInUser.setCustomerType(customerType);
 		}
 		
+		// Obrisi cart useru posto je order poslat
+		loggedInUser.getCart().getCartItems().clear();
+		loggedInUser.getCart().setPrice(0.0);
+		
 		// Azururaj restoran (posto sam dodao listu restaurantsOrders da bi mogao da izlistam sve ordere vezane za njega)
 		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getAttribute("restaurants");
 		Restaurant restaurant = restaurantDAO.findRestaurant(restaurantId);
@@ -217,7 +221,6 @@ public class OrderService {
 		
 		// Azuriranje ordera u korisniku
 		User loggedInUser = (User) request.getSession().getAttribute("user");
-		loggedInUser.getMyOrders().remove(orderId);
 		// Smanjivanje bodova korisniku
 		Double points = order.getPrice() / 1000 * 133 * 4;
 		loggedInUser.setPoints(loggedInUser.getPoints() - points);
@@ -250,13 +253,18 @@ public class OrderService {
 		OrderDAO orderDAO = (OrderDAO) context.getAttribute("orders");
 		Order oldOrder = orderDAO.getOrder(id);
 		
-
+		boolean flag = false;
+		
 		System.out.println("Menja status delivery na TAKEN_FOR_DELIVERY");
 		oldOrder.setOrderDeliveryStatus(OrderDeliveryStatus.TAKEN_FOR_DELIVERY);
 		for(String orderId : loggedInUser.getDeliveryOrders()) {
 			if(!orderId.equals(oldOrder.getOrderId())) {
-				loggedInUser.getDeliveryOrders().add(oldOrder.getOrderId());
+				flag = true;
 			}
+		}
+		
+		if(!flag) {
+			loggedInUser.getDeliveryOrders().add(oldOrder.getOrderId());
 		}
 		
 		//loggedInUser.getDeliveryOrders().add(oldOrder.getOrderId());

@@ -198,6 +198,29 @@ table {
 	background-color: #04AA6D;
 }
 
+.button-cancel {
+  background-color: #ff2222;
+  border: none;
+  color: white;
+  padding: 3px 7px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  width: 100%;	
+}
+
+.button-comment, .button-details, .add-to-cart {
+  background-color: #05a018;
+  border: none;
+  color: white;
+  padding: 3px 7px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  width: 100%;	
+  pointer: cursor;
+}
+
 .map {
 	margin-left: auto;
 	margin-right: auto;

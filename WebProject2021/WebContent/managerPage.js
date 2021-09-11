@@ -201,7 +201,7 @@ function initShowButtons(){
 		$("#divArticleDetails").hide();
 		$("#divEditArticle").hide();
 		$("#divAddArticle").hide();
-		$("#divOrders").show();
+		$("#divOrders").hide();
 		$("#divSearchOrders").hide();
 		$("#divEditOrder").hide();
 		$("#divRequestOrders").show();
@@ -232,7 +232,7 @@ function logout(){
  			url: './rest/logout',
  			contentType: 'application/json',
  			success: function() {
-				alert("Uspešno ste se odjavili");
+				alert("You logged out successfully");
  				window.location = "./index.html";
  			}
  		});
@@ -356,7 +356,7 @@ function deleteArticleById(orderId) {
 		success: function(){
 			getManagerUsername();
 			getRestaurantByManager();
-			alert("Uspesno obrisan artikal");
+			alert("Article deleted successfuly");
 		},
 		error: function(message) {
 			alert(message);
@@ -522,7 +522,7 @@ function editAccount() {
 			data: JSON.stringify(user),
 			contentType: "application/json",
 			success: function(){
-				alert("Uspesno izmenjeni podaci");
+				alert("Account edited successfuly");
 			},
 			error: function(message) {
 				alert(message);
@@ -572,7 +572,7 @@ function editArticle() {
 			data: JSON.stringify(newArticle),
 			contentType: "application/json",
 			success: function(){
-				alert("Uspesno izmenjeni podaci artikla");
+				alert("Article data edited successfully");
 			},
 			error: function(message) {
 				alert(message);
@@ -623,7 +623,7 @@ function addArticle() {
 			data: JSON.stringify(newArticle),
 			contentType: "application/json",
 			success: function(){
-				alert("Uspesno dodat artikal");
+				alert("Article added successfully");
 			},
 			error: function(message) {
 				alert(message);
@@ -715,7 +715,7 @@ function editOrder() {
 			data: JSON.stringify(newOrder),
 			contentType: "application/json",
 			success: function(){
-				alert("Uspesno izmenjeni podaci narudzbine");
+				alert("Order edited successfully");
 			},
 			error: function(message) {
 				alert(message);
@@ -775,7 +775,7 @@ function approveOrderById(orderId){
 		contentType: "application/json",
 		success: function(){
 			//getRestaurantRequestOrders();
-			alert("Uspesno odobrena dostava narudzbine");
+			alert("Successfully approved order delivery");
 		},
 		error: function(message) {
 			alert(message);
@@ -795,7 +795,7 @@ function rejectOrderById(orderId){
 		contentType: "application/json",
 		success: function(){
 			//getRestaurantRequestOrders();
-			alert("Uspesno odbijena dostava narudzbine");
+			alert("Successfully rejected order delivery");
 		},
 		error: function(message) {
 			alert(message);

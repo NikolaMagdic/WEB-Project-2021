@@ -5,7 +5,7 @@ function initHide(){
 	$("#divSearchInfo").hide();
 	$("#divRestaurantDetails").hide();
 	$("#divRestaurantArticles").hide();
-
+	$("#divRestaurantComments").hide();
 }
 
 function initShowButtons(){
@@ -18,6 +18,7 @@ function initShowButtons(){
 			$("#divSearchInfo").hide();
 			$("#divRestaurantDetails").hide();
 			$("#divRestaurantArticles").hide();
+			$("#divRestaurantComments").hide();
 		});	
 		$("#registerMenu").click( function(){
 			$("#divLogin").hide();
@@ -26,6 +27,7 @@ function initShowButtons(){
 			$("#divSearchInfo").hide();
 			$("#divRestaurantDetails").hide();
 			$("#divRestaurantArticles").hide();
+			$("#divRestaurantComments").hide();
 		});	
 		$("#restaurantsMenu").click( function(){
 			console.log("Clicked restaurants menu");
@@ -36,6 +38,7 @@ function initShowButtons(){
 			$("#divSearchInfo").hide();
 			$("#tableRestaurants tbody").empty();
 			$("#divRestaurantDetails").hide();
+			$("#divRestaurantComments").hide();
 			getAllRestaurants();
 		});
 		$("#openSearchBox").click( function(){
@@ -45,6 +48,7 @@ function initShowButtons(){
 			$("#divRestaurantArticles").hide();
 			$("#divSearchInfo").show();
 			$("#divRestaurantDetails").hide();
+			$("#divRestaurantComments").hide();
 			$("#tableRestaurants tbody").empty();
 			getAllRestaurants();
 		});
@@ -56,6 +60,7 @@ function initShowButtons(){
 			$("#divSearchInfo").hide();
 			$("#divRestaurantDetails").show();
 			$("#divRestaurantArticles").show();
+			$("#divRestaurantComments").show();
 			$("#tableRestaurants tbody").empty();
 			getAllRestaurants();
 		}); 
@@ -92,6 +97,7 @@ function addRestaurantInTable(restaurant) {
 
 	let tr = "<tr id=\"trRestaurant\">" +
 			"<td>" + restaurant.name + "</td>" +
+			"<td><img alt='' src='" + restaurant.image + "' width='50px' height='50px'></td>" +
 			"<td>" + restaurant.type + "</td>" +
 			"<td>" + restaurant.open + "</td>" +
 			"<td>" + restaurant.city + "</td>" +
@@ -104,12 +110,14 @@ function addRestaurantInTable(restaurant) {
 }
 
 function getRestaurantById(id){
+	getRestaurantComments(id);
 	$.ajax({
 		
 		type: "GET",
 		url: './rest/restaurant/' + id,
 		contentType: 'application/json',
 		success: function(res) {
+			$('#h2Restaurant').text("Restaurant " + res.name + " details");
 			$('#txtIdRestorana').val(res.id);
 			$('#txtNameRestorana').val(res.name);
 			$('#txtCityRestorana').val(res.city);
@@ -118,7 +126,21 @@ function getRestaurantById(id){
 			$('#txtTypeRestorana').val(res.type);
 			$('#txtStatusRestorana').val(res.open);
 			$('#txtRatingRestorana').val(res.rating);
-	
+			
+			// Mapa
+			$("#map").empty();
+			var map = new ol.Map({
+			    target: 'map',
+			    layers: [
+			      new ol.layer.Tile({
+			        source: new ol.source.OSM()
+			      })
+			    ],
+			    view: new ol.View({
+			      center: ol.proj.fromLonLat([res.longitude, res.latitude ]),
+			      zoom: 18
+			    })
+			 });
 		}
 	});
 	
@@ -161,7 +183,7 @@ function addArticleInTable(article) {
 			"<td class=\"tdTable\">" + article.type + "</td>" +
 			"<td class=\"tdTable\">" + article.amount + "</td>" +
 			"<td class=\"tdTable\">" + article.description + "</td>" +
-			"<td><image alt='' src='" + article.image + "' width='50px' height='50px'></td>" +
+			"<td><img alt='' src='" + article.image + "' width='50px' height='50px'></td>" +
 			"</tr>";
 	table.append(tr);
 
@@ -191,6 +213,30 @@ function getArticleById(articleId){
 	})
 }
 
+//KOMENTARI ##############################
+function getRestaurantComments(restaurantId) {
+	$("#tableComments").empty();
+	$.ajax({
+		type: "GET",
+		url: 'rest/comment/approved/' + restaurantId,
+		contentType: 'application/json',
+		success: function(comments) {
+	    	for(let comment of comments) {
+				addRestaurantComments(comment);
+			}
+		}
+	});	
+}
+
+function addRestaurantComments(comment){
+	let tr = "<tr>" +
+	" <td>" + comment.customer + "</td> " +
+	" <td>" + comment.text + "</td> " +
+	" <td>" + comment.grade + "</td> " +
+	"</tr>"
+	
+	$("#tableComments").append(tr);
+}
 
 //SEARCH #################################################################
 function search(){	

@@ -11,14 +11,14 @@
 </head>
 <body>
 	<div class="menu">
-	  <a id="buttonAddUser" class="menu-button">Dodaj korisnika</a>
-	  <a id="buttonAllUsers" class="menu-button">Korisnici</a>
-	  <a id="buttonAddRestaurant" class="menu-button">Dodaj restoran</a>
-	  <a id="buttonRestaurants" class="menu-button">Restorani</a>
+	  <a id="buttonAddUser" class="menu-button">Add user</a>
+	  <a id="buttonAllUsers" class="menu-button">Users</a>
+	  <a id="buttonAddRestaurant" class="menu-button">Add restaurant</a>
+	  <a id="buttonRestaurants" class="menu-button">Restaurants</a>
 	  <div class="dropdown">
-	  	  <button id="buttonAccount" class="account-button">Nalog</button>
+	  	  <button id="buttonAccount" class="account-button">Account</button>
 	  	  <div class="dropdown-content">
-	  	  	  <a id="buttonEditAccount" class="menu-button">Izmeni podatke</a>
+	  	  	  <a id="buttonEditAccount" class="menu-button">Edit account</a>
 	  	  	  <a id="buttonLogout" class="menu-button">Logout</a>
 	  	  </div>	  	  
 	  </div>	  
@@ -26,108 +26,108 @@
 	
 	<div id="divAddUser">
 		<form id="formAddUser">
-		<h1>Dodavanje novih dostavljača i menadžera</h1>
+		<h1>Add new managers and deliverers</h1>
 		<table>
 			<tr>
 				<td>Username</td>
-				<td><input type="text" id="username"></td>
+				<td><input type="text" id="username" required></td>
 			</tr>
 			<tr>
 				<td>Password</td>
-				<td><input type="password" id="password"></td>
+				<td><input type="password" id="password" required></td>
 			</tr>
 			<tr>
-				<td>Ime</td>
-				<td><input type="text" id="name"></td>
+				<td>Fist Name</td>
+				<td><input type="text" id="name" required></td>
 			</tr>
 			<tr>
-				<td>Prezime</td>
-				<td><input type="text" id="lastName"></td>
+				<td>Last Name</td>
+				<td><input type="text" id="lastName" required></td>
 			</tr>
 			<tr>
-				<td>Pol</td>
+				<td>Gender</td>
 				<td>
-				<label>Muški</label>
+				<label>Male</label>
 				<input type="radio" name="gender" id="male" checked>
 				<br>
-				<label>Ženski</label>
+				<label>Female</label>
 				<input type="radio" name="gender" id="female">
 				</td>
 			</tr>
 			<tr>
-				<td>Datum rođenja</td>
+				<td>Date of Birth</td>
 				<td><input type="date" id="date"></td>
 			</tr>
 			<tr>
-				<td>Uloga</td>
+				<td>Role</td>
 				<td>
 				<select id="role">
-        			<option value="MENADZER">Menadžer</option>
-        			<option value="DOSTAVLJAC">Dostavljač</option>
+        			<option value="MENADZER">Manager</option>
+        			<option value="DOSTAVLJAC">Deliverer</option>
       			</select> 
       			</td>
 			</tr>
 			<tr>
 				<td></td>						
-				<td><input type="submit" value="Dodaj korisnika" class="submit"></td>
+				<td><input type="submit" value="Add user" class="submit"></td>
 			</tr>
 		</table>
 		</form>
 	</div>
 	<div id="divAllUsers">
-		<h1>Pregled korisnika <button id="buttonSearch"><img id="buttonSearch" alt="Pretraga" src="../images/search-icon.png" width="15px" height="15px"></button></h1>
+		<h1>Users overview <button id="buttonSearch"><img id="buttonSearch" alt="Search" src="../images/search-icon.png" width="15px" height="15px"></button></h1>
 		<div id="divSearchUsers" hidden="true">
 			<form id="formSearchUsers">
 				<table>
 					<tr>
 						<th>
-							<label>Pretraga:</label>
+							<label>Search:</label>
 						</th>
 						<td>
 							<input type="text" id="searchUsername" placeholder="Username">
 						</td>
 						<td>
-							<input type="text" id="searchFirstName" placeholder="Ime">
+							<input type="text" id="searchFirstName" placeholder="First Name">
 						</td>
 						<td>
-							<input type="text" id="searchLastName" placeholder="Prezime">
+							<input type="text" id="searchLastName" placeholder="Last Name">
 						</td>
 						<td>
-							<input type="submit" value="Pretraži" id="submitSearch" class="submit">
+							<input type="submit" value="Search" id="submitSearch" class="submit">
 						</td>
 					</tr>
 				</table>
 			</form>
 		</div>
 		<div id="divFilter">
-			<label><b>Uloga:</b></label>
+			<label><b>Role:</b></label>
 			<select id="filterRole">
-				<option value="SVI">Svi</option>
+				<option value="SVI">All</option>
 				<option value="ADMIN">Administrator</option>
-				<option value="MENADZER">Menadžer</option>
-				<option value="DOSTAVLJAC">Dostavljač</option>
-				<option value="KUPAC">Kupac</option>
+				<option value="MENADZER">Manager</option>
+				<option value="DOSTAVLJAC">Deliverer</option>
+				<option value="KUPAC">Customer</option>
 			</select>
 			<label><b>Tip kupca:</b></label>
 			<select id="filterType">
-				<option value="SVI">Svi</option>
+				<option value="SVI">All</option>
 				<option value="NONE">None</option>
-				<option value="BRONZE">Bronzani</option>
-				<option value="SILVER">Srebrni</option>
-				<option value="GOLD">Zlatni</option>
+				<option value="BRONZE">Bronze</option>
+				<option value="SILVER">Silver</option>
+				<option value="GOLD">Gold</option>
 			</select>
 		</div>	
 		<table class="table-data">
 			<thead>
 				<tr>
 					<th id="sortUsername" class="sort-header">Username  <img id="imageSortUsername" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
-					<th id="sortName" class="sort-header">Ime  <img id="imageSortFirstName" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
-					<th id="sortLastName" class="sort-header">Prezime  <img id="imageSortLastName" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
-					<th>Uloga</th>
-					<th>Pol</th>
-					<th>Datum rođenja</th>
-					<th id="sortPoints" class="sort-header">Broj bodova  <img id="imageSortPoints" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
-					<th>Tip kupca</th>
+					<th id="sortName" class="sort-header">First Name  <img id="imageSortFirstName" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortLastName" class="sort-header">Last Name  <img id="imageSortLastName" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th>Role</th>
+					<th>Gender</th>
+					<th>Date of birth</th>
+					<th id="sortPoints" class="sort-header">Number of Points  <img id="imageSortPoints" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th>Customer type</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -136,10 +136,10 @@
 	</div>
 	<div id="divAddRestaurant">
 		<form id="formAddRestaurant">
-		<h1>Dodavanje novog restorana</h1>
+		<h1>Add new restaurant</h1>
 		<table>
 			<tr>
-				<td>Naziv</td>
+				<td>Name</td>
 				<td><input type="text" id="restaurantName" required></td>
 				<!--Polje za prikaz dodate slike restorana -->
 				<td rowspan="9">
@@ -147,7 +147,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td>Tip</td>
+				<td>Type</td>
 				<td>
 				<select id="type">
         			<option value="ITALIAN">Italijanski</option>
@@ -166,19 +166,19 @@
 				<td><input type="number" id="longitude" required disabled></td>
 			</tr>
 			<tr>
-				<td>Grad</td>
+				<td>City</td>
 				<td><input type="text" id="city"></td>
 			</tr>
 			<tr>
-				<td>Drzava</td>
+				<td>Country</td>
 				<td><input type="text" id="country"></td>
 			</tr>
 			<tr>
-				<td>Ulica i broj</td>
+				<td>Street and Number</td>
 				<td><input type="text" id="streetAndNumber"></td>
 			</tr>
 			<tr>
-				<td>Poštanski broj</td>
+				<td>Postal Code</td>
 				<td><input type="number" id="postalCode"></td>
 			</tr>
 			<tr>
@@ -186,7 +186,7 @@
 				<td><input type="file" id="restaurantImage" required accept="image/*"></td>
 			</tr>
 			<tr>
-				<td>Menadžer</td>
+				<td>Manager</td>
 				<td>
 					<select id="managerOfRestaurant">
       				</select>
@@ -194,7 +194,7 @@
 			</tr>
 			<tr>
 				<td></td>						
-				<td><input type="submit" value="Dodaj restoran" class="submit"></td>
+				<td><input type="submit" value="Add restaurant" class="submit"></td>
 			</tr>
 		</table>
 		</form>
@@ -202,7 +202,7 @@
 	</div>	
 	<div id="divAddManager">
 		<form id="formAddManager">
-		<h1>Dodavanje menadžera za prethodno dodat restoran</h1>
+		<h1>Add manager for previously added restaurant</h1>
 		<table>
 			<tr>
 				<td>Username</td>
@@ -213,36 +213,36 @@
 				<td><input type="password" id="managerPassword"></td>
 			</tr>
 			<tr>
-				<td>Ime</td>
+				<td>First Name</td>
 				<td><input type="text" id="managerName"></td>
 			</tr>
 			<tr>
-				<td>Prezime</td>
+				<td>Last Name</td>
 				<td><input type="text" id="managerLastName"></td>
 			</tr>
 			<tr>
-				<td>Pol</td>
+				<td>Grade</td>
 				<td>
-				<label>Muški</label>
+				<label>Male</label>
 				<input type="radio" name="managerGender" id="managerMale" checked>
-				<label>Ženski</label>
+				<label>Female</label>
 				<input type="radio" name="managerGender" id="managerFemale">
 				</td>
 			</tr>
 			<tr>
-				<td>Datum rođenja</td>
+				<td>Date of Birth</td>
 				<td><input type="date" id="managerDate"></td>
 			</tr>
 			<tr>
 				<td></td>						
-				<td><input type="submit" value="Dodaj menadžera" class="submit"></td>
+				<td><input type="submit" value="Add manager" class="submit"></td>
 			</tr>
 		</table>
 		</form>
 	</div>	
 	<div id="divEditAccount">
 		<form id="formEdit">
-		<h1>Izmeni svoje podatke</h1>
+		<h1>Edit your data</h1>
 			<table>
 				<tr>
 					<td>
@@ -270,7 +270,7 @@
 				</tr>
 				<tr>
 					<td>
-						Ime: 
+						First Name: 
 					</td>
 					<td>			
 						<input type="text" id="nameEdit">
@@ -278,40 +278,40 @@
 				</tr>
 				<tr>
 					<td>
-						Prezime: 
+						Last Name: 
 					</td>
 					<td>			
 						<input type="text" id="lastNameEdit">
 					</td>
 				</tr>
 				<tr>
-					<td>Pol:</td>
+					<td>Gender:</td>
 					<td>
-					<label>Muški</label>
+					<label>Male</label>
 					<input type="radio" name="genderEdit" id="maleEdit" checked>
-					<label>Ženski</label>
+					<label>Female</label>
 					<input type="radio" name="genderEdit" id="femaleEdit">
 					</td>
 				</tr>
 				<tr>
-					<td>Datum rođenja:</td>
+					<td>Date of Birth:</td>
 					<td><input type="date" id="dateEdit"></td>
 				</tr>
 				<tr>
 					<td></td>						
-					<td><input type="submit" value="Izmeni" class="submit"></td>
+					<td><input type="submit" value="Edit" class="submit"></td>
 				</tr>
 			</table>				
 		</form>
 	</div>
 	<div id="divRestaurants">
-		<h1>Pregled restorana <button id="buttonSearchRestaurants"><img id="buttonSearch" alt="Pretraga" src="../images/search-icon.png" width="15px" height="15px"></button></h1>
+		<h1>Restaurant overview <button id="buttonSearchRestaurants"><img id="buttonSearch" alt="Pretraga" src="../images/search-icon.png" width="15px" height="15px"></button></h1>
 		<div id="divSearchRestaurants" hidden="true">
 			<form id="formSearchRestaurants">
 				<table>
 					<tr>
 						<th>
-							<label>Pretraga:</label>
+							<label>Search:</label>
 						</th>
 						<td>
 							<input type="text" id="searchRestaurantsName" placeholder="Name">
@@ -338,12 +338,13 @@
 			<thead>
 				<tr>
 					<th id='sortRestaurantsByName' class="sort-header">Name <img id="imageSortName" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th>Image</th>
 					<th> <input id="typeZaFiltraciju" placeholder="Type" ></th>
 					<th id='sortRestaurantsByStatus'>Status</th>
 					<th id='sortRestaurantsByCity' class="sort-header">City<img id="imageSortCity" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
 					<th id='sortRestaurantsByCountry' class="sort-header">Country<img id="imageSortCountry" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
 					<th id='sortRestaurantsByRating' class="sort-header">Rating<img id="imageSortRating" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
-					<th>Detalji</th>
+					<th>Details</th>
 				</tr>
 			</thead>
 			<tbody id="tableRestaurants"></tbody>
@@ -389,27 +390,26 @@
 					<td><img id="imgRestaurantLogo"></td>
 				</tr>			
 			</table>
-			<h2>Artikli</h2>
+			<h2>Articles</h2>
 			<table class="table-data">
 				<thead>
 					<tr>
-						<th>Naziv</th>
-						<th>Slika</th>
-						<th>Opis</th>
-						<th>Cena</th>
-						<th>Korpa</th>
+						<th>Name</th>
+						<th>Image</th>
+						<th>Description</th>
+						<th>Price</th>
 					</tr>
 				</thead>
 				<tbody  id="tableArticles">
 				</tbody>
 			</table>
-			<h2>Komentari</h2>	
+			<h2>Comments</h2>	
 			<table class="table-data">
 				<thead>
 					<tr>
-						<th>Username kupca</th>
-						<th>Komentar</th>
-						<th>Ocena</th>
+						<th>Customer username</th>
+						<th>Comment</th>
+						<th>Rating</th>
 					</tr>
 				</thead>
 				<tbody  id="tableComments">
