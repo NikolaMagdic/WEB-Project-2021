@@ -258,7 +258,7 @@ public class OrderService {
 		System.out.println("Menja status delivery na TAKEN_FOR_DELIVERY");
 		oldOrder.setOrderDeliveryStatus(OrderDeliveryStatus.TAKEN_FOR_DELIVERY);
 		for(String orderId : loggedInUser.getDeliveryOrders()) {
-			if(!orderId.equals(oldOrder.getOrderId())) {
+			if(orderId.equals(oldOrder.getOrderId())) {
 				flag = true;
 			}
 		}
