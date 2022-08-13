@@ -4,9 +4,10 @@
 	<meta charset="UTF-8">
 	<title>Naruci</title>
 	<link rel="stylesheet" href="index.css">
+	<link rel="shortcut icon" href="favicon.ico" />
 	<script src="jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="index.js"></script>
-	<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.6.1/build/ol.js"></script>
+	<script src="ol/ol.js"></script>
 </head>
 <body>
 	<div class="meni">
@@ -78,11 +79,22 @@
 					<tr>
 						<td>Gender*:</td>
 						<td>
-						    <input type="radio" name="optionsCheck" id="male" checked> Male
-						    <input type="radio" name="optionsCheck" id="female"> Female
+							<table>
+								<tr>
+									<td><label>Male</label></td>
+									<td><input type="radio" name="optionsCheck" id="male" checked></td>
+								</tr>
+								<tr>
+									<td><label>Female</label></td>
+									<td><input type="radio" name="optionsCheck" id="female"></td>
+								</tr>
+							</table>
 						</td>
 					</tr>
-					
+					<tr>
+						<td>Date of Birth</td>
+						<td><input type="date" id="date"></td>
+					</tr>
 					<tr>
 						<td><input type="submit"
 							id="submitRegister" value="Register" class="buttonEdit">

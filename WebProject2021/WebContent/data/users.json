@@ -45,11 +45,21 @@
 		"birthDate": 1508762343511,
 		"role": "KUPAC",
 		"myOrders": [],
-		"cart": {},
+		"cart": {
+			"cartItems" : [ ],
+      		"customer" : "user",
+      		"price" : 0.0,
+      		"restaurant" : null
+		},
 		"restaurant": 0,
 		"deliveryOrders": [],
 		"points": 0,
-		"customerType": null,
+		"customerType": {
+      		"customerTypeName" : "NONE",
+      		"discount" : 0,
+      		"points" : 0
+    	},
+		"blocked": false,
 		"numberOfCancellations": 0
 	},
 	

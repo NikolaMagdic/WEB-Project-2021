@@ -137,5 +137,15 @@ public class Article {
 		this.deleted = deleted;
 	}
 
+
+
+	@Override
+	public String toString() {
+		return "Article [id=" + id + ", name=" + name + ", price=" + price + ", articleType=" + articleType
+				+ ", restaurant=" + restaurant + ", amount=" + amount + ", description=" + description + ", image="
+				+ image + ", deleted=" + deleted + "]";
+	}
+
+	
 	
 }

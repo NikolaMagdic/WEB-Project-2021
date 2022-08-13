@@ -6,10 +6,8 @@ body {
 	/*background-color: blue;*/
 	background: -webkit-gradient(linear, left top, left bottom, from(#99d6ff), to(#006bb3));
 	margin: 0%;
-	min-height: 100vh;
-	position: relative;
-	display: flex;
-	flex-direction: column; .
+	font-family: Arial, Helvetica, sans-serif;
+	
 }
 
 h1, h2 {
@@ -22,6 +20,12 @@ form {
 
 input {
 	border-radius: 10px;
+	width: 200px;
+  	padding: 8px 10px;
+  	margin: 8px 0;
+  	display: inline-block;
+  	border: 1px solid #ccc;
+  	box-sizing: border-box;
 }
 
 table {
@@ -41,6 +45,7 @@ div {
   border: 1px solid #ddd;
   border-color: #003d66;
   padding: 8px;
+  text-align: left;
 }
 
 .table-data th {

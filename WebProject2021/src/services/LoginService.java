@@ -73,7 +73,7 @@ public class LoginService {
 		System.out.println(user);
 		// Dodavanje svih atributa da ne bi bili null
 		user.setRole(UserRole.KUPAC);
-		user.setMyOrders(new ArrayList<String>()); //sta cemo za cart, treba Int da se doda
+		user.setMyOrders(new ArrayList<String>()); 
 		
 		// inicijalizacija korpe
 		Cart newCart = new Cart();
@@ -83,7 +83,7 @@ public class LoginService {
 		
 		user.setPoints(0.0);
 		CustomerType type = new CustomerType(CustomerTypeName.NONE, 0, 0);
-		user.setCustomerType(type); //?????
+		user.setCustomerType(type); 
 		user.setBlocked(false);
 		user.setNumberOfCancellations(0);
 		System.out.println(user);

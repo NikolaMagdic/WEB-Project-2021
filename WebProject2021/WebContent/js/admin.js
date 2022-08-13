@@ -572,13 +572,15 @@ function getAllRestaurants(){
 function addRestaurantInTable(restaurant) {
 	let table = $("#tableRestaurants");
 
+	var opened = restaurant.open ? "Opened" : "Closed";
+
 	let tr = "<tr id=\"trRestaurant\">" +
 			"<td>" + restaurant.name + "</td>" +
 			"<td><img alt='' src='../" + restaurant.image + "' width='100px' height='100px'></td>" +
-			"<td>" + restaurant.type + "</td>" +
-			"<td>" + restaurant.open + "</td>" +
-			"<td>" + restaurant.city + "</td>" +
-			"<td>" + restaurant.country + "</td>" +
+			"<td>" + restaurant.restaurantType + "</td>" +
+			"<td>" + opened + "</td>" +
+			"<td>" + restaurant.location.address.city + "</td>" +
+			"<td>" + restaurant.location.address.country + "</td>" +
 			"<td>" + restaurant.rating + "</td>" +
 			" <td> <button id='" + restaurant.id + "' class='button-details'> Details </button></td>" +
 			"</tr>";
@@ -594,15 +596,15 @@ function getRestaurantDetails(restaurantId) {
 		url: '../rest/restaurant/' + restaurantId,
 		contentType: 'application/json',
 		success: function(restaurant) {
-			console.log(restaurant.image);
+			var opened = restaurant.open ? "Opened" : "Closed";
 			$('#h1Restaurant').text("Restaurant " + restaurant.name);
 			$('#tdRestaurantId').text(restaurant.id);
 			$('#tdRestaurantName').text(restaurant.name);
-			$('#tdRestaurantCity').text(restaurant.city);
-			$('#tdRestaurantStreet').text(restaurant.address);
-			$('#tdRestaurantCountry').text(restaurant.country);
-			$('#tdRestaurantType').text(restaurant.type);
-			$('#tdRestaurantStatus').text(restaurant.open);
+			$('#tdRestaurantCity').text(restaurant.location.address.city);
+			$('#tdRestaurantStreet').text(restaurant.location.address.streetAndNumber);
+			$('#tdRestaurantCountry').text(restaurant.location.address.country);
+			$('#tdRestaurantType').text(restaurant.restaurantType);
+			$('#tdRestaurantStatus').text(opened);
 			$('#tdRestaurantRating').text(restaurant.rating);
 			$('#imgRestaurantLogo').attr("src", "../" + restaurant.image);
 			$('#imgRestaurantLogo').attr("height", "150px");
@@ -733,7 +735,7 @@ function filterByType(){
  			success: function(restaurants) {
 				shownRestaurants = [];
  		    	for(let res of restaurants) {
- 		    		if($("#typeZaFiltraciju").val() == '' || res.type.toLowerCase().includes($("#typeZaFiltraciju").val().toLowerCase())){
+ 		    		if($("#typeZaFiltraciju").val() == '' || res.restaurantType.toLowerCase().includes($("#typeZaFiltraciju").val().toLowerCase())){
  	 					addRestaurantInTable(res);
  	 					$( "#detaljiRestorana" + res.id).click(function() {
 							getRestaurantById(res.id);
@@ -756,7 +758,7 @@ function sortRestaurantsByStatus() {
  		$("#tableRestaurants").empty();
 		
 		for(let res of shownRestaurants) {
-			if(res.open === "Open") {
+			if(res.open) {
 	 	 		addRestaurantInTable(res);
 	 	 		$( "#detaljiRestorana" + res.id).click(function() {
 					getRestaurantById(res.id);
@@ -872,16 +874,16 @@ function sortRestaurantsByCity(){
 
 		if(sortCityDesc) {
 			shownRestaurants.sort(function(a, b){
-			    if(a.city < b.city) { return -1; }
-			    if(a.city > b.city) { return 1; }
+			    if(a.location.address.city < b.location.address.city) { return -1; }
+			    if(a.location.address.city > b.location.address.city) { return 1; }
 			    return 0;
 			});
 			sortCityDesc = false;
 			$("#imageSortCity").attr("src", "../images/sort-down.png");
 		} else {
 			shownRestaurants.sort(function(a, b){
-			    if(a.city > b.city) { return -1; }
-			    if(a.city < b.city) { return 1; }
+			    if(a.location.address.city > b.location.address.city) { return -1; }
+			    if(a.location.address.city < b.location.address.city) { return 1; }
 			    return 0;
 			});
 			sortCityDesc = true;
@@ -912,16 +914,16 @@ function sortRestaurantsByCountry(){
 		
 		if(sortCountryDesc) {
 			shownRestaurants.sort(function(a, b){
-			    if(a.country < b.country) { return -1; }
-			    if(a.country > b.country) { return 1; }
+			    if(a.location.address.country < b.location.address.country) { return -1; }
+			    if(a.location.address.country > b.location.address.country) { return 1; }
 			    return 0;
 			});
 			sortCountryDesc = false;
 			$("#imageSortCountry").attr("src", "../images/sort-down.png");
 		} else {
 			shownRestaurants.sort(function(a, b){
-			    if(a.country > b.country) { return -1; }
-			    if(a.country < b.country) { return 1; }
+			    if(a.location.address.country > b.location.address.country) { return -1; }
+			    if(a.location.address.country < b.location.address.country) { return 1; }
 			    return 0;
 			});
 			sortCountryDesc = true;

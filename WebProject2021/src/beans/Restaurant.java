@@ -172,4 +172,14 @@ public class Restaurant {
 	}
 
 
+	@Override
+	public String toString() {
+		return "Restaurant [id=" + id + ", name=" + name + ", restaurantType=" + restaurantType + ", articles="
+				+ articles + ", open=" + open + ", location=" + location + ", image=" + image + ", rating=" + rating
+				+ ", deleted=" + deleted + ", restaurantOrders=" + restaurantOrders + "]";
+	}
+
+
+	
+	
 }

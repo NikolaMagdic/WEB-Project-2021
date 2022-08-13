@@ -95,13 +95,15 @@ function getAllRestaurants(){
 function addRestaurantInTable(restaurant) {
 	let table = $("#tableRestaurants");
 
+	var opened = restaurant.open ? "Opened" : "Closed";
+
 	let tr = "<tr id=\"trRestaurant\">" +
 			"<td>" + restaurant.name + "</td>" +
 			"<td><img alt='' src='" + restaurant.image + "' width='50px' height='50px'></td>" +
-			"<td>" + restaurant.type + "</td>" +
-			"<td>" + restaurant.open + "</td>" +
-			"<td>" + restaurant.city + "</td>" +
-			"<td>" + restaurant.country + "</td>" +
+			"<td>" + restaurant.restaurantType + "</td>" +
+			"<td>" + opened + "</td>" +
+			"<td>" + restaurant.location.address.city + "</td>" +
+			"<td>" + restaurant.location.address.country + "</td>" +
 			"<td>" + restaurant.rating + "</td>" +
 			" <td> <button id='detaljiRestorana" + restaurant.id + "' class='buttonDetails' name='detaljiRestorana'> Details </button></td>" +
 			"</tr>";
@@ -117,14 +119,15 @@ function getRestaurantById(id){
 		url: './rest/restaurant/' + id,
 		contentType: 'application/json',
 		success: function(res) {
+			var opened = res.open ? "Opened" : "Closed";
 			$('#h2Restaurant').text("Restaurant " + res.name + " details");
 			$('#txtIdRestorana').val(res.id);
 			$('#txtNameRestorana').val(res.name);
-			$('#txtCityRestorana').val(res.city);
-			$('#txtAddressRestorana').val(res.address);
-			$('#txtCountryRestorana').val(res.country);
-			$('#txtTypeRestorana').val(res.type);
-			$('#txtStatusRestorana').val(res.open);
+			$('#txtCityRestorana').val(res.location.address.city);
+			$('#txtAddressRestorana').val(res.location.address.streetAndNumber);
+			$('#txtCountryRestorana').val(res.location.address.country);
+			$('#txtTypeRestorana').val(res.restaurantType);
+			$('#txtStatusRestorana').val(opened);
 			$('#txtRatingRestorana').val(res.rating);
 			
 			// Mapa
@@ -137,10 +140,25 @@ function getRestaurantById(id){
 			      })
 			    ],
 			    view: new ol.View({
-			      center: ol.proj.fromLonLat([res.longitude, res.latitude ]),
+			      center: ol.proj.fromLonLat([res.location.longitude, res.location.latitude ]),
 			      zoom: 18
 			    })
 			 });
+			 
+			var markers = new ol.layer.Vector({
+			  source: new ol.source.Vector(),
+			  style: new ol.style.Style({
+			    image: new ol.style.Icon({
+			      anchor: [0.5, 1],
+			      src: 'ol/marker.png'
+			    })
+			  })
+			});
+			map.addLayer(markers);
+			
+			var marker = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([res.location.longitude, res.location.latitude])));
+			markers.getSource().addFeature(marker);
+						 
 		}
 	});
 	
@@ -309,7 +327,7 @@ function filterByType(){
  			success: function(restaurants) {
 				shownRestaurants = [];
  		    	for(let res of restaurants) {
- 		    		if($("#typeZaFiltraciju").val() == '' || res.type.toLowerCase().includes($("#typeZaFiltraciju").val().toLowerCase())){
+ 		    		if($("#typeZaFiltraciju").val() == '' || res.restaurantType.toLowerCase().includes($("#typeZaFiltraciju").val().toLowerCase())){
  	 					addRestaurantInTable(res);
  	 					$( "#detaljiRestorana" + res.id).click(function() {
 							getRestaurantById(res.id);
@@ -333,7 +351,7 @@ function sortRestaurantsByStatus() {
  		$("#tableRestaurants tbody").empty();
 		
 		for(let res of shownRestaurants) {
-			if(res.open === "Open") {
+			if(res.open) {
 	 	 		addRestaurantInTable(res);
 	 	 		$( "#detaljiRestorana" + res.id).click(function() {
 					getRestaurantById(res.id);
@@ -449,16 +467,16 @@ function sortRestaurantsByCity(){
 
 		if(sortCityDesc) {
 			shownRestaurants.sort(function(a, b){
-			    if(a.city < b.city) { return -1; }
-			    if(a.city > b.city) { return 1; }
+			    if(a.location.address.city < b.location.address.city) { return -1; }
+			    if(a.location.address.city > b.location.address.city) { return 1; }
 			    return 0;
 			});
 			sortCityDesc = false;
 			$("#imageSortCity").attr("src", "./images/sort-down.png");
 		} else {
 			shownRestaurants.sort(function(a, b){
-			    if(a.city > b.city) { return -1; }
-			    if(a.city < b.city) { return 1; }
+			    if(a.location.address.city > b.location.address.city) { return -1; }
+			    if(a.location.address.city < b.location.address.city) { return 1; }
 			    return 0;
 			});
 			sortCityDesc = true;
@@ -489,16 +507,16 @@ function sortRestaurantsByCountry(){
 		
 		if(sortCountryDesc) {
 			shownRestaurants.sort(function(a, b){
-			    if(a.country < b.country) { return -1; }
-			    if(a.country > b.country) { return 1; }
+			    if(a.location.address.country < b.location.address.country) { return -1; }
+			    if(a.location.address.country > b.location.address.country) { return 1; }
 			    return 0;
 			});
 			sortCountryDesc = false;
 			$("#imageSortCountry").attr("src", "./images/sort-down.png");
 		} else {
 			shownRestaurants.sort(function(a, b){
-			    if(a.country > b.country) { return -1; }
-			    if(a.country < b.country) { return 1; }
+			    if(a.location.address.country > b.location.address.country) { return -1; }
+			    if(a.location.address.country < b.location.address.country) { return 1; }
 			    return 0;
 			});
 			sortCountryDesc = true;
@@ -572,11 +590,11 @@ $(document).ready(function(){
 					window.location = "./html/admin.html";
 					alert("Welcome!");
 				} else if(message === "MENADZER"){
-					window.location = "./managerPage.html";
+					window.location = "./html/managerPage.html";
 				} else if(message === "DOSTAVLJAC") {
-					window.location = "./delivererPage.html";
+					window.location = "./html/delivererPage.html";
 				} else if(message === "KUPAC"){
-					window.location = "./userPage.html";
+					window.location = "./html/userPage.html";
 					alert("Welcome!");
 				} else {
 					alert(message)
@@ -601,6 +619,7 @@ $(document).ready(function(){
 		let firstName = $("#nameRegister").val();
 		let lastName = $("#lastNameRegister").val();
 		let male = $("#male:checked").val();
+		let birthDate = $("#date").val();
 		
 		let confirm_password = $("#confirm-password").val();
 		console.log(confirm_password);
@@ -620,12 +639,12 @@ $(document).ready(function(){
 		if (password === confirm_password){
 					$.post({
 						url : "rest/register",
-						data : JSON.stringify({username, password, firstName, lastName, gender}),
+						data : JSON.stringify({username, password, firstName, lastName, gender, birthDate}),
 						contentType: "application/json",
 						success : function(){
-							alert("You are registred");
+							alert("You are registered");
 							console.log("success");
-							window.location = "./userPage.html";
+							window.location = "./html/userPage.html";
 						},
 						error : function(){
 							console.log("error");

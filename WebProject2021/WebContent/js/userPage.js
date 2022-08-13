@@ -65,7 +65,7 @@ function formatDate(newDate) {
 function getLoggedInUser(){
 	    $.get({
 		type: "GET",
-		url: 'rest/user/loggedIn',
+		url: '../rest/user/loggedIn',
 		success: function(user) {
 			console.log(user);
 			$('#usernameEdit').val(user.username);
@@ -85,11 +85,11 @@ function logout(){
  	$( "#logoutMenu").click(function() {
  		$.ajax({
  			type: "GET",
- 			url: 'rest/logout',
+ 			url: '../rest/logout',
  			contentType: 'application/json',
  			success: function() {
  				alert("You logged out successfully");
- 				window.location = "./index.html";
+ 				window.location = "../index.html";
  			}
  		});
  		
@@ -101,7 +101,7 @@ function logout(){
 function getAllRestaurants(){
 	$("#tableRestaurants").empty();
 	$.get({
-		url: "rest/restaurant/all",
+		url: "../rest/restaurant/all",
 		contentType: "application/json",
 		success: function(restaurants) {
 			for(let restaurant of restaurants) {
@@ -114,14 +114,16 @@ function getAllRestaurants(){
 
 function addRestaurantInTable(restaurant) {
 	let table = $("#tableRestaurants");
+	
+	var opened = restaurant.open ? "Opened" : "Closed";
 
 	let tr = "<tr id=\"trRestaurant\">" +
 			"<td>" + restaurant.name + "</td>" +
-			"<td><img alt='' src='" + restaurant.image + "' width='150px' height='150px'></td>" +
-			"<td>" + restaurant.type + "</td>" +
-			"<td>" + restaurant.open + "</td>" +
-			"<td>" + restaurant.city + "</td>" +
-			"<td>" + restaurant.country + "</td>" +
+			"<td><img alt='' src='../" + restaurant.image + "' width='150px' height='150px'></td>" +
+			"<td>" + restaurant.restaurantType + "</td>" +
+			"<td>" + opened + "</td>" +
+			"<td>" + restaurant.location.address.city + "</td>" +
+			"<td>" + restaurant.location.address.country + "</td>" +
 			"<td>" + restaurant.rating + "</td>" +
 			" <td> <button id='" + restaurant.id + "' class='button-details'> Details </button></td>" +
 			"</tr>";
@@ -134,20 +136,20 @@ function getRestaurantDetails(restaurantId) {
 	getRestaurantComments(restaurantId);
 	$.ajax({
 		type: "GET",
-		url: 'rest/restaurant/' + restaurantId,
+		url: '../rest/restaurant/' + restaurantId,
 		contentType: 'application/json',
 		success: function(restaurant) {
-			console.log(restaurant.image);
+			var opened = restaurant.open ? "Opened" : "Closed";
 			$('#h1Restaurant').text("Restaurant " + restaurant.name);
 			$('#tdRestaurantId').text(restaurant.id);
 			$('#tdRestaurantName').text(restaurant.name);
-			$('#tdRestaurantCity').text(restaurant.city);
-			$('#tdRestaurantStreet').text(restaurant.address);
-			$('#tdRestaurantCountry').text(restaurant.country);
-			$('#tdRestaurantType').text(restaurant.type);
-			$('#tdRestaurantStatus').text(restaurant.open);
+			$('#tdRestaurantCity').text(restaurant.location.address.city);
+			$('#tdRestaurantStreet').text(restaurant.location.address.streetAndNumber);
+			$('#tdRestaurantCountry').text(restaurant.location.address.country);
+			$('#tdRestaurantType').text(restaurant.restaurantType);
+			$('#tdRestaurantStatus').text(opened);
 			$('#tdRestaurantRating').text(restaurant.rating);
-			$('#imgRestaurantLogo').attr("src", restaurant.image);
+			$('#imgRestaurantLogo').attr("src", "../" + restaurant.image);
 			$('#imgRestaurantLogo').attr("width", "250px");
 			$('#imgRestaurantLogo').attr("height", "150px");
 			
@@ -161,11 +163,24 @@ function getRestaurantDetails(restaurantId) {
 			      })
 			    ],
 			    view: new ol.View({
-			      center: ol.proj.fromLonLat([restaurant.longitude, restaurant.latitude ]),
+			      center: ol.proj.fromLonLat([restaurant.location.longitude, restaurant.location.latitude ]),
 			      zoom: 18
 			    })
 			 });
 			
+			var markers = new ol.layer.Vector({
+			  source: new ol.source.Vector(),
+			  style: new ol.style.Style({
+			    image: new ol.style.Icon({
+			      anchor: [0.5, 1],
+			      src: '../ol/marker.png'
+			    })
+			  })
+			});
+			map.addLayer(markers);
+			
+			var marker = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([restaurant.location.longitude, restaurant.location.latitude])));
+			markers.getSource().addFeature(marker);
 		}
 	});
 }
@@ -176,7 +191,7 @@ function getRestaurantArticles(restaurantId) {
 	$.ajax({
 		
 		type: "GET",
-		url: './rest/article/' + restaurantId,
+		url: '../rest/article/' + restaurantId,
 		contentType: 'application/json',
 		success: function(articles) {
 	    	for(let article of articles) {
@@ -205,7 +220,7 @@ function getRestaurantComments(restaurantId) {
 	$("#tableComments").empty();
 	$.ajax({
 		type: "GET",
-		url: 'rest/comment/approved/' + restaurantId,
+		url: '../rest/comment/approved/' + restaurantId,
 		contentType: 'application/json',
 		success: function(comments) {
 	    	for(let comment of comments) {
@@ -238,7 +253,7 @@ function addToCart(restaurantId) {
 			"amount": amount
 		}
 		$.post({
-			url: "rest/cart/add-to-cart/" + restaurantId,
+			url: "../rest/cart/add-to-cart/" + restaurantId,
 			contentType: "application/json",
 			data: JSON.stringify(cartItem),
 			success: function(){
@@ -255,7 +270,7 @@ function getCart() {
 	$("#tableCart").empty();
 	$("#totalSum").empty();
 	$.get({
-		url: "rest/cart",
+		url: "../rest/cart",
 		contentType: "application/json",
 		success: function (cart) {
 			for(let cartItem of cart.cartItems) {
@@ -271,7 +286,7 @@ function getCart() {
 
 function getArticle(cartItem, amount) {
 	$.get({
-		url: "rest/article/one/" + cartItem,
+		url: "../rest/article/one/" + cartItem,
 		contentType: "application/json",
 		success: function (article) {
 			addArticleInTable(article, amount);
@@ -287,7 +302,7 @@ function addArticleInTable(article, amount) {
 			"<td>" + article.name + "</td>" +
 			"<td><input type='number' min='1' class='input-number' id='" + article.id + "' value='" + amount + "'>" + "</td>" +
 			"<td>" + article.price + "</td>" +
-			"<td><img alt='' src='" + article.image + "' width='100px' height='100px'></td>" +
+			"<td><img alt='' src='../images" + article.image + "' width='100px' height='100px'></td>" +
 			"<td><button class='remove-article' id='" + article.id  + "'>Remove</button></td>" +
 			"</tr>";
 	
@@ -299,7 +314,7 @@ function removeArticleFromCart() {
 	$(document).on('click', '.remove-article', function(){
 		let id = $(this).attr("id");
 		$.ajax({
-			url: "rest/cart/" + id,
+			url: "../rest/cart/" + id,
 			type: "DELETE",
 			dataType: "json",
 			complete: function(){
@@ -324,7 +339,7 @@ function refreshCart() {
 		
 		$.ajax({
 			type: "PUT",
-			url: "rest/cart",
+			url: "../rest/cart",
 			contentType: "application/json",
 			dataType: "json",
 			data: JSON.stringify(tempCart),
@@ -342,7 +357,7 @@ function makeOrder() {
 	$("#buttonCreateOrder").click(function(){
 		let data = userCart;
 		$.post({
-			url: "rest/order",
+			url: "../rest/order",
 			contentType: "application/json",
 			data: JSON.stringify(data),
 			success: function() {
@@ -358,7 +373,7 @@ function makeOrder() {
 function getMyOrders() {
 	$("#tableOrders").empty();
 	$.get({
-		url: "rest/order",
+		url: "../rest/order",
 		contentType: "application/json",
 		success: function (orders) {
 			for(let order of orders) {
@@ -377,7 +392,7 @@ function addOrderInTable(order) {
 	for (let restaurant of allRestaurants) {
 		if(restaurant.id === order.restaurant) {
 			restaurantName = restaurant.name;
-			restaurantType = restaurant.type;
+			restaurantType = restaurant.restaurantType;
 			break;
 		}
 	}
@@ -410,7 +425,7 @@ function cancelOrder() {
 	$(document).on('click', 'button[name="cancel"]', function(){
 		let orderId = $(this).attr("id");
 		$.ajax({
-			url: "rest/order/cancel/" + orderId,
+			url: "../rest/order/cancel/" + orderId,
 			type: "PUT", 
 			success: function(message){
 				alert(message);
@@ -424,7 +439,7 @@ function cancelOrder() {
 // Za popunjavanje podataka o restoranu u tabeli sa poruzbinama
 function getRestaurants() {
 	$.get({
-		url: "rest/restaurant/all",
+		url: "../rest/restaurant/all",
 		contentType: "application/json",
 		success: function(restaurants) {
 			allRestaurants = restaurants;
@@ -451,7 +466,7 @@ function addComment() {
 				
 				
 				$.post({
-					url: "rest/comment",
+					url: "../rest/comment",
 					contentType: "application/json",
 					data: JSON.stringify(data),
 					success: function(message){
@@ -499,7 +514,7 @@ function searchOrders() {
 		};
 		
 		$.get({
-			url: "rest/order/search",
+			url: "../rest/order/search",
 			data: queryParams,
 			success: function(orders){
 				// Prvo brisem postojece narudzbine iz tabele pa dodajem filtrirane - pretraga
@@ -548,11 +563,11 @@ function sortOrdersByRestaurantName() {
 		}
 		if(sortRestaurantNameDesc) {
 			sortRestaurantNameDesc = false;
-			$("#imageSortRestaurantName").attr("src", "images/sort-up.png");
+			$("#imageSortRestaurantName").attr("src", "../images/sort-up.png");
 		} else {
 			shownOrders.reverse();
 			sortRestaurantNameDesc = true;
-			$("#imageSortRestaurantName").attr("src", "images/sort-down.png");
+			$("#imageSortRestaurantName").attr("src", "../images/sort-down.png");
 		}
 		for(let order of shownOrders) {
 			addOrderInTable(order);
@@ -577,11 +592,11 @@ function sortOrdersByPrice() {
 		}
 		if(sortPriceDesc) {
 			sortPriceDesc = false;
-			$("#imageSortPrice").attr("src", "images/sort-up.png");
+			$("#imageSortPrice").attr("src", "../images/sort-up.png");
 		} else {
 			shownOrders.reverse();
 			sortPriceDesc = true;
-			$("#imageSortPrice").attr("src", "images/sort-down.png");
+			$("#imageSortPrice").attr("src", "../images/sort-down.png");
 		}
 		for(let order of shownOrders) {
 			addOrderInTable(order);
@@ -606,11 +621,11 @@ function sortOrdersByDate() {
 		}
 		if(sortDateDesc) {
 			sortDateDesc = false;
-			$("#imageSortDate").attr("src", "images/sort-up.png");
+			$("#imageSortDate").attr("src", "../images/sort-up.png");
 		} else {
 			shownOrders.reverse();
 			sortDateDesc = true;
-			$("#imageSortDate").attr("src", "images/sort-down.png");
+			$("#imageSortDate").attr("src", "../images/sort-down.png");
 		}
 		for(let order of shownOrders) {
 			addOrderInTable(order);
@@ -624,7 +639,7 @@ function sortOrdersByDate() {
 function filterOrdersByRestaurantType() {
 	$("#filterType").change(function(){
 		$.get({
-			url: "rest/order",
+			url: "../rest/order",
 			contentType: "application/json",
 			success: function(orders) {
 				$("#tableOrders").empty();
@@ -650,7 +665,7 @@ function filterOrdersByRestaurantType() {
 function filterOrdersByStatus() {
 	$("#filterStatus").change(function(){
 		$.get({
-			url: "rest/order",
+			url: "../rest/order",
 			contentType: "application/json",
 			success: function(orders) {
 				$("#tableOrders").empty();
@@ -703,7 +718,7 @@ function search(){
  		console.log(filter);
  		$.ajax({
  			type: "POST",
- 			url: 'rest/restaurant/search',
+ 			url: '../rest/restaurant/search',
 			data : JSON.stringify(filter),
  			contentType: 'application/json',
  			success: function(restaurants) {
@@ -731,12 +746,12 @@ function filterByType(){
  		$.ajax({
  			
  			type: "GET",
- 			url: 'rest/restaurant/open',
+ 			url: '../rest/restaurant/open',
  			contentType: 'application/json',
  			success: function(restaurants) {
 				shownRestaurants = [];
  		    	for(let res of restaurants) {
- 		    		if($("#typeZaFiltraciju").val() == '' || res.type.toLowerCase().includes($("#typeZaFiltraciju").val().toLowerCase())){
+ 		    		if($("#typeZaFiltraciju").val() == '' || res.restaurantType.toLowerCase().includes($("#typeZaFiltraciju").val().toLowerCase())){
  	 					addRestaurantInTable(res);
  	 					$( "#detaljiRestorana" + res.id).click(function() {
 							getRestaurantById(res.id);
@@ -759,7 +774,7 @@ function sortRestaurantsByStatus() {
  		$("#tableRestaurants").empty();
 		
 		for(let res of shownRestaurants) {
-			if(res.open === "Open") {
+			if(res.open) {
 	 	 		addRestaurantInTable(res);
 	 	 		$( "#detaljiRestorana" + res.id).click(function() {
 					getRestaurantById(res.id);
@@ -792,7 +807,7 @@ function sortRestaurantsByRating(){
  	 		}
 			
  			sortRatingDesc = false;
- 			$("#imageSortRating").attr("src", "./images/sort-down.png");
+ 			$("#imageSortRating").attr("src", "../images/sort-down.png");
  		} else {
  			//shownUsers.reverse();
  			for(let i=0; i<shownRestaurants.length; i++){
@@ -805,7 +820,7 @@ function sortRestaurantsByRating(){
  	 			}
  	 		}
  			sortRatingDesc = true;
- 			$("#imageSortRating").attr("src", "./images/sort-up.png");
+ 			$("#imageSortRating").attr("src", "../images/sort-up.png");
  		}
  		
  			for(let res of shownRestaurants) {
@@ -840,7 +855,7 @@ function sortRestaurantsByName(){
 			    return 0;
 			});
 			sortNameDesc = false;
-			$("#imageSortName").attr("src", "./images/sort-down.png");
+			$("#imageSortName").attr("src", "../images/sort-down.png");
 		} else {
 			shownRestaurants.sort(function(a, b){
 			    if(a.name > b.name) { return -1; }
@@ -848,7 +863,7 @@ function sortRestaurantsByName(){
 			    return 0;
 			});
 			sortNameDesc = true;
-			$("#imageSortName").attr("src", "./images/sort-up.png");
+			$("#imageSortName").attr("src", "../images/sort-up.png");
 		}
  			
  			
@@ -875,20 +890,20 @@ function sortRestaurantsByCity(){
 
 		if(sortCityDesc) {
 			shownRestaurants.sort(function(a, b){
-			    if(a.city < b.city) { return -1; }
-			    if(a.city > b.city) { return 1; }
+			    if(a.location.address.city < b.location.address.city) { return -1; }
+			    if(a.location.address.city > b.location.address.city) { return 1; }
 			    return 0;
 			});
 			sortCityDesc = false;
-			$("#imageSortCity").attr("src", "./images/sort-down.png");
+			$("#imageSortCity").attr("src", "../images/sort-down.png");
 		} else {
 			shownRestaurants.sort(function(a, b){
-			    if(a.city > b.city) { return -1; }
-			    if(a.city < b.city) { return 1; }
+			    if(a.location.address.city > b.location.address.city) { return -1; }
+			    if(a.location.address.city < b.location.address.city) { return 1; }
 			    return 0;
 			});
 			sortCityDesc = true;
-			$("#imageSortCity").attr("src", "./images/sort-up.png");
+			$("#imageSortCity").attr("src", "../images/sort-up.png");
 		}
  		
  		
@@ -915,20 +930,20 @@ function sortRestaurantsByCountry(){
 		
 		if(sortCountryDesc) {
 			shownRestaurants.sort(function(a, b){
-			    if(a.country < b.country) { return -1; }
-			    if(a.country > b.country) { return 1; }
+			    if(a.location.address.country < b.location.address.country) { return -1; }
+			    if(a.location.address.country > b.location.address.country) { return 1; }
 			    return 0;
 			});
 			sortCountryDesc = false;
-			$("#imageSortCountry").attr("src", "./images/sort-down.png");
+			$("#imageSortCountry").attr("src", "../images/sort-down.png");
 		} else {
 			shownRestaurants.sort(function(a, b){
-			    if(a.country > b.country) { return -1; }
-			    if(a.country < b.country) { return 1; }
+			    if(a.location.address.country > b.location.address.country) { return -1; }
+			    if(a.location.address.country < b.location.address.country) { return 1; }
 			    return 0;
 			});
 			sortCountryDesc = true;
-			$("#imageSortCountry").attr("src", "./images/sort-up.png");
+			$("#imageSortCountry").attr("src", "../images/sort-up.png");
 		}
  		
  		
@@ -1055,7 +1070,7 @@ $(document).ready(function(){
 			
 			$.ajax({
 				type: "PUT",
-				url: 'rest/user',
+				url: '../rest/user',
 				data: JSON.stringify(data),
 				contentType: 'application/json',
 				success: function() {

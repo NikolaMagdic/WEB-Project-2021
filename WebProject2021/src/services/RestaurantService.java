@@ -26,7 +26,6 @@ import javax.ws.rs.core.Response;
 import beans.Restaurant;
 import beans.User;
 import dao.RestaurantDAO;
-import dto.RestaurantDTO;
 import dao.UserDAO;
 import enumerations.UserRole;
 import filters.RestaurantFilter;
@@ -133,7 +132,7 @@ public class RestaurantService {
 			return Response.status(400).build();
 		}
 
-		return Response.status(200).entity(convertToDTO(restaurant)).build();
+		return Response.status(200).entity(restaurant).build();
 	}
 	
 	
@@ -146,13 +145,13 @@ public class RestaurantService {
 		
 		Collection<Restaurant> allRestaurants = restaurantDAO.findAllRestaurants();
 		
-		List<RestaurantDTO> dtoRestaurants = new ArrayList<>();
+		List<Restaurant> restaurants = new ArrayList<>();
 		
 		for(Restaurant res : allRestaurants) {
-			dtoRestaurants.add(convertToDTO(res));
+			restaurants.add(res);
 		}
 		
-		return Response.status(200).entity(dtoRestaurants).build();
+		return Response.status(200).entity(restaurants).build();
 	}
 	
 	// Pretraga apartmana
@@ -160,11 +159,11 @@ public class RestaurantService {
 	@Path("/search")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<RestaurantDTO> searchApartment(RestaurantFilter filter){
+	public List<Restaurant> searchApartment(RestaurantFilter filter){
 		RestaurantDAO restaurantDAO = (RestaurantDAO) ctx.getAttribute("restaurants");
 		Collection<Restaurant> restaurants = restaurantDAO.findAllRestaurants();
 		
-		List<RestaurantDTO> filteredRestaurants = new ArrayList<>();
+		List<Restaurant> filteredRestaurants = new ArrayList<>();
 		
 		for (Restaurant r : restaurants) {
 			if ((filter.getCity() != null && r.getLocation().getAddress().getCity().toLowerCase().contains(filter.getCity().toLowerCase())) || filter.getCity() == null) {
@@ -172,7 +171,7 @@ public class RestaurantService {
 					if ((filter.getRating() != null && (r.getRating() > filter.getRating())) || filter.getRating() == null) {
 						if ((filter.getType() != null && r.getRestaurantType().toString().toLowerCase().contains(filter.getType().toLowerCase())) || filter.getType() == null) {
 							//System.out.println(r.getRestaurantType().toString());
-							filteredRestaurants.add(convertToDTO(r));
+							filteredRestaurants.add(r);
 						}
 					}
 				}
@@ -188,28 +187,6 @@ public class RestaurantService {
 		return filteredRestaurants;
 	}
 	
-	public RestaurantDTO convertToDTO(Restaurant res) {
-		RestaurantDTO dto = new RestaurantDTO();
-		dto.setId(res.getId());
-		dto.setName(res.getName());
-		dto.setType(res.getRestaurantType().toString());
-		dto.setCity(res.getLocation().getAddress().getCity());
-		dto.setCountry(res.getLocation().getAddress().getCountry());
-		dto.setRating(res.getRating());
-		dto.setAddress(res.getLocation().getAddress().getStreetAndNumber());
-		dto.setImage(res.getImage());
-		dto.setLatitude(res.getLocation().getLatitude());
-		dto.setLongitude(res.getLocation().getLongitude());
-		
-		if(res.isOpen()) {
-			dto.setOpen("Open");
-		} else {
-			dto.setOpen("Closed");
-		}
-		
-		return dto;
-	}
-	
 	//svi otvoreni restorani
 	@GET
 	@Path("/open")
@@ -220,11 +197,11 @@ public class RestaurantService {
 		
 		Collection<Restaurant> allRestaurants = restaurantDAO.findAllRestaurants();
 		
-		List<RestaurantDTO> dtoRestaurants = new ArrayList<>();
+		List<Restaurant> dtoRestaurants = new ArrayList<>();
 		
 		for(Restaurant res : allRestaurants) {
 			if(res.isOpen()) {
-				dtoRestaurants.add(convertToDTO(res));
+				dtoRestaurants.add(res);
 			}
 		}
 		

@@ -1,9 +1,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Manager Page</title>
-	<link rel="stylesheet" href="managerPage.css">
-	<script src="jquery-3.3.1.min.js"></script>
-	<script type="text/javascript" src="./managerPage.js"></script>
+	<link rel="stylesheet" href="../css/managerPage.css">
+	<script src="../jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="../js/managerPage.js"></script>
 </head>
 <body>
 	<div class="meni">
@@ -22,7 +22,7 @@
 	
 	<div id="divRestaurantDetails">
 
-		<h1 align="center">Details </h1></br>
+		<h1 align="center">Details </h1>
 
 		<table id="tableDetails" >
 			<tr hidden=true>
@@ -163,6 +163,7 @@
 					<td>Name:</td>
 					<td><input type="text" required id="txtNameArticlaEdit"></td>
 				</tr>
+				<tr>
 					<td>Price:</td>
 					<td><input type="text" required id="txtPriceArticlaEdit"> </td>
 				</tr>
@@ -217,7 +218,7 @@
 				<tr>
 					<td>Price:</td>
 					<td>
-						<input type="text" required id="txtPriceArticlaAdd">
+						<input type="number" required id="txtPriceArticlaAdd">
 					</td>
 				</tr>
 				<tr>
@@ -231,7 +232,7 @@
 				</tr>
 				<tr>
 					<td>Amount:</td>
-					<td><input type="text"  id="txtAmountArticlaAdd"> </td>
+					<td><input type="number"  id="txtAmountArticlaAdd"> </td>
 				</tr>
 				<tr>
 					<td>Desription:</td>
@@ -319,7 +320,7 @@
 	
 	
 	<div id="divOrders">
-		<h1 align="center">Restaurant orders<button id="buttonSearch"><img id="imgSearch" alt="Pretraga" src="images/search-icon.png" width="15px" height="15px"></button></h1>
+		<h1 align="center">Restaurant orders<button id="buttonSearch"><img id="imgSearch" alt="Pretraga" src="../images/search-icon.png" width="15px" height="15px"></button></h1>
 		<div id="divSearchOrders">
 			<form id="formSearchOrders">
 				<table>
@@ -358,8 +359,8 @@
 		<table class="table-data">
 			<thead>
 				<tr class="tr-top">
-					<th id="sortPrice" class="sort-header">Price <img id="imageSortPrice2" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
-					<th id="sortDate"" class="sort-header">Date <img id="imageSortDate" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortPrice" class="sort-header">Price <img id="imageSortPrice2" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortDate" class="sort-header">Date <img id="imageSortDate" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
 					<th>Customer</th>
 					<th>Status</th>
 					<th></th>
@@ -417,7 +418,7 @@
 	
 	
 	<div id="divRequestOrders">
-		<h1 align="center">Request orders<button id="buttonSearchRequest"><img id="imgSearchRequest" alt="Pretraga" src="images/search-icon.png" width="15px" height="15px"></button></h1>
+		<h1 align="center">Request orders<button id="buttonSearchRequest"><img id="imgSearchRequest" alt="Pretraga" src="../images/search-icon.png" width="15px" height="15px"></button></h1>
 		<div id="divSearchRequestOrders">
 			<form id="formSearchRequestOrders">
 				<table>
@@ -445,8 +446,8 @@
 		<table class="table-data">
 			<thead>
 				<tr class="tr-top">
-					<th id="sortPrice" class="sort-header">Price <img id="imageSortPrice2" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
-					<th id="sortDate"" class="sort-header">Date <img id="imageSortDate" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortPrice" class="sort-header">Price <img id="imageSortPrice2" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortDate" class="sort-header">Date <img id="imageSortDate" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
 					<th>Customer</th>
 					<th>Delivery Status</th>
 					<th></th>

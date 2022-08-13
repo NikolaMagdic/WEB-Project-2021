@@ -25,7 +25,6 @@ import beans.User;
 import dao.ArticleDAO;
 import dao.RestaurantDAO;
 import dao.UserDAO;
-import dto.RestaurantDTO;
 import enumerations.UserRole;
 
 @Path("user")
@@ -293,38 +292,9 @@ public class UserService {
 		
 		restaurant.setArticles(restaurantArticles);
 		
-		return Response.status(200).entity(convertToDTO(restaurant)).build();
+		return Response.status(200).entity(restaurant).build();
 		
 	}
 	
 	
-	public RestaurantDTO convertToDTO(Restaurant res) {
-		RestaurantDTO dto = new RestaurantDTO();
-		dto.setId(res.getId());
-		dto.setName(res.getName());
-		dto.setType(res.getRestaurantType().toString());
-		dto.setCity(res.getLocation().getAddress().getCity());
-		dto.setCountry(res.getLocation().getAddress().getCountry());
-		dto.setRating(res.getRating());
-		dto.setAddress(res.getLocation().getAddress().getStreetAndNumber());
-		//dto.setArticles(res.getArticles());
-		
-		List<Integer> articlesId = new ArrayList<Integer>();
-		for(Integer articleId : res.getArticles()) {
-			if(articleId != 0) {
-				//System.out.println("Id artikla koji dodajemo u dto artikala: " + articleId);
-				articlesId.add(articleId);
-			}
-		}
-		
-		dto.setArticles(articlesId);
-		
-		if(res.isOpen()) {
-			dto.setOpen("Open");
-		} else {
-			dto.setOpen("Closed");
-		}
-		
-		return dto;
-	}
 }

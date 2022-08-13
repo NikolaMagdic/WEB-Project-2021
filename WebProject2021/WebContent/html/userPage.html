@@ -2,10 +2,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>My Page</title>
-	<link rel="stylesheet" href="userPage.css">
-	<script src="jquery-3.3.1.min.js"></script>
-	<script type="text/javascript" src="userPage.js"></script>
-	<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.6.1/build/ol.js"></script>
+	<link rel="stylesheet" href="../css/userPage.css">
+	<script src="../jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="../js/userPage.js"></script>
+	<script src="../ol/ol.js"></script>
 </head>
 <body>
 	<div class="menu">
@@ -40,7 +40,7 @@
 						</tr>
 						<tr>
 							<td>
-								<div class="input-group mb-3">
+								<div>
 									<div>
 										<span>Password*: </span>
 									</div>
@@ -50,7 +50,7 @@
 						</tr>
 										<tr>
 							<td>
-								<div class="input-group mb-3">
+								<div>
 									<div>
 										<span>Confirm Password*: </span>
 									</div>
@@ -61,7 +61,7 @@
 						<tr>
 		
 							<td>
-								<div class="input-group mb-3">
+								<div>
 									<div>
 										<span>Name*: </span>
 									</div>
@@ -71,7 +71,7 @@
 						</tr>
 						<tr>
 		
-							<td><div class="input-group mb-3">
+							<td><div>
 									<div>
 										<span>Last
 											Name* : </span>
@@ -82,13 +82,19 @@
 						
 						<tr>
 							<td>
-							    <input type="radio" name="optionsCheck" id="male" checked> Male
-							</td>
-							<td>
-							  <input type="radio" name="optionsCheck" id="female"> Female
+							<span>Gender</span>
+							<table>
+							<tr>
+							<td><label>Male</label></td>
+							<td><input type="radio" name="optionsCheck" id="male" checked></td>
+							</tr>	
+							<tr>
+							<td><label>Female</label></td>
+							<td><input type="radio" name="optionsCheck" id="female"></td>
+							</tr>
+							</table>
 							</td>
 						</tr>
-						
 						<tr>
 							<td>
 								<input type="submit"
@@ -99,7 +105,7 @@
 				</form>
 		</div>
 	<div id="divRestaurants">
-		<h1>Restaurants overview <button id="buttonSearchRestaurants"><img id="buttonSearch" alt="Pretraga" src="images/search-icon.png" width="15px" height="15px"></button></h1>
+		<h1>Restaurants overview <button id="buttonSearchRestaurants"><img id="buttonSearch" alt="Pretraga" src="../images/search-icon.png" width="15px" height="15px"></button></h1>
 		<div id="divSearchRestaurants" hidden="true">
 			<form id="formSearchRestaurants">
 				<table>
@@ -131,13 +137,13 @@
 		<table class="table-data">
 			<thead>
 				<tr>
-					<th id='sortRestaurantsByName' class="sort-header">Name <img id="imageSortName" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id='sortRestaurantsByName' class="sort-header">Name <img id="imageSortName" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
 					<th>Restaurant image</th>
 					<th> <input id="typeZaFiltraciju" placeholder="Type" ></th>
 					<th id='sortRestaurantsByStatus'>Status</th>
-					<th id='sortRestaurantsByCity' class="sort-header">City<img id="imageSortCity" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
-					<th id='sortRestaurantsByCountry' class="sort-header">Country<img id="imageSortCountry" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
-					<th id='sortRestaurantsByRating' class="sort-header">Rating<img id="imageSortRating" alt="" src="./images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id='sortRestaurantsByCity' class="sort-header">City<img id="imageSortCity" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id='sortRestaurantsByCountry' class="sort-header">Country<img id="imageSortCountry" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id='sortRestaurantsByRating' class="sort-header">Rating<img id="imageSortRating" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
 					<th >Detalji</th>
 				</tr>
 			</thead>
@@ -234,7 +240,7 @@
 		</div>
 	</div>
 	<div id="divOrders">
-		<h1>All my orders<button id="buttonSearch"><img id="buttonSearch" alt="Pretraga" src="images/search-icon.png" width="15px" height="15px"></button></h1>
+		<h1>All my orders<button id="buttonSearch"><img id="buttonSearch" alt="Pretraga" src="../images/search-icon.png" width="15px" height="15px"></button></h1>
 		<div id="divSearchOrders" hidden="true">
 			<form id="formSearchOrders">
 				<table>
@@ -289,10 +295,10 @@
 		<table class="table-data">
 			<thead>
 				<tr>
-					<th id="sortRestaurant" class="sort-header">Restaurant <img id="imageSortRestaurantName" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortRestaurant" class="sort-header">Restaurant <img id="imageSortRestaurantName" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
 					<th>Restaurant type</th>
-					<th id="sortPrice" class="sort-header">Price <img id="imageSortPrice" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
-					<th id="sortDate" class="sort-header">Date <img id="imageSortDate" alt="" src="images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortPrice" class="sort-header">Price <img id="imageSortPrice" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
+					<th id="sortDate" class="sort-header">Date <img id="imageSortDate" alt="" src="../images/sort-up-down.png" width="12px" height="12px"></th>
 					<th>Customer</th>
 					<th>Status</th>
 					<th></th>

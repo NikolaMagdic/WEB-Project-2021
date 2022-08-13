@@ -15,7 +15,7 @@
         		"postalCode" : 21000
         	}
       	},
-		"image": "",
+		"image": "images/kfc-svg.png",
 		"rating" : 3.8,
 		"restaurantOrders": [123345566788, 122112233433, 124444444444, 21121221212]
 	},
@@ -35,7 +35,7 @@
         		"postalCode" : 22000
         	}
       	},
-		"image": "",
+		"image": "images/burrito.jpg",
 		"rating" : 4.2,
 		"restaurantOrders": []
 	},
@@ -55,7 +55,7 @@
         		"postalCode" : 23200
         	}
       	},
-		"image": "",
+		"image": "images/sarma i prijatelji.jpg",
 		"rating" : 4.6,
 		"restaurantOrders": []
 	},
@@ -75,7 +75,7 @@
         		"postalCode" : 25390
         	}
       	},
-		"image": "",
+		"image": "images/burger.jpg",
 		"rating" : 3.5,
 		"restaurantOrders": []
 	},
@@ -95,7 +95,7 @@
         		"postalCode" : 31000
         	}
       	},
-		"image": "",
+		"image": "images/pizza.jpg",
 		"rating" : 4.8,
 		"restaurantOrders": []
 	},
@@ -115,7 +115,7 @@
         		"postalCode" : 100000
         	}
       	},
-		"image": "",
+		"image": "images/chinese-restaurant.jpg",
 		"rating" : 4.5,
 		"restaurantOrders": []
 	}

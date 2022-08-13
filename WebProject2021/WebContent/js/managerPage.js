@@ -143,7 +143,7 @@ function initShowButtons(){
 		$("#divSearchRequestOrders").hide();
 	});  
 	
-	$("#buttonRequests").click(function(event){
+	$("#buttonRequests").click(function(){
 		getRestaurantByManager();
 		getManagerUsername();
 		//getRestaurantRequestOrders();
@@ -192,7 +192,7 @@ function initShowButtons(){
 		$("#divSearchRequestOrders").hide();
 	}); 
 	
-	$("#buttonSearchRequest").click(function(event){
+	$("#buttonSearchRequest").click(function(){
 		getRestaurantByManager();
 		//getRestaurantRequestOrders();
 		$("#divEditAccount").hide();
@@ -229,11 +229,11 @@ function logout(){
  	$( "#buttonLogout").click(function() {
  		$.ajax({
  			type: "GET",
- 			url: './rest/logout',
+ 			url: '../rest/logout',
  			contentType: 'application/json',
  			success: function() {
 				alert("You logged out successfully");
- 				window.location = "./index.html";
+ 				window.location = "../index.html";
  			}
  		});
  		
@@ -243,7 +243,7 @@ function logout(){
 function getManagerUsername(){
 	$.get({
 		type: "GET",
-		url: "./rest/loggedIn",
+		url: "../rest/loggedIn",
 		dataType: "json",
 		success: function(user) {
 			managerUsername = user.username;
@@ -255,16 +255,17 @@ function getRestaurantByManager(){
 	$.ajax({
 		
 		type: "GET",
-		url: './rest/user/manager/' + managerUsername,
+		url: '../rest/user/manager/' + managerUsername,
 		contentType: 'application/json',
 		success: function(res) {
+			var opened = res.open ? "Opened" : "Closed";
 			$('#txtIdRestorana').val(res.id);
 			$('#txtNameRestorana').val(res.name);
-			$('#txtCityRestorana').val(res.city);
-			$('#txtAddressRestorana').val(res.address);
-			$('#txtCountryRestorana').val(res.country);
-			$('#txtTypeRestorana').val(res.type);
-			$('#txtStatusRestorana').val(res.open);
+			$('#txtCityRestorana').val(res.location.address.city);
+			$('#txtAddressRestorana').val(res.location.address.streetAndNumber);
+			$('#txtCountryRestorana').val(res.location.address.country);
+			$('#txtTypeRestorana').val(res.restaurantType);
+			$('#txtStatusRestorana').val(opened);
 			$('#txtRatingRestorana').val(res.rating);
 			
 			$('#tableArticles tbody').empty();
@@ -281,7 +282,7 @@ function getRestaurantByManager(){
 			}
 			
 			restaurantId = res.id;
-			console.log("Postavljamo globalnu promenljivu restaurantId na: " + restaurantId);
+			//Postavljamo globalnu promenljivu restaurantId na: restaurantId
 			
 			getRestaurantOrders(res.id);
 			getRestaurantRequestOrders(res.id);
@@ -298,7 +299,7 @@ function addArticleInTable(articleId) {
 	
 	$.get({
 		type: "GET",
-		url: "./rest/article/Id/" + articleId,
+		url: "../rest/article/Id/" + articleId,
 		dataType: "json",
 		success: function(article) {
 			
@@ -307,7 +308,7 @@ function addArticleInTable(articleId) {
 			let tr = "<tr id=\"trArticle\">" +
 					"<td class=\"tdTable\">" + article.name + "</td>" +
 					"<td class=\"tdTable\">" + article.price + "</td>" +
-					"<td class=\"tdTable\">" + article.type + "</td>" +
+					"<td class=\"tdTable\">" + article.articleType + "</td>" +
 					"<td class=\"tdTable\">" + article.amount + "</td>" +
 					"<td class=\"tdTable\">" + article.description + "</td>" +
 					"<td><image alt='' src='" + article.image + "' width='50px' height='50px'></td>" +
@@ -327,7 +328,7 @@ function getArticleById(articleId){
 	
 	$.get({
 		type: "GET",
-		url: "./rest/article/Id/" + articleId,
+		url: "../rest/article/Id/" + articleId,
 		dataType: "json",
 		success: function(article) {
 			
@@ -335,7 +336,7 @@ function getArticleById(articleId){
 			$('#txtIdArticla').val(article.id);
 			$('#txtNameArticla').val(article.name);
 			$('#txtPriceArticla').val(article.price);
-			$('#txtTypeArticla').val(article.type);
+			$('#txtTypeArticla').val(article.articleType);
 			$('#txtAmountArticla').val(article.amount);
 			$('#txtDescriptionArticla').val(article.description);
 			$('#txtImageArticla').val(article.image);
@@ -350,7 +351,7 @@ function deleteArticleById(orderId) {
 
 	$.ajax({
 		type: "PUT",
-		url: "./rest/article/deleteArticle/" + orderId,
+		url: "../rest/article/deleteArticle/" + orderId,
 		data: "",
 		contentType: "application/json",
 		success: function(){
@@ -370,7 +371,7 @@ function isArticleDeleted(orderId) {
 	
 	$.ajax({
 		type: "GET",
-		url: "./rest/article/isDeleted/" + orderId,
+		url: "../rest/article/isDeleted/" + orderId,
 		data: "",
 		contentType: "application/json",
 		success: function(deleted){
@@ -391,7 +392,7 @@ function getRestaurantComments(restaurantId) {
 	$("#tableComments").empty();
 	$.ajax({
 		type: "GET",
-		url: 'rest/comment/' + restaurantId,
+		url: '../rest/comment/' + restaurantId,
 		contentType: 'application/json',
 		success: function(comments) {
 	    	for(let comment of comments) {
@@ -424,7 +425,7 @@ function approveComment() {
 		let commentId = $(this).attr("id");
 		
 		$.ajax({
-			url: "rest/comment/" + commentId,
+			url: "../rest/comment/" + commentId,
 			type: "PUT",
 			contentType: "application/json",
 			success: function() {
@@ -462,7 +463,7 @@ function formatDatePicker(newDate) {
 function getLoggedUserData() {
 	$.get({
 		type: "GET",
-		url: "./rest/loggedIn",
+		url: "../rest/loggedIn",
 		dataType: "json",
 		success: function(user) {
 			managerUsername = user.username;
@@ -518,7 +519,7 @@ function editAccount() {
 		
 		$.ajax({
 			type: "PUT",
-			url: "rest/user",
+			url: "../rest/user",
 			data: JSON.stringify(user),
 			contentType: "application/json",
 			success: function(){
@@ -536,7 +537,7 @@ function setSelectedArticleData(article) {
 	$('#txtIdArticlaEdit').val(article.id);
 	$('#txtNameArticlaEdit').val(article.name);
 	$('#txtPriceArticlaEdit').val(article.price);
-	$('#txtTypeArticlaEdit').val(article.type);
+	$('#txtTypeArticlaEdit').val(article.articleType);
 	$('#txtAmountArticlaEdit').val(article.amount);
 	$('#txtDescriptionArticlaEdit').val(article.description);
 	$('#txtImageArticlaEdit').val(article.image);
@@ -560,7 +561,7 @@ function editArticle() {
 			id: id,
 			name: name,
 			price: price,
-			type: type,
+			articleType: type,
 			amount: amount,
 			description: description,
 			image: image
@@ -568,7 +569,7 @@ function editArticle() {
 		
 		$.ajax({
 			type: "PUT",
-			url: "rest/article/edit",
+			url: "../rest/article/edit",
 			data: JSON.stringify(newArticle),
 			contentType: "application/json",
 			success: function(){
@@ -592,6 +593,8 @@ function addArticle() {
 		let description = $("#txtDescriptionArticlaAdd").val();
 		let image = $("#txtImageArticlaAdd").attr("src");
 		
+		price = parseFloat(price);
+		amount = parseFloat(amount);
 		
 		if(name == ""){
 			alert("Name field is empty!");
@@ -609,7 +612,7 @@ function addArticle() {
 			id: id,
 			name: name,
 			price: price,
-			type: type,
+			articleType: type,
 			amount: amount,
 			description: description,
 			image: image
@@ -619,7 +622,7 @@ function addArticle() {
 		
 		$.ajax({
 			type: "POST",
-			url: "rest/article/add/" + restaurantId,
+			url: "../rest/article/add/" + restaurantId,
 			data: JSON.stringify(newArticle),
 			contentType: "application/json",
 			success: function(){
@@ -638,7 +641,7 @@ function getRestaurantOrders(id) {
 	console.log("Usao u restaurantOrders za restaurantId:" + id);
 	$("#tableOrders").empty();
 	$.get({
-		url: "rest/order/restaurant/" + id,
+		url: "../rest/order/restaurant/" + id,
 		contentType: "application/json",
 		success: function (orders) {
 			for(let order of orders) {
@@ -675,7 +678,7 @@ function getOrderById(orderId){
 	
 	$.get({
 		type: "GET",
-		url: "./rest/order/" + orderId,
+		url: "../rest/order/" + orderId,
 		dataType: "json",
 		success: function(order) {
 			setSelectedOrderData(order);
@@ -711,7 +714,7 @@ function editOrder() {
 		
 		$.ajax({
 			type: "PUT",
-			url: "rest/order/edit",
+			url: "../rest/order/edit",
 			data: JSON.stringify(newOrder),
 			contentType: "application/json",
 			success: function(){
@@ -729,7 +732,7 @@ function getRestaurantRequestOrders(id) {
 	console.log("Usao u getRestaurantRequestOrders za restaurantId:" + id);
 	$("#tableRequestOrders").empty();
 	$.get({
-		url: "rest/order/forPickup/restaurant/" + id,
+		url: "../rest/order/forPickup/restaurant/" + id,
 		contentType: "application/json",
 		success: function (orders) {
 			for(let order of orders) {
@@ -770,7 +773,7 @@ function approveOrderById(orderId){
 	
 	$.ajax({
 		type: "PUT",
-		url: "./rest/order/approveOrder/" + orderId,
+		url: "../rest/order/approveOrder/" + orderId,
 		data: "",
 		contentType: "application/json",
 		success: function(){
@@ -790,7 +793,7 @@ function rejectOrderById(orderId){
 	
 	$.ajax({
 		type: "PUT",
-		url: "./rest/order/reject/" + orderId,
+		url: "../rest/order/reject/" + orderId,
 		data: "",
 		contentType: "application/json",
 		success: function(){
@@ -837,7 +840,7 @@ function searchOrders() {
 		};
 		
 		$.get({
-			url: "rest/order/search/" + restaurantId,
+			url: "../rest/order/search/" + restaurantId,
 			data: queryParams,
 			success: function(orders){
 				// Prvo brisem postojece narudzbine iz tabele pa dodajem filtrirane - pretraga
@@ -861,7 +864,7 @@ function searchOrders() {
 function filterOrdersByStatus() {
 	$("#filterStatus").change(function(){
 		$.get({
-			url: "rest/order/restaurant/" + restaurantId,
+			url: "../rest/order/restaurant/" + restaurantId,
 			contentType: "application/json",
 			success: function(orders) {
 				$("#tableOrders").empty();

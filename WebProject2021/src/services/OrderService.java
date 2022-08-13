@@ -29,7 +29,6 @@ import beans.User;
 import dao.OrderDAO;
 import dao.RestaurantDAO;
 import dao.UserDAO;
-import dto.OrderDTO;
 import enumerations.OrderDeliveryStatus;
 import enumerations.CustomerTypeName;
 import enumerations.OrderStatus;
@@ -173,7 +172,7 @@ public class OrderService {
 	@Path("/edit")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void changeOrderStatus(OrderDTO order) {
+	public void changeOrderStatus(Order order) {
 		
 		System.out.println(order.getOrderId());
 		System.out.println(order.getDate());
@@ -186,10 +185,10 @@ public class OrderService {
 		Order oldOrder = orderDAO.getOrder(order.getOrderId());
 		
 		OrderStatus status = null;
-		if(order.getOrderStatus().equals("U_PRIREMI") && oldOrder.getOrderStatus().equals(OrderStatus.OBRADA)) {
+		if(order.getOrderStatus().equals(OrderStatus.U_PRIREMI) && oldOrder.getOrderStatus().equals(OrderStatus.OBRADA)) {
 			System.out.println("USAO U PRVI");
 			status = OrderStatus.U_PRIREMI;
-		} else if(order.getOrderStatus().equals("CEKA_DOSTAVLJACA") && oldOrder.getOrderStatus().equals(OrderStatus.U_PRIREMI)) {
+		} else if(order.getOrderStatus().equals(OrderStatus.CEKA_DOSTAVLJACA) && oldOrder.getOrderStatus().equals(OrderStatus.U_PRIREMI)) {
 			status = OrderStatus.CEKA_DOSTAVLJACA;
 			System.out.println("USAO U DRUGI");
 		} else {

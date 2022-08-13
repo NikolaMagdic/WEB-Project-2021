@@ -95,11 +95,11 @@ function logout(){
  	$( "#buttonLogout").click(function() {
  		$.ajax({
  			type: "GET",
- 			url: './rest/logout',
+ 			url: '../rest/logout',
  			contentType: 'application/json',
  			success: function() {
 				alert("Uspešno ste se odjavili");
- 				window.location = "./index.html";
+ 				window.location = "../index.html";
  			}
  		});
  		
@@ -109,7 +109,7 @@ function logout(){
 function getLoggedUserData() {
 	$.get({
 		type: "GET",
-		url: "./rest/loggedIn",
+		url: "../rest/loggedIn",
 		dataType: "json",
 		success: function(user) {
 			delivererUsername = user.username;
@@ -165,7 +165,7 @@ function editAccount() {
 		
 		$.ajax({
 			type: "PUT",
-			url: "rest/user",
+			url: "../rest/user",
 			data: JSON.stringify(user),
 			contentType: "application/json",
 			success: function(){
@@ -181,7 +181,7 @@ function editAccount() {
 function getDelivererUsername(){
 	$.get({
 		type: "GET",
-		url: "./rest/loggedIn",
+		url: "../rest/loggedIn",
 		dataType: "json",
 		success: function(user) {
 			delivererUsername = user.username;
@@ -197,7 +197,7 @@ function getDelivererOrders(username) {
 	console.log("Usao u delivererOrders za dostavljaca:" + username);
 	$("#tableOrders").empty();
 	$.get({
-		url: "rest/order/deliverer/" + username,
+		url: "../rest/order/deliverer/" + username,
 		contentType: "application/json",
 		success: function (orders) {
 			for(let order of orders) {
@@ -215,7 +215,7 @@ function getDelivererOrders(username) {
 function getPickupOrders() {
 	$("#tableAllOrders").empty();
 	$.get({
-		url: "rest/order/forPickup",
+		url: "../rest/order/forPickup",
 		contentType: "application/json",
 		success: function (orders) {
 			console.log(orders);
@@ -290,7 +290,7 @@ function getOrderById(orderId){
 	
 	$.get({
 		type: "GET",
-		url: "./rest/order/" + orderId,
+		url: "../rest/order/" + orderId,
 		dataType: "json",
 		success: function(order) {
 			setSelectedOrderData(order);
@@ -309,7 +309,7 @@ function setSelectedOrderData(order) {
 // Za popunjavanje podataka o restoranu u tabeli sa poruzbinama
 function getRestaurants() {
 	$.get({
-		url: "rest/restaurant/all",
+		url: "../rest/restaurant/all",
 		contentType: "application/json",
 		success: function(restaurants) {
 			allRestaurants = restaurants;
@@ -323,7 +323,7 @@ function deliverOrderById(orderId){
 	
 	$.ajax({
 		type: "PUT",
-		url: "./rest/order/deliverOrder/" + orderId,
+		url: "../rest/order/deliverOrder/" + orderId,
 		data: "",
 		contentType: "application/json",
 		success: function(){
@@ -340,7 +340,7 @@ function setDeliveryStatusOrderById(orderId) {
 
 	$.ajax({
 		type: "PUT",
-		url: "./rest/order/deliverOrder/setDelivered/" + orderId,
+		url: "../rest/order/deliverOrder/setDelivered/" + orderId,
 		data: "",
 		contentType: "application/json",
 		success: function(){
@@ -400,11 +400,11 @@ function sortOrdersByPrice() {
 		}
 		if(sortPriceDesc2) {
 			sortPriceDesc2 = false;
-			$("#imageSortPrice2").attr("src", "./images/sort-up.png");
+			$("#imageSortPrice2").attr("src", "../images/sort-up.png");
 		} else {
 			shownOrders.reverse();
 			sortPriceDesc2 = true;
-			$("#imageSortPrice2").attr("src", "./images/sort-down.png");
+			$("#imageSortPrice2").attr("src", "../images/sort-down.png");
 		}
 		for(let order of shownOrders) {
 			addPickupOrderInTable(order);
@@ -432,11 +432,11 @@ function sortOrdersByDate() {
 		}
 		if(sortDateDesc) {
 			sortDateDesc = false;
-			$("#imageSortDate").attr("src", "images/sort-up.png");
+			$("#imageSortDate").attr("src", "../images/sort-up.png");
 		} else {
 			shownOrders.reverse();
 			sortDateDesc = true;
-			$("#imageSortDate").attr("src", "images/sort-down.png");
+			$("#imageSortDate").attr("src", "../images/sort-down.png");
 		}
 		for(let order of shownOrders) {
 			addOrderInTable(order);
@@ -462,11 +462,11 @@ function sortOrdersByDate() {
 		}
 		if(sortDateDesc2) {
 			sortDateDesc2 = false;
-			$("#imageSortDate2").attr("src", "images/sort-up.png");
+			$("#imageSortDate2").attr("src", "../images/sort-up.png");
 		} else {
 			shownOrders.reverse();
 			sortDateDesc2 = true;
-			$("#imageSortDate2").attr("src", "images/sort-down.png");
+			$("#imageSortDate2").attr("src", "../images/sort-down.png");
 		}
 		for(let order of shownOrders) {
 			addPickupOrderInTable(order);
@@ -493,7 +493,7 @@ function sortOrdersByCustomer(){
 			    return 0;
 			});
 			sortCustomerDesc = false;
-			$("#imageSortCustomer").attr("src", "./images/sort-down.png");
+			$("#imageSortCustomer").attr("src", "../images/sort-down.png");
 		} else {
 			shownOrders.sort(function(a, b){
 			    if(a.customer > b.customer) { return -1; }
@@ -501,7 +501,7 @@ function sortOrdersByCustomer(){
 			    return 0;
 			});
 			sortCustomerDesc = true;
-			$("#imageSortCustomer").attr("src", "./images/sort-up.png");
+			$("#imageSortCustomer").attr("src", "../images/sort-up.png");
 		}
  		
  		
@@ -528,7 +528,7 @@ function sortOrdersByCustomer(){
 			    return 0;
 			});
 			sortCustomerDesc2 = false;
-			$("#imageSortCustomer2").attr("src", "./images/sort-down.png");
+			$("#imageSortCustomer2").attr("src", "../images/sort-down.png");
 		} else {
 			shownOrders.sort(function(a, b){
 			    if(a.customer > b.customer) { return -1; }
@@ -536,7 +536,7 @@ function sortOrdersByCustomer(){
 			    return 0;
 			});
 			sortCustomerDesc2 = true;
-			$("#imageSortCustomer2").attr("src", "./images/sort-up.png");
+			$("#imageSortCustomer2").attr("src", "../images/sort-up.png");
 		}
  		
  		

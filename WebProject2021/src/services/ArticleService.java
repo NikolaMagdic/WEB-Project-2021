@@ -27,7 +27,6 @@ import beans.Article;
 import beans.Restaurant;
 import dao.ArticleDAO;
 import dao.RestaurantDAO;
-import dto.ArticleDTO;
 import enumerations.ArticleType;
 
 @Path("article")
@@ -105,16 +104,17 @@ public class ArticleService {
 	@GET
 	@Path("/Id/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ArticleDTO getOneArticle(@PathParam("id") Integer id){
+	public Response getOneArticle(@PathParam("id") Integer id){
 		
 		ArticleDAO articleDAO = (ArticleDAO) ctx.getAttribute("articles");
-		ArticleDTO dto = null;
+		Article article = articleDAO.findArticle(id);
+		
 		
 		if(id != 0) {
-			dto = convertToDTO(articleDAO.findArticle(id));
+			return Response.status(200).entity(article).build();
 		}
 		
-		return dto;
+		return Response.status(404).build();
 		
 	}
 	
@@ -123,7 +123,7 @@ public class ArticleService {
 	@Path("/edit")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ArticleDTO updateArticle(ArticleDTO art, @Context HttpServletRequest request) {
+	public Article updateArticle(Article art, @Context HttpServletRequest request) {
 		
 		ArticleDAO articleDAO = (ArticleDAO) ctx.getAttribute("articles");
 		System.out.println("Id artikla koji editujemo: " + art.getId());
@@ -131,7 +131,7 @@ public class ArticleService {
 		
 		System.out.println(art.getName());
 		System.out.println(art.getPrice());
-		System.out.println(art.getType()); //tip ne menjamo
+		System.out.println(art.getArticleType()); //tip ne menjamo
 		System.out.println(art.getAmount());
 		System.out.println(art.getDescription());
 		System.out.println(art.getImage());
@@ -147,7 +147,7 @@ public class ArticleService {
 		String contextPath = ctx.getRealPath("");
 		articleDAO.saveArticles(contextPath);
 		
-		return convertToDTO(articleForUpdate);
+		return articleForUpdate;
 	}
 	
 	
@@ -156,7 +156,7 @@ public class ArticleService {
 	@Path("/add/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addArticle(ArticleDTO art, @PathParam("id") Integer id) {
+	public Response addArticle(Article art, @PathParam("id") Integer id) {
 		
 		ArticleDAO articleDAO = (ArticleDAO) ctx.getAttribute("articles");
 		
@@ -166,7 +166,7 @@ public class ArticleService {
 		}
 		
 		ArticleType type = null;
-		if(art.getType().equals("DRINK")) {
+		if(art.getArticleType().equals(ArticleType.DRINK)) {
 			type = ArticleType.DRINK;
 		} else {
 			type = ArticleType.FOOD;
@@ -274,24 +274,7 @@ public class ArticleService {
 		System.out.println("IsDeleted articla je: " + article.isDeleted());
 		return false;
 		
-	}
-	
-	
-	
-	public ArticleDTO convertToDTO(Article art) {
-		ArticleDTO dto = new ArticleDTO();
-		dto.setId(art.getId());
-		dto.setName(art.getName());
-		dto.setPrice(art.getPrice());
-		dto.setType(art.getArticleType().toString());
-		dto.setAmount(art.getAmount());
-		dto.setDescription(art.getDescription());
-		dto.setImage(art.getImage());
-		
-		return dto;
-	}
-	
-	
+	}	
 	
 	
 	// Vraca artikal po njegovom id-ju
